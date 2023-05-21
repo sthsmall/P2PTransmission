@@ -7,6 +7,9 @@ import Tracker.Presentation.*;
 import java.io.File;
 
 public class TrackerMG  {
+    final static int ProtocolPort = 8888;
+    final static int FilePort = 9999;
+
     //使用单例模式
     private static TrackerMG instance = new TrackerMG();
     private TrackerMG() {}

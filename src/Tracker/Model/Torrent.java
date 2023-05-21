@@ -18,6 +18,15 @@ public class Torrent implements Serializable {
     private String description;
     //种子文件的下载地址
     private String downloadUrl;
+
+    public String getDownloadUrl() {
+        return downloadUrl;
+    }
+
+    public void setDownloadUrl(String downloadUrl) {
+        this.downloadUrl = downloadUrl;
+    }
+
     //种子的文件列表
     private ArrayList<TorrentFile> fileList;
 
@@ -31,5 +40,9 @@ public class Torrent implements Serializable {
 
     public void setFileList(ArrayList<TorrentFile> torrentFiles) {
         this.fileList = torrentFiles;
+    }
+
+    public String getName() {
+        return name;
     }
 }
