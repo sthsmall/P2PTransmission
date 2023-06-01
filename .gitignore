@@ -2,3 +2,9 @@
 .idea/
 
 src/Java_Big_Assignment.iml
+
+src/Test.java
+
+.gitignore
+
+TestFile

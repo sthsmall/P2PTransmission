@@ -2,6 +2,7 @@ package Peer;
 
 import Peer.Business.ProtocolCommunicator;
 import Peer.Business.TorrentFileTransmissionThread;
+import Tracker.Business.LargeFileHashCalculator;
 import Tracker.Model.Torrent;
 import Tracker.Model.TorrentFile;
 
@@ -21,7 +22,8 @@ public class PeerMG {
     public static PeerMG getInstance() {
         return instance;
     }
-
+    //计算文件的哈希值
+    LargeFileHashCalculator largeFileHashCalculator = new LargeFileHashCalculator();
     private ProtocolCommunicator protocolCommunicator;
 
     //与服务器建立连接
@@ -30,7 +32,7 @@ public class PeerMG {
     }
 
     //从文件制作种子文件
-    public boolean MakeTorrentFromFile(ArrayList<File> files,String name) {
+    public boolean MakeTorrentFromFile(ArrayList<File> files) {
 
         Torrent torrent = new Torrent();
 
@@ -60,10 +62,14 @@ public class PeerMG {
     //将种子对象写入文件
     private void StorageTorrent(Torrent torrent) {
         try {
-            File file = new File("D:\\torrentsStorage\\"+torrent.getName()+".torrent");
+            File file = new File("./src/TestFile/torrents/temp.torrent");
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
             objectOutputStream.writeObject(torrent);
             objectOutputStream.close();
+            String hash = largeFileHashCalculator.getHash(file);
+            File fileNew = new File("./src/TestFile/torrents/"+hash+".torrent");
+            file.renameTo(fileNew);
+
         }catch (Exception e){
             e.printStackTrace();
         }

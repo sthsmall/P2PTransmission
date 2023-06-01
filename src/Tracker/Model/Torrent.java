@@ -2,7 +2,7 @@ package Tracker.Model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
+//种子文件类
 public class Torrent implements Serializable {
     //种子文件的名称
     private String name;

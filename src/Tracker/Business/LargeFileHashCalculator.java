@@ -12,25 +12,16 @@ public class LargeFileHashCalculator {
     private static final int BUFFER_SIZE = 8192; // 8 KB buffer
     private String hash;
 
-    public LargeFileHashCalculator (File file) {
-        this.file = file;
-        try {
-            byte[] hashBytes = calculateFileHash(file, hashAlgorithm);
-            hash = bytesToHex(hashBytes);
-        } catch (IOException | NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+    public LargeFileHashCalculator () {
     }
 
 
 
-    public String getHash() {
-        return hash;
-    }
 
-    private static byte[] calculateFileHash(File file, String algorithm)
+
+    public String getHash(File file)
             throws IOException, NoSuchAlgorithmException {
-        MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
+        MessageDigest messageDigest = MessageDigest.getInstance(hashAlgorithm);
         FileInputStream fileInputStream = new FileInputStream(file);
         byte[] buffer = new byte[BUFFER_SIZE];
         int bytesRead;
@@ -38,7 +29,8 @@ public class LargeFileHashCalculator {
             messageDigest.update(buffer, 0, bytesRead);
         }
         fileInputStream.close();
-        return messageDigest.digest();
+        hash = bytesToHex(messageDigest.digest());
+        return hash;
     }
 
     private static String bytesToHex(byte[] bytes) {
