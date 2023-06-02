@@ -4,9 +4,9 @@ import Tracker.Business.*;
 import Tracker.Model.*;
 import Tracker.Presentation.*;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 public class TrackerMG  {
     final static int ProtocolPort = 8888;
@@ -31,6 +31,23 @@ public class TrackerMG  {
         //初始化种子文件列表
         File file = new File("./src/TestFile/torrents/");
 
+        File files[]=file.listFiles();
+        ArrayList<Torrent> torrents = new ArrayList<>();
+        try {
+
+            for (File f : files){
+                ObjectInputStream ob = new ObjectInputStream(new FileInputStream(f));
+                torrents.add ((Torrent)ob.readObject());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
+
+
+
+
         //启动用户界面
         new TrackerForm().start();
         //启动监听线程
@@ -52,5 +69,7 @@ public class TrackerMG  {
             throw new RuntimeException(e);
         }
     }
+
+
 
 }
