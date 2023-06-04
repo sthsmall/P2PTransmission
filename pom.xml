@@ -16,7 +16,7 @@
             <scope>test</scope>
         </dependency>
 
-    <!--  myc  :batis -->
+    <!--  myc  :ba tis -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
