@@ -81,7 +81,7 @@ public class PeerMG {
         if(now.isDirectory()){
             TorrentFile torrentFile = new TorrentFile(now,newPath);
             for(File file : now.listFiles()){
-                //
+
                 torrentFile.addChildren(MakeTorrentFromFileCirculate(file,newPath));
             }
             return torrentFile;
