@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dao.UserMapper">
+
+    <!--配置数据库中的表和实体类属性的映射关系-->
+    <resultMap id="UserResultMap" type="User">
+        <result column="username" property="userName"/>
+        <result column="password" property="password"/>
+        <result column="score" property="score"/>
+    </resultMap>
+
+    <!--注册用户-->
+    <insert id="register">
+        insert into tb_user(username, password, score)
+        values (#{userName}, #{password}, #{score});
+    </insert>
+
+    <!--更新用户积分-->
+    <update id="updateScore">
+        update tb_user
+        set score = #{score}
+        where username = #{userName};
+    </update>
+
+    <!--登录-->
+    <select id="login" resultMap="UserResultMap">
+        select *
+        from tb_user
+        where username = #{userName}
+          and password = #{password};
+    </select>
+
+
+    <!--查询积分-->
+    <select id="selectScore" resultType="String">
+        select score
+        from tb_user
+        where username = #{userName};
+    </select>
+
+    <!--查询用户-->
+    <select id="selectUser" resultMap="UserResultMap">
+        select *
+        from tb_user
+        where username = #{userName};
+    </select>
+
+
+</mapper>
+
