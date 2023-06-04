@@ -79,9 +79,9 @@ public class PeerMG {
     private TorrentFile MakeTorrentFromFileCirculate(File now,String path){
         String newPath = path + "/" + now.getName();
         if(now.isDirectory()){
-
             TorrentFile torrentFile = new TorrentFile(now,newPath);
             for(File file : now.listFiles()){
+                //
                 torrentFile.addChildren(MakeTorrentFromFileCirculate(file,newPath));
             }
             return torrentFile;

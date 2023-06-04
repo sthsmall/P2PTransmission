@@ -8,3 +8,5 @@ src/Test.java
 .gitignore
 
 TestFile
+
+target
