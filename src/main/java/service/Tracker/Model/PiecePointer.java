@@ -1,10 +1,10 @@
-package Tracker.Model;
+package service.Tracker.Model;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-//用于输出文件的某一片段
+//块指针（用于将文件分割成块）
 public class PiecePointer {
     //随机访问文件类
     RandomAccessFile randomAccessFile;

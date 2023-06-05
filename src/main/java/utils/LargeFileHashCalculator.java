@@ -1,4 +1,5 @@
-package Tracker.Business;
+package utils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -7,20 +8,17 @@ import java.security.NoSuchAlgorithmException;
 
 public class LargeFileHashCalculator {
 
-    private File file;
-    private String hashAlgorithm = "SHA-256";
+    private static String hashAlgorithm = "SHA-256";
     private static final int BUFFER_SIZE = 8192; // 8 KB buffer
-    private String hash;
 
-    public LargeFileHashCalculator () {
+
+    private LargeFileHashCalculator() {
     }
 
-
-
-
-
-    public String getHash(File file)
+    //获取文件的哈希值
+    public static String getHash(File file)
             throws IOException, NoSuchAlgorithmException {
+        String hash;
         MessageDigest messageDigest = MessageDigest.getInstance(hashAlgorithm);
         FileInputStream fileInputStream = new FileInputStream(file);
         byte[] buffer = new byte[BUFFER_SIZE];
@@ -33,6 +31,7 @@ public class LargeFileHashCalculator {
         return hash;
     }
 
+    //将字节转换为十六进制
     private static String bytesToHex(byte[] bytes) {
         StringBuilder hexString = new StringBuilder();
         for (byte b : bytes) {

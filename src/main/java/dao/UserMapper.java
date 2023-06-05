@@ -3,11 +3,8 @@ package dao;
 import domain.User;
 import org.apache.ibatis.annotations.Param;
 
-/*
-@Subject:
-@Author:叶兆威
-@Time:2023/6/4
-*/
+
+//mapper实体类
 public interface UserMapper {
     //登录
     User login(@Param("userName") String userName,@Param("password") String password);

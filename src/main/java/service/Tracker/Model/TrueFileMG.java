@@ -1,6 +1,6 @@
-package Tracker.Model;
+package service.Tracker.Model;
 
-import Tracker.TrackerMG;
+import utils.TrackerMG;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.io.IOException;
 //实际文件管理器
 public class TrueFileMG {
     private int filePieceSize = TrackerMG.FilePieceSize;
-    File file;
+    private File file;
     public TrueFileMG(File file){
         this.file = file;
     }

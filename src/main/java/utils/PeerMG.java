@@ -1,10 +1,9 @@
-package Peer;
+package utils;
 
-import Peer.Business.ProtocolCommunicator;
-import Peer.Business.TorrentFileTransmissionThread;
-import Tracker.Business.LargeFileHashCalculator;
-import Tracker.Model.Torrent;
-import Tracker.Model.TorrentFile;
+import service.Peer.ProtocolCommunicator;
+import service.Peer.TorrentFileTransmissionThread;
+import domain.Torrent;
+import domain.TorrentFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -18,17 +17,20 @@ public class PeerMG {
 
     //使用单例模式
     private static PeerMG instance = new PeerMG();
-    private PeerMG() {}
+
+    private PeerMG() {
+    }
+
     public static PeerMG getInstance() {
         return instance;
     }
-    //计算文件的哈希值
-    LargeFileHashCalculator largeFileHashCalculator = new LargeFileHashCalculator();
+
     private ProtocolCommunicator protocolCommunicator;
 
     //与服务器建立连接
-    public void ConnectToServer(){
+    public void ConnectToServer() {
         protocolCommunicator = new ProtocolCommunicator();
+        protocolCommunicator.start();
     }
 
     //从文件制作种子文件
@@ -38,12 +40,12 @@ public class PeerMG {
 
         ArrayList<TorrentFile> torrentFiles = new ArrayList<TorrentFile>();
 
-        for(File file : files ){
+        for (File file : files) {
             String path = file.getName();
-            if(file.isDirectory()){
-                torrentFiles.add(MakeTorrentFromFileCirculate(file,path));
-            }else{
-                torrentFiles.add(new TorrentFile(file,path));
+            if (file.isDirectory()) {
+                torrentFiles.add(MakeTorrentFromFileCirculate(file, path));
+            } else {
+                torrentFiles.add(new TorrentFile(file, path));
             }
         }
 
@@ -63,35 +65,39 @@ public class PeerMG {
     private void StorageTorrent(Torrent torrent) {
         try {
             File file = new File("./src/temp.torrent");
+
+            //利用对象输出流，将种子对象写入文件
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
             objectOutputStream.writeObject(torrent);
             objectOutputStream.close();
-            String hash = largeFileHashCalculator.getHash(file);
-            File fileNew = new File("./src/"+hash+".torrent");
-            file.renameTo(fileNew);
 
-        }catch (Exception e){
+            //获取给文件的哈希值(该哈希值为文件的唯一标识)
+            String hash = LargeFileHashCalculator.getHash(file);
+            File fileNew = new File("./src/" + hash + ".torrent");
+            //将文件重命名
+            file.renameTo(fileNew);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     //递归制作种子文件
-    private TorrentFile MakeTorrentFromFileCirculate(File now,String path){
+    private TorrentFile MakeTorrentFromFileCirculate(File now, String path) {
         String newPath = path + "/" + now.getName();
-        if(now.isDirectory()){
-            TorrentFile torrentFile = new TorrentFile(now,newPath);
-            for(File file : now.listFiles()){
+        if (now.isDirectory()) {
+            TorrentFile torrentFile = new TorrentFile(now, newPath);
+            for (File file : now.listFiles()) {
 
-                torrentFile.addChildren(MakeTorrentFromFileCirculate(file,newPath));
+                torrentFile.addChildren(MakeTorrentFromFileCirculate(file, newPath));
             }
             return torrentFile;
-        }else {
-            return new TorrentFile(now,newPath);
+        } else {
+            return new TorrentFile(now, newPath);
         }
     }
 
     //发送种子文件
-    private boolean SendTorrent(Torrent torrent){
+    private boolean SendTorrent(Torrent torrent) {
         protocolCommunicator.Send("Torrent");
         new TorrentFileTransmissionThread(torrent).start();
         return true;

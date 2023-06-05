@@ -1,12 +1,14 @@
-package Tracker.Model;
+package domain;
 
-import Tracker.TrackerMG;
+import lombok.Data;
+import utils.TrackerMG;
 
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-//种子包含文件的类
+//种子中包含文件
+@Data
 public class TorrentFile  implements Serializable {
     //文件是否是文件夹
     private boolean isDirectory;

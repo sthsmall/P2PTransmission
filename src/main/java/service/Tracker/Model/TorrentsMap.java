@@ -1,4 +1,6 @@
-package Tracker.Model;
+package service.Tracker.Model;
+
+import domain.Torrent;
 
 import java.util.HashMap;
 

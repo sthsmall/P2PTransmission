@@ -1,6 +1,6 @@
-package Tracker.Business;
+package service.Tracker;
 
-import Tracker.Model.Torrent;
+import domain.Torrent;
 
 import java.util.ArrayList;
 

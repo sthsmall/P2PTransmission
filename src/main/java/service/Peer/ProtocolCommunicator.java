@@ -1,4 +1,4 @@
-package Peer.Business;
+package service.Peer;
 
 import java.io.*;
 import java.net.Socket;
@@ -15,6 +15,7 @@ public class ProtocolCommunicator extends Thread{
     @Override
     public void run() {
         try {
+            //连接服务器
             Socket socket = new Socket(ip, port);
             System.out.println("连接成功");
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -25,6 +26,7 @@ public class ProtocolCommunicator extends Thread{
 
                 String [] msgs = msg.split(" ");
 
+                //协议操作类型
                 if(msgs[0].equals("")){
 
                 }
