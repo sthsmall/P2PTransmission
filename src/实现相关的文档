@@ -1,0 +1,45 @@
+Peer:
+    文件传输{TotalFileTransmitter
+        一个Torrent文件包含文件的传输类{TorrentFileTransmitter
+            单个文件的传输类{SingleFileTransmitter
+                文件单个块的传输类{PieceTransmitter}
+            }
+        }
+    }
+
+    节点信息的传输{
+        Peer{
+            向Tracker发送{
+                拉取同一Torrent文件的Peer信息{
+
+                }
+                上线本机情况{
+                    本机对Torrent文件的拥有情况
+                    本机的IP地址
+                    本机的端口号
+                    本机的User信息{
+
+                    }
+                }
+                持续发送{
+                    本机对Torrent文件的拥有情况
+                }
+
+            }
+            向Peer发送{
+                本机的文件下载状态
+            }
+            接收Peer发送{
+                Peer的文件下载状态
+            }
+            接收Tracker发送{
+
+            }
+        }
+        Tracker{
+            向Peer发送{
+
+            }
+        }
+
+    }

@@ -16,7 +16,6 @@
         1.3.3传输后
             1.3.3.1对文件分片的哈希值检验 [LargeFileHashCalculator]
     1.4制作torrent文件 √ [Torrent,TorrentFile,PeerMG.MakeTorrentFromFile]
-
 2.tracker（服务端）
     2.1维护登录信息
     2.2界面（保留）
