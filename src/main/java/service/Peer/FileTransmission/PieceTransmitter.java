@@ -1,4 +1,4 @@
-package service.Peer;
+package service.Peer.FileTransmission;
 
 import domain.Piece;
 import service.Tracker.InfoServerHandler;

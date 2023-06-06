@@ -1,5 +1,6 @@
 package service.Peer.Model;
 
+import service.Peer.FileTransmission.PiecePointer;
 import utils.TrackerMG;
 
 import java.io.File;

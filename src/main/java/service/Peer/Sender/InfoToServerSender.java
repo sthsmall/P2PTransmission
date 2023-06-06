@@ -1,4 +1,4 @@
-package service.Peer;
+package service.Peer.Sender;
 
 import java.io.*;
 import java.net.Socket;

@@ -1,6 +1,6 @@
 package utils;
 
-import service.Peer.InfoToServerSender;
+import service.Peer.Sender.InfoToServerSender;
 import service.Peer.TorrentFileTransmissionThread;
 import domain.Torrent;
 import domain.TorrentFile;

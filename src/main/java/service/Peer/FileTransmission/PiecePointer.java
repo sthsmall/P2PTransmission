@@ -1,4 +1,4 @@
-package service.Peer.Model;
+package service.Peer.FileTransmission;
 
 import java.io.File;
 import java.io.IOException;
