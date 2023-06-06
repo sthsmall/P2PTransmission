@@ -1,6 +1,6 @@
 package utils;
 
-import service.Peer.ProtocolCommunicator;
+import service.Peer.InfoToServerSender;
 import service.Peer.TorrentFileTransmissionThread;
 import domain.Torrent;
 import domain.TorrentFile;
@@ -25,12 +25,12 @@ public class PeerMG {
         return instance;
     }
 
-    private ProtocolCommunicator protocolCommunicator;
+    private InfoToServerSender infoToServerSender;
 
     //与服务器建立连接
     public void ConnectToServer() {
-        protocolCommunicator = new ProtocolCommunicator();
-        protocolCommunicator.start();
+        infoToServerSender = new InfoToServerSender();
+        infoToServerSender.start();
     }
 
     //从文件制作种子文件
@@ -98,7 +98,7 @@ public class PeerMG {
 
     //发送种子文件
     private boolean SendTorrent(Torrent torrent) {
-        protocolCommunicator.Send("Torrent");
+        infoToServerSender.Send("Torrent");
         new TorrentFileTransmissionThread(torrent).start();
         return true;
     }

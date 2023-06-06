@@ -1,0 +1,27 @@
+    1.2登录
+        1.2.1数据库
+    1.3传输文件
+        1.3.1传输前
+            1.3.1.1检查本地文件夹中的torrent文件
+            1.3.1.2获取torrent文件或磁力链接
+            1.3.1.3向tracker拉取peers的ip地址
+        1.3.2传输中
+            1.3.2.1下载策略
+                1.3.2.1.1贪心式
+            1.3.2.2断点续传
+            1.3.2.3监控流量
+            1.3.2.4定时不断地和tracker进行通信传输peers的信息
+            1.3.2.5不断地和peers交换下载和上传情况
+            1.3.2.6分片上传和下载（保留）
+        1.3.3传输后
+            1.3.3.1对文件分片的哈希值检验 [LargeFileHashCalculator]
+    1.4制作torrent文件 √ [Torrent,TorrentFile,PeerMG.MakeTorrentFromFile]
+
+2.tracker（服务端）
+    2.1维护登录信息
+    2.2界面（保留）
+    2.3保存torrent文件
+        2.3.1torrent文件注册
+    2.4根据peer对torrent文件的拥有情况对peer进行分类（定期）
+    2.5向peer定期发送peer相关情况（由tracker？由peer？）
+    2.6维护一个torrent文件和磁力链接的映射（hashtable？）

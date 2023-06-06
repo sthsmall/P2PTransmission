@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class Test1 {
     @Test
     public void test1() {
-        File file = new File("F:\\2125060016.txt");
+        File file = new File("E:\\81.png");
         ArrayList<File> arrayList = new ArrayList<>();
         arrayList.add(file);
         PeerMG.getInstance().MakeTorrentFromFile(arrayList);

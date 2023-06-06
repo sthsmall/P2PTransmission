@@ -3,7 +3,8 @@ package service.Tracker;
 import java.io.IOException;
 import java.net.ServerSocket;
 
-public class ServerListener extends Thread{
+//对监听
+public class InfoServerListener extends Thread{
     //监听端口
     private int port = 5204;
 
@@ -14,7 +15,7 @@ public class ServerListener extends Thread{
         try {
             serverSocket = new ServerSocket(port);
             while(true) {
-                new ServerHandler(serverSocket.accept()).start();
+                new InfoServerHandler(serverSocket.accept()).start();
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

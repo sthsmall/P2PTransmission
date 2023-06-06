@@ -4,7 +4,7 @@ import dao.UserMapper;
 import domain.User;
 import org.apache.ibatis.session.SqlSession;
 import service.Tracker.HeartBeat;
-import service.Tracker.ServerListener;
+import service.Tracker.InfoServerListener;
 import domain.Torrent;
 import service.Tracker.Model.TorrentsMap;
 import java.io.File;
@@ -46,7 +46,7 @@ public class TrackerMG  {
         //启动用户界面
         // new TrackerForm().start();
         //启动监听线程
-        new ServerListener().start();
+        new InfoServerListener().start();
         //启动心跳线程
         new HeartBeat().start();
     }

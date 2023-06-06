@@ -6,10 +6,14 @@ import java.util.ArrayList;
 
 
 public class OneFileDownLoader extends Thread{
-    ArrayList<Torrent> torrents;
-    public OneFileDownLoader(ArrayList<Torrent> torrents){
-        this.torrents = torrents;
+    int totalPieceNum;
+    boolean PieceStatus[];
+
+    public OneFileDownLoader(){
+        
     }
+
+
 
     @Override
     public void run() {

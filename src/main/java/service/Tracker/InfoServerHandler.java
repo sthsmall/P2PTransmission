@@ -6,13 +6,13 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ServerHandler extends Thread{
+public class InfoServerHandler extends Thread{
     private BufferedReader reader;
     private PrintWriter writer;
     private Socket socket;
     private String ip;
 
-    public ServerHandler(Socket accept) {
+    public InfoServerHandler(Socket accept) {
         this.socket = accept;
         this.ip = socket.getInetAddress().getHostAddress();
         //初始化流
