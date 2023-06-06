@@ -9,4 +9,6 @@ import java.io.Serializable;
 
 public class InfoToTrackerContent implements Serializable {
     String type;
+    String hash;
+
 }

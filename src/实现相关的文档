@@ -9,9 +9,9 @@ Peer:
 
     节点信息的传输{
         Peer{
-            向Tracker发送{
+            向Tracker发送{InfoToTrackerSender
             //Tracker的监听端口号 8888
-                拉取同一Torrent文件的Peer信息{
+                拉取同一Torrent文件的Peer信息{InfoToTrackerContent的type设置为pull
 
                 }
                 上线本机情况{

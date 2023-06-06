@@ -3,7 +3,7 @@ package service.Peer.Sender;
 import java.io.*;
 import java.net.Socket;
 
-public class InfoToServerSender extends Thread{
+public class InfoToTrackerSender extends Thread{
 
     private String ip;
     private int port;
