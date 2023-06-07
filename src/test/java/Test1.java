@@ -51,4 +51,16 @@ public class Test1 {
         sqlSession.close();
     }
 
+    @Test
+    public void test2() throws IOException {
+        ArrayList<File> files = new ArrayList<>();
+        File source = new File("./Torrent");
+        if(source.isDirectory()){
+            source.list();
+        }
+        for (String s : source.list()) {
+            System.out.println(s);
+        }
+
+    }
 }

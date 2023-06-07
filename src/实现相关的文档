@@ -2,6 +2,7 @@ Peer:
     文件传输{TotalFileTransmitter
         一个Torrent文件包含文件的传输类{TorrentFileTransmitter
             单个文件的传输类{SingleFileTransmitter
+                分块下载策略控制器PieceController
                 文件单个块的传输类{PieceTransmitter}
             }
         }
@@ -28,13 +29,16 @@ Peer:
 
             }
             向Peer发送{
+            //Peer的监听端口号 9999
+                对相关文件及分片的拥有情况
                 本机的文件下载状态
             }
             接收Peer发送{
+            //Peer的监听端口号 9999
                 Peer的文件下载状态
             }
             接收Tracker发送{
-
+                使用InfoBackFromTracker接收
             }
         }
         Tracker{

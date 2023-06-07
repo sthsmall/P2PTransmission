@@ -1,5 +1,6 @@
 package utils;
 
+import service.Peer.Model.PeerInfo;
 import service.Peer.Sender.InfoToTrackerSender;
 import service.Peer.TorrentFileTransmissionThread;
 import domain.Torrent;
@@ -9,11 +10,23 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 public class PeerMG {
 
-    public final static int ProtocolPort = 8888;
+    public final static int InfoPort = 8888;
     public final static int FilePort = 9999;
+    private String TrackerIP = "127.0.0.1";
+    private HashMap<String, HashSet<PeerInfo>> hashToPeerInfo = new HashMap<>();
+    public String getTrackerIP() {
+        return TrackerIP;
+    }
+
+    public void setTrackerIP(String trackerIP) {
+        TrackerIP = trackerIP;
+    }
 
     //使用单例模式
     private static PeerMG instance = new PeerMG();
@@ -29,8 +42,7 @@ public class PeerMG {
 
     //与服务器建立连接
     public void ConnectToServer() {
-        infoToTrackerSender = new InfoToTrackerSender();
-        infoToTrackerSender.start();
+
     }
 
     //从文件制作种子文件
@@ -103,4 +115,11 @@ public class PeerMG {
         return true;
     }
 
+    public HashMap<String, HashSet<PeerInfo>> getHashToPeerInfo() {
+        return hashToPeerInfo;
+    }
+
+    public void setHashToPeerInfo(HashMap<String, HashSet<PeerInfo>> hashToPeerInfo) {
+        this.hashToPeerInfo = hashToPeerInfo;
+    }
 }

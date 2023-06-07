@@ -1,15 +1,35 @@
 package service.Peer.Sender;
 
+import service.Peer.FileTransmission.TorrentFileTransmitter;
+import service.Peer.Model.InfoBackFromTracker;
+import service.Peer.Model.PeerInfo;
+import utils.PeerMG;
+
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashSet;
+/*
+应该持续发送信息给Tracker
+ 拉取Peer信息
+ 到PeerMG中更新
+ */
+
+
 
 public class InfoToTrackerSender extends Thread{
 
-    private String ip;
-    private int port;
-    private BufferedReader bufferedReader;
-    private PrintWriter printWriter;
-    private OutputStream   outputStream;
+    private String ip = PeerMG.getInstance().getTrackerIP();
+    private int port = PeerMG.InfoPort;
+    private Socket socket;
+    String hash;
+
+
+    public InfoToTrackerSender(File file)  {
+        hash = file.getName();
+
+
+    }
 
 
     @Override
@@ -17,21 +37,20 @@ public class InfoToTrackerSender extends Thread{
         try {
             //连接服务器
             Socket socket = new Socket(ip, port);
-            System.out.println("连接成功");
-            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            printWriter = new PrintWriter(socket.getOutputStream(), true);
-            outputStream = socket.getOutputStream();
-            String msg = null;
-            while ((msg = bufferedReader.readLine()) != null) {
-
-                String [] msgs = msg.split(" ");
-
-                //协议操作类型
-                if(msgs[0].equals("")){
-
-                }
-            }
+            //发送文件
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+            objectOutputStream.writeObject(new InfoToTrackerContent());
+            ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+            InfoBackFromTracker infoBackFromTracker = (InfoBackFromTracker) objectInputStream.readObject();
+            HashSet<PeerInfo> peerInfos = infoBackFromTracker.getPeerInfos();
+            PeerMG.getInstance().getHashToPeerInfo().put(hash, peerInfos);
+            objectInputStream.close();
+            objectOutputStream.flush();
+            objectOutputStream.close();
+            socket.close();
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
@@ -40,6 +59,6 @@ public class InfoToTrackerSender extends Thread{
 
 
     public void Send(String str) {
-        printWriter.println(str);
+
     }
 }

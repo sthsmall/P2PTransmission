@@ -1,4 +1,4 @@
-package service.Peer.Model;
+package service.Peer.FileTransmission;
 
 import service.Peer.FileTransmission.PiecePointer;
 import utils.TrackerMG;
