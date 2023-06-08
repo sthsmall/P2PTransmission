@@ -1,4 +1,4 @@
-package service.Peer.Model;
+package service.Tracker;
 
 import domain.Torrent;
 

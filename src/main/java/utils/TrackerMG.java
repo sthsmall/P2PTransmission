@@ -3,10 +3,9 @@ package utils;
 import dao.UserMapper;
 import domain.User;
 import org.apache.ibatis.session.SqlSession;
-import service.Peer.HeartBeat;
 import service.Tracker.InfoServerListener;
 import domain.Torrent;
-import service.Peer.Model.TorrentsMap;
+import service.Tracker.TorrentsMap;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
@@ -47,8 +46,7 @@ public class TrackerMG  {
         // new TrackerForm().start();
         //启动监听线程
         new InfoServerListener().start();
-        //启动心跳线程
-        new HeartBeat().start();
+
     }
 
     //获取文件的哈希值

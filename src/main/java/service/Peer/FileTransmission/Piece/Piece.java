@@ -1,4 +1,4 @@
-package domain;
+package service.Peer.FileTransmission.Piece;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

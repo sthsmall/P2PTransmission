@@ -1,6 +1,5 @@
-package service.Peer.FileTransmission;
+package service.Peer.FileTransmission.Piece;
 
-import domain.Piece;
 import service.Tracker.InfoServerHandler;
 
 //用于传输分块的线程

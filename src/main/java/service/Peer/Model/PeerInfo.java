@@ -1,5 +1,5 @@
 package service.Peer.Model;
-
+//Peer的信息类
 public class PeerInfo {
     String ip;
     int port;

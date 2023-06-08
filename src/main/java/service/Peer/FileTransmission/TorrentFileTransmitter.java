@@ -30,28 +30,41 @@ public class TorrentFileTransmitter extends Thread{
         infoToTrackerSender.run();
         HashSet<PeerInfo> peerInfos = PeerMG.getInstance().getHashToPeerInfo().get(hash);
         try {
-            pieceInfoAnalyser(file, peerInfos);
+            ArrayList<TotalFileStatus> totalFileStatuses=pieceInfoAnalyser(file, peerInfos);
+            ArrayList<SingleFileStatus> singleFileStatuses = MakeDownloadList(totalFileStatuses);
 
 
-
-
-
-            
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
     //向Peer发送文件状况请求
-    private void pieceInfoAnalyser(File file, HashSet<PeerInfo> peerInfos) throws IOException {
+    private ArrayList<TotalFileStatus> pieceInfoAnalyser(File file, HashSet<PeerInfo> peerInfos) throws IOException, ClassNotFoundException {
         ArrayList<TotalFileStatus> totalFileStatuses = new ArrayList<>();
         for(PeerInfo peerInfo : peerInfos) {
             Socket socket = new Socket(peerInfo.getIp(), peerInfo.getPort());
             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+            objectOutputStream.writeObject(new Content());
+            objectOutputStream.flush();
+            TotalFileStatus totalFileStatus = (TotalFileStatus) objectInputStream.readObject();
+            totalFileStatuses.add(totalFileStatus);
+        }
+        return totalFileStatuses;
+    }
 
+    private ArrayList<SingleFileStatus> MakeDownloadList(ArrayList<TotalFileStatus> totalFileStatuses){
+        return null;
+    }
 
+    private void StartDownload(ArrayList<SingleFileStatus> singleFileStatuses){
+        for(SingleFileStatus singleFileStatus : singleFileStatuses){
+            new SingleFileTransmitter(singleFileStatus).start();
 
         }
     }
-
 }
+
+
