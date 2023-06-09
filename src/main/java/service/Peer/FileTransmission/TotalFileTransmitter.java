@@ -14,6 +14,5 @@ public class TotalFileTransmitter extends Thread{
         for (String list : lists) {
             new TorrentFileTransmitter(new File("./Torrent/" + list)).start();
         }
-
     }
 }
