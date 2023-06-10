@@ -1,11 +1,14 @@
 package service.Peer.FileTransmission.DownloadTask;
 
+import service.Peer.FileTransmission.ASKPeerForFileStatuser;
+import service.Peer.FileTransmission.ASKTrackerForPeerInfoer;
 import service.Peer.FileTransmission.StatusOfTotalFile;
 import service.Peer.Model.PeerInfo;
 import service.Peer.Sender.InfoToTrackerSender;
 import utils.PeerMG;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
@@ -19,10 +22,26 @@ public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
     }
     @Override
     public void run() {
+        ArrayList<DLTaskOfSingleFile> dlTaskOfSingleFiles = new ArrayList<>();
         //创建心跳线程
         InfoToTrackerSender infoToTrackerSender = new InfoToTrackerSender(file);
         infoToTrackerSender.run();
-        HashSet<PeerInfo> peerInfos = PeerMG.getInstance().getHashToPeerInfo().get(hash);
+        ASKTrackerForPeerInfoer askTrackerForPeerInfoer = new ASKTrackerForPeerInfoer(file);
+        askTrackerForPeerInfoer.start();
+        ASKPeerForFileStatuser askPeerForFileStatuser = new ASKPeerForFileStatuser(file);
+        askPeerForFileStatuser.start();
+        while(!Thread.currentThread().isInterrupted()){
+            try {
+                Thread.sleep(1000);
+                StatusOfTotalFile statusOfTotalFile = PeerMG.getInstance().getHashToDownloadList().get(hash);
+                for()
+
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+
     }
 
     @Override

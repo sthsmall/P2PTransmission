@@ -21,20 +21,21 @@ public class ASKTrackerForPeerInfoer extends Thread{
         try {
             ObjectOutputStream objectOutputStream;
             ObjectInputStream objectInputStream;
-
-
             Socket socket = new Socket(PeerMG.getInstance().getTrackerIp(), PeerMG.getInstance().getTrackerInfoPort());
-
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-
-            Content content = new Content(Content.ASK_FOR_TRACKER_PEER_INFO, hash);
-            objectOutputStream.writeObject(content);
-            objectOutputStream.flush();
-            objectInputStream = new ObjectInputStream(socket.getInputStream());
-            PeerMG.getInstance().getHashToPeerInfo().put(hash,(HashSet<PeerInfo>) objectInputStream.readObject());
+            while(!Thread.currentThread().isInterrupted()){
+                Thread.sleep(1000);
+                Content content = new Content(Content.ASK_FOR_TRACKER_PEER_INFO, hash);
+                objectOutputStream.writeObject(content);
+                objectOutputStream.flush();
+                objectInputStream = new ObjectInputStream(socket.getInputStream());
+                PeerMG.getInstance().getHashToPeerInfo().put(hash,(HashSet<PeerInfo>) objectInputStream.readObject());
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }

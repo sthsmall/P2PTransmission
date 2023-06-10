@@ -14,6 +14,7 @@ import java.util.List;
  */
 public interface Downloader {
     public void addTask(DownloadTask task);
+    public void addAndStartTask(DownloadTask task);
 
     public void removeTask(DownloadTask task);
 

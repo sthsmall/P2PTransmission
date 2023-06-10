@@ -30,6 +30,17 @@ public class PeerMG {
     private HashMap<String, ArrayList<StatusOfTotalFile>> hashALLToTotalFileStatus = new HashMap<>();
     private HashMap<String, StatusOfTotalFile> hashToTotalFileStatus = new HashMap<>();
 
+    private HashMap<String,StatusOfTotalFile> hashToDownloadList = new HashMap<>();
+
+    public HashMap<String, StatusOfTotalFile> getHashToDownloadList() {
+        return hashToDownloadList;
+    }
+
+    public HashMap<String, Torrent> getHashToTorrent() {
+        return hashToTorrent;
+    }
+
+    private HashMap<String, Torrent> hashToTorrent = new HashMap<>();
     public HashMap<String, ArrayList<StatusOfTotalFile>> getHashALLToTotalFileStatus() {
         return hashALLToTotalFileStatus;
     }
@@ -67,7 +78,7 @@ public class PeerMG {
 
 
     //分析所有的文件状况
-    private StatusOfTotalFile pieceInfoAnalyse(ArrayList<StatusOfTotalFile> statusOfTotalFiles){
+    public StatusOfTotalFile strategyOfDownload(StatusOfTotalFile StructOfTotalFile){
         //暂定
         return null;
     }

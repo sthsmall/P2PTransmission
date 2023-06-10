@@ -6,9 +6,18 @@ import java.util.ArrayList;
 
 public class DLofTotalFile implements Downloader{
     ArrayList<DownloadTask> dltOfTotalFiles;
+    DLofTotalFile(){
+        dltOfTotalFiles = new ArrayList<>();
+    }
     @Override
     public void addTask(DownloadTask task) {
         dltOfTotalFiles.add(task);
+    }
+
+    @Override
+    public void addAndStartTask(DownloadTask task) {
+        dltOfTotalFiles.add(task);
+        task.startDownload();
     }
 
     @Override
