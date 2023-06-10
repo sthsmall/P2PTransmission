@@ -8,5 +8,7 @@ src/test
 .gitignore
 
 TestFile
-
+.project
 target
+.classpath
+.settings
