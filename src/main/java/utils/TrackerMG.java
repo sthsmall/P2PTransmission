@@ -58,8 +58,13 @@ public class TrackerMG  {
         }
     }
 
+    //启动服务器信息监听线程
+    public void startInfoServerListener() {
+        new InfoServerListener().start();
+    }
+
     //校验用户的用户名和密码
-    public boolean CheckUser(String username, String password) {
+    public boolean checkUser(String username, String password) {
         SqlSession session = SqlSessionFactoryUtil.getSqlSessionFactory().openSession();
         UserMapper mapper = session.getMapper(UserMapper.class);
         User user = mapper.login(username, password);
@@ -67,17 +72,28 @@ public class TrackerMG  {
     }
 
     //用户注册
-    public boolean RegisterUser(User user) {
+    public void registerUser(User user) {
         SqlSession session = SqlSessionFactoryUtil.getSqlSessionFactory().openSession();
         UserMapper mapper = session.getMapper(UserMapper.class);
-        User user1 = mapper.selectUser(user.getUserName());
-        if (user1 != null) {
-            return false;
-        }
         mapper.register(user);
         session.commit();
         session.close();
-        return true;
+    }
+
+    //查找该用户的积分
+    public int selectScore(String username){
+        SqlSession session = SqlSessionFactoryUtil.getSqlSessionFactory().openSession();
+        UserMapper mapper = session.getMapper(UserMapper.class);
+        String score = mapper.selectScore(username);
+        return Integer.parseInt(score);
+    }
+
+    //查看用户名是否已存在
+    public boolean checkUsername(String username){
+        SqlSession session = SqlSessionFactoryUtil.getSqlSessionFactory().openSession();
+        UserMapper mapper = session.getMapper(UserMapper.class);
+        User user = mapper.selectUser(username);
+        return user != null;
     }
 
 }
