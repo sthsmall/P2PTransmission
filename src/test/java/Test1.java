@@ -11,6 +11,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Test;
 import utils.SqlSessionFactoryUtil;
+import utils.TrackerMG;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,5 +63,11 @@ public class Test1 {
             System.out.println(s);
         }
 
+    }
+
+
+    //启动tracker服务器
+    public static void main(String[] args) {
+        TrackerMG.getInstance().startInfoServerListener();
     }
 }

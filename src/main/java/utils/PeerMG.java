@@ -1,25 +1,32 @@
 package utils;
 
+import service.Peer.Sender.AccessInfoToTrackerSender;
+import service.Peer.page.Home;
+
 import service.Peer.Model.PeerInfo;
 import service.Peer.Sender.InfoToTrackerSender;
 import service.Peer.TorrentFileTransmissionThread;
 import domain.Torrent;
 import domain.TorrentFile;
+import service.Peer.page.Login;
+import service.Peer.page.Register;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
+
 
 public class PeerMG {
 
-    public final static int InfoPort = 8888;
+    public final static int InfoPort = 5204;
     public final static int FilePort = 9999;
     private String TrackerIP = "127.0.0.1";
     private HashMap<String, HashSet<PeerInfo>> hashToPeerInfo = new HashMap<>();
+
     public String getTrackerIP() {
         return TrackerIP;
     }
@@ -40,9 +47,28 @@ public class PeerMG {
 
     private InfoToTrackerSender infoToTrackerSender;
 
+    //登录界面
+    private final Login login = new Login();
+    //注册界面
+    private final Register register = new Register();
+    //主界面
+    private final Home home = new Home();
+
     //与服务器建立连接
     public void ConnectToServer() {
 
+    }
+
+    public Login getLogin() {
+        return login;
+    }
+
+    public Register getRegister() {
+        return register;
+    }
+
+    public Home getHome() {
+        return home;
     }
 
     //从文件制作种子文件
@@ -121,5 +147,93 @@ public class PeerMG {
 
     public void setHashToPeerInfo(HashMap<String, HashSet<PeerInfo>> hashToPeerInfo) {
         this.hashToPeerInfo = hashToPeerInfo;
+    }
+
+
+    //跳转到登录页面
+    public void switchLogin(boolean flag) {
+        //flag用来判断是由首界面还是注册界面跳转过来的
+        if (flag) {
+            //清空注册界面信息
+            register.getID().setText("");
+            register.getM1().setText("");
+            register.getM2().setText("");
+            register.setVisible(false);
+        } else {
+            home.setVisible(false);
+        }
+        login.setVisible(true);
+    }
+
+    //跳转到注册页面
+    public void switchRegister() {
+        //清空登录界面信息
+        login.getID2().setText("");
+        login.getPw().setText("");
+        login.setVisible(false);
+        register.setVisible(true);
+    }
+
+    //跳转到首页面
+    public void switchHome(int score) {
+        //清空登录界面信息
+        login.getID2().setText("");
+        login.getPw().setText("");
+        login.setVisible(false);
+        login.setVisible(false);
+        home.setVisible(true);
+    }
+
+    //判断用户名和密码是否正确
+    public void ToHome(String username, String password) {
+        //按照协给tracker服务器发送登录消息
+        String msg = "LOGIN|" + username + "|" + password;
+        //启动发送访问信息线程
+        new AccessInfoToTrackerSender(msg).start();
+    }
+
+    //检查用户名是否已经存在
+    public void checkUsername(String username) {
+        //按照协议给tracker服务器发送注册消息
+        String msg = "CHECK|" + username;
+        //启动发送访问信息线程
+        new AccessInfoToTrackerSender(msg).start();
+    }
+
+    //显示登录失败信息
+    public void loginFailed(String msg) {
+        login.getWarning2().setText(msg);
+    }
+
+    //显示用户名是否重复
+    public void usernameRepeated(boolean flag) {
+        if (flag) {
+            register.getUserWarning().setText("用户名已存在");
+        } else {
+            register.getUserWarning().setText("");
+        }
+    }
+
+    //检查两次输入的密码是否一致
+    public boolean checkPassword(String password1, String password2) {
+        if (!password1.equals(password2)) {
+            register.getPasswordWarning().setText("两次密码输入不一致");
+            return false;
+        } else {
+            register.getPasswordWarning().setText("");
+        }
+        return true;
+    }
+
+    //注册
+    public void register(String username, String password) {
+        //按照协议给tracker服务器发送注册消息
+        String msg = "REGISTER|" + username + "|" + password;
+        //启动发送访问信息线程
+        new AccessInfoToTrackerSender(msg).start();
+    }
+
+    public void registerFailed() {
+        register.getUserWarning().setText("用户名已存在");
     }
 }
