@@ -14,8 +14,8 @@
 
     <!--注册用户-->
     <insert id="register">
-        insert into tb_user(username, password, score)
-        values (#{userName}, #{password}, #{score});
+        insert into tb_user(username, password)
+        values (#{userName}, #{password});
     </insert>
 
     <!--更新用户积分-->

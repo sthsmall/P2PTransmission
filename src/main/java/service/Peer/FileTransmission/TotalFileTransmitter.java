@@ -7,12 +7,6 @@ import java.util.ArrayList;
 public class TotalFileTransmitter extends Thread{
     @Override
     public void run() {
-        //获取Torrent文件列表
-        ArrayList<File> files = new ArrayList<>();
-        File source = new File("./Torrent");
-        String lists[] = source.list();
-        for (String list : lists) {
-            new TorrentFileTransmitter(new File("./Torrent/" + list)).start();
-        }
+
     }
 }

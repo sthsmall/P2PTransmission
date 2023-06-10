@@ -1,4 +1,9 @@
 package service.Peer.FileTransmission.Downloader;
+
+import service.Peer.FileTransmission.DownloadTask.DownloadTask;
+
+import java.util.List;
+
 /*
 文件URL：表示要下载的文件的网络地址。
 保存路径：指定下载文件保存的本地路径。
@@ -8,5 +13,13 @@ package service.Peer.FileTransmission.Downloader;
 处理下载事件：方法用于处理下载过程中的事件，例如成功下载一个块、下载错误等。
  */
 public interface Downloader {
+    public void addTask(DownloadTask task);
 
+    public void removeTask(DownloadTask task);
+
+    public void startAllTasks();
+
+    public void pauseAllTasks();
+
+    public void cancelAllTasks();
 }

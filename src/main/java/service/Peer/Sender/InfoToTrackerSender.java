@@ -15,8 +15,6 @@ import java.util.HashSet;
  到PeerMG中更新
  */
 
-
-
 public class InfoToTrackerSender extends Thread{
 
     private String ip = PeerMG.getInstance().getTrackerIP();

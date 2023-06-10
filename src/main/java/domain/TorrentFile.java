@@ -21,7 +21,7 @@ public class TorrentFile  implements Serializable {
     //文件的唯一路径
     private String path;
     //文件夹的子文件
-    private ArrayList<TorrentFile> children;
+    private ArrayList<TorrentFile> children = new ArrayList<>();
     //文件
     private File file;
 
@@ -35,9 +35,10 @@ public class TorrentFile  implements Serializable {
     public TorrentFile(File file,String path){
         this.file = file;
         this.name = file.getName();
-        this.hash = TrackerMG.getInstance().getFileHash(file);
+//        this.hash = TrackerMG.getInstance().getFileHash(file);
         this.size = file.length();
         this.path = path;
+        this.isDirectory = file.isDirectory();
     }
 
     public void addChildren(TorrentFile torrentFile){

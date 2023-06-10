@@ -1,8 +1,11 @@
 package domain;
 
 import lombok.Data;
+import service.Peer.FileTransmission.SingleFileStatus;
 
+import java.io.File;
 import java.io.Serializable;
+import java.security.Signature;
 import java.util.ArrayList;
 
 //种子文件
@@ -24,4 +27,32 @@ public class Torrent implements Serializable {
     private String downloadUrl;
     //种子的文件列表
     private ArrayList<TorrentFile> fileList;
+
+
+    public ArrayList<SingleFileStatus> getFileStruct(){
+        ArrayList<SingleFileStatus> sfs = new ArrayList<>();
+        for(TorrentFile torrentFile: fileList){
+            String path = torrentFile.getPath();
+            if(torrentFile.isDirectory()){
+                sfs.add(CirculateOfGetFileStruct(torrentFile));
+            }else{
+                sfs.add(new SingleFileStatus(torrentFile.getFile(),path));
+            }
+        }
+        return sfs;
+    }
+    private SingleFileStatus CirculateOfGetFileStruct (TorrentFile torrentFile){
+        SingleFileStatus singleFileStatus = new SingleFileStatus(torrentFile.getFile(),torrentFile.getPath());
+
+        for(TorrentFile torrentFile1: torrentFile.getChildren()){
+            if(torrentFile1.isDirectory()){
+                singleFileStatus.addChildren(CirculateOfGetFileStruct(torrentFile1));
+            }else{
+                singleFileStatus.addChildren(new SingleFileStatus(torrentFile1.getFile(),torrentFile1.getPath()));
+            }
+        }
+        return singleFileStatus;
+    }
+
+
 }
