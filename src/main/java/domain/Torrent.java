@@ -1,11 +1,9 @@
 package domain;
 
 import lombok.Data;
-import service.Peer.FileTransmission.SingleFileStatus;
+import service.Peer.FileTransmission.StatusOfSingleFile;
 
-import java.io.File;
 import java.io.Serializable;
-import java.security.Signature;
 import java.util.ArrayList;
 
 //种子文件
@@ -29,29 +27,29 @@ public class Torrent implements Serializable {
     private ArrayList<TorrentFile> fileList;
 
 
-    public ArrayList<SingleFileStatus> getFileStruct(){
-        ArrayList<SingleFileStatus> sfs = new ArrayList<>();
+    public ArrayList<StatusOfSingleFile> getFileStruct(){
+        ArrayList<StatusOfSingleFile> sfs = new ArrayList<>();
         for(TorrentFile torrentFile: fileList){
             String path = torrentFile.getPath();
             if(torrentFile.isDirectory()){
                 sfs.add(CirculateOfGetFileStruct(torrentFile));
             }else{
-                sfs.add(new SingleFileStatus(torrentFile.getFile(),path));
+                sfs.add(new StatusOfSingleFile(torrentFile.getFile(),path));
             }
         }
         return sfs;
     }
-    private SingleFileStatus CirculateOfGetFileStruct (TorrentFile torrentFile){
-        SingleFileStatus singleFileStatus = new SingleFileStatus(torrentFile.getFile(),torrentFile.getPath());
+    private StatusOfSingleFile CirculateOfGetFileStruct (TorrentFile torrentFile){
+        StatusOfSingleFile statusOfSingleFile = new StatusOfSingleFile(torrentFile.getFile(),torrentFile.getPath());
 
         for(TorrentFile torrentFile1: torrentFile.getChildren()){
             if(torrentFile1.isDirectory()){
-                singleFileStatus.addChildren(CirculateOfGetFileStruct(torrentFile1));
+                statusOfSingleFile.addChildren(CirculateOfGetFileStruct(torrentFile1));
             }else{
-                singleFileStatus.addChildren(new SingleFileStatus(torrentFile1.getFile(),torrentFile1.getPath()));
+                statusOfSingleFile.addChildren(new StatusOfSingleFile(torrentFile1.getFile(),torrentFile1.getPath()));
             }
         }
-        return singleFileStatus;
+        return statusOfSingleFile;
     }
 
 

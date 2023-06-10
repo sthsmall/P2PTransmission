@@ -49,6 +49,7 @@ public class TrackerMG  {
 
     }
 
+
     //获取文件的哈希值
     public String getFileHash(File file)  {
         try {

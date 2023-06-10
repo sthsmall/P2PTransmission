@@ -1,7 +1,5 @@
 package service.Peer.FileTransmission.DownloadTask;
 
-import service.Peer.FileTransmission.TorrentFileTransmitter;
-
 import java.io.File;
 import java.util.ArrayList;
 

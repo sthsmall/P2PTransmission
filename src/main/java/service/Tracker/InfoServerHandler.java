@@ -24,7 +24,7 @@ public class InfoServerHandler extends Thread {
         //初始化流
         try {
             this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-            this.writer = new PrintWriter(socket.getOutputStream(), true, StandardCharsets.UTF_8);
+            this.writer = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

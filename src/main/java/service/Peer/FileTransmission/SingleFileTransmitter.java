@@ -5,7 +5,7 @@ public class SingleFileTransmitter extends Thread{
     int totalPieceNum;
     boolean PieceStatus[];
 
-    public SingleFileTransmitter(SingleFileStatus singleFileStatus){
+    public SingleFileTransmitter(StatusOfSingleFile statusOfSingleFile){
         
     }
 

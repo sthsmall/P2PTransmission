@@ -1,8 +1,7 @@
 package service.Peer;
 
 import service.Peer.FileTransmission.Content;
-import service.Peer.FileTransmission.SingleFileStatus;
-import service.Peer.FileTransmission.TotalFileStatus;
+import service.Peer.FileTransmission.StatusOfTotalFile;
 import utils.PeerMG;
 
 import java.io.IOException;
@@ -64,7 +63,7 @@ public class ListenerOfCome extends Thread{
 
         }
         //对文件的分片拥有状况进行分析
-        private TotalFileStatus AnalyseContent(String hash) {
+        private StatusOfTotalFile AnalyseContent(String hash) {
             return null;
         }
     }

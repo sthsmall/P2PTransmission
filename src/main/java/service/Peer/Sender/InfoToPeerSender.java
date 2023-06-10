@@ -1,12 +1,12 @@
 package service.Peer.Sender;
 
-import service.Peer.FileTransmission.SingleFileStatus;
+import service.Peer.FileTransmission.StatusOfSingleFile;
 
 public class InfoToPeerSender extends Thread{
-    SingleFileStatus singleFileStatus;
+    StatusOfSingleFile statusOfSingleFile;
 
-    public InfoToPeerSender(SingleFileStatus singleFileStatus) {
-        this.singleFileStatus = singleFileStatus;
+    public InfoToPeerSender(StatusOfSingleFile statusOfSingleFile) {
+        this.statusOfSingleFile = statusOfSingleFile;
     }
 
     @Override

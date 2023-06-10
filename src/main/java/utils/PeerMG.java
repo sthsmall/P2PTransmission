@@ -1,5 +1,6 @@
 package utils;
 
+import service.Peer.FileTransmission.StatusOfTotalFile;
 import service.Peer.Sender.AccessInfoToTrackerSender;
 import service.Peer.page.Home;
 
@@ -14,7 +15,6 @@ import service.Peer.page.Register;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,25 +24,18 @@ public class PeerMG {
 
     public final static int InfoPort = 5204;
     public final static int FilePort = 9999;
+    public static int FilePieceSize = 1024 * 1024;
     private String TrackerIP = "127.0.0.1";
     private HashMap<String, HashSet<PeerInfo>> hashToPeerInfo = new HashMap<>();
+    private HashMap<String, ArrayList<StatusOfTotalFile>> hashALLToTotalFileStatus = new HashMap<>();
+    private HashMap<String, StatusOfTotalFile> hashToTotalFileStatus = new HashMap<>();
 
-    public String getTrackerIP() {
-        return TrackerIP;
+    public HashMap<String, ArrayList<StatusOfTotalFile>> getHashALLToTotalFileStatus() {
+        return hashALLToTotalFileStatus;
     }
 
-    public void setTrackerIP(String trackerIP) {
-        TrackerIP = trackerIP;
-    }
-
-    //使用单例模式
-    private static PeerMG instance = new PeerMG();
-
-    private PeerMG() {
-    }
-
-    public static PeerMG getInstance() {
-        return instance;
+    public HashMap<String, StatusOfTotalFile> getHashToTotalFileStatus() {
+        return hashToTotalFileStatus;
     }
 
     private InfoToTrackerSender infoToTrackerSender;
@@ -53,6 +46,33 @@ public class PeerMG {
     private final Register register = new Register();
     //主界面
     private final Home home = new Home();
+    //使用单例模式
+    private static PeerMG instance = new PeerMG();
+
+    private PeerMG() {
+    }
+
+    public static PeerMG getInstance() {
+        return instance;
+    }
+
+    public String getTrackerIP() {
+        return TrackerIP;
+    }
+
+    public void setTrackerIP(String trackerIP) {
+        TrackerIP = trackerIP;
+    }
+
+
+
+    //分析所有的文件状况
+    private StatusOfTotalFile pieceInfoAnalyse(ArrayList<StatusOfTotalFile> statusOfTotalFiles){
+        //暂定
+        return null;
+    }
+
+
 
     //与服务器建立连接
     public void ConnectToServer() {
@@ -235,5 +255,13 @@ public class PeerMG {
 
     public void registerFailed() {
         register.getUserWarning().setText("用户名已存在");
+    }
+
+    public String getTrackerIp() {
+        return TrackerIP;
+    }
+
+    public int getTrackerInfoPort() {
+        return InfoPort;
     }
 }

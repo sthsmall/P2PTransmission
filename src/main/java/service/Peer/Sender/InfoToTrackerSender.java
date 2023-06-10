@@ -1,13 +1,11 @@
 package service.Peer.Sender;
 
-import service.Peer.FileTransmission.TorrentFileTransmitter;
 import service.Peer.Model.InfoBackFromTracker;
 import service.Peer.Model.PeerInfo;
 import utils.PeerMG;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashSet;
 /*
 应该持续发送信息给Tracker
