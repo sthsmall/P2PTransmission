@@ -35,7 +35,7 @@ public class AccessInfoToTrackerSender extends Thread {
         try {
             socket = new Socket(ip, port);
             //获取输入输出流
-            pw = new PrintWriter(socket.getOutputStream(), true, StandardCharsets.UTF_8);
+            pw = new PrintWriter(socket.getOutputStream(), true);
             br = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
             //发送消息
             pw.println(this.msg);
