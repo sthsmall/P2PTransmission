@@ -13,10 +13,10 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 public class InfoServerHandler extends Thread {
-    private BufferedReader reader;
-    private PrintWriter writer;
-    private Socket socket;
-    private String ip;
+    private final BufferedReader reader;
+    private final PrintWriter writer;
+    private final Socket socket;
+    private final String ip;
 
     public InfoServerHandler(Socket accept) {
         this.socket = accept;

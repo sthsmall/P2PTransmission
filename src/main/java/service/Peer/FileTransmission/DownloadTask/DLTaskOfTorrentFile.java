@@ -1,11 +1,18 @@
 package service.Peer.FileTransmission.DownloadTask;
 
+import domain.Torrent;
+import domain.TorrentFile;
 import service.Peer.FileTransmission.ASK.ASKPeerForFileStatuser;
 import service.Peer.FileTransmission.ASK.ASKTrackerForPeerInfoer;
 import service.Peer.FileTransmission.Downloader.DLofPiece;
+import service.Peer.FileTransmission.Status.StatusOfSingleFile;
+import service.Peer.FileTransmission.Status.StatusOfTotalFile;
+import utils.LargeFileHashCalculator;
 import utils.PeerMG;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.*;
 
 public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
@@ -13,17 +20,17 @@ public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
     String hash;
 
 
-    public DLTaskOfTorrentFile(File file ) {
+    public DLTaskOfTorrentFile(File file) {
         this.file = file;
-        hash = file.getName();
-
+        this.hash = file.getName();
     }
     @Override
     public void run() {
         ArrayList<DLofPiece> dlOfPieces = new ArrayList<>();
+
+
+
         //创建心跳线程
-        ASKTrackerForPeerInfoer infoToTrackerSender = new ASKTrackerForPeerInfoer(file);
-        infoToTrackerSender.run();
         ASKTrackerForPeerInfoer askTrackerForPeerInfoer = new ASKTrackerForPeerInfoer(file);
         askTrackerForPeerInfoer.start();
         ASKPeerForFileStatuser askPeerForFileStatuser = new ASKPeerForFileStatuser(file);
@@ -63,5 +70,6 @@ public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
         new Thread(this).interrupt();
     }
 
+    //递归Torrent文件结构，将文件路径和状态对应存入HashMap
 
 }

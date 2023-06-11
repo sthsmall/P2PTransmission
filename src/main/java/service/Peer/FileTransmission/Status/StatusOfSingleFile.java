@@ -11,6 +11,24 @@ import java.util.*;
 public class StatusOfSingleFile {
     //文件是否是文件夹
     private boolean isDirectory;
+
+    public StatusOfSingleFile() {
+
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StatusOfSingleFile that = (StatusOfSingleFile) o;
+        return Objects.equals(hash, that.hash) && Objects.equals(path, that.path);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(hash, path);
+    }
+
     //文件的名称
     private String name;
     //文件的大小
@@ -84,9 +102,11 @@ public class StatusOfSingleFile {
                     }
                 }
             }
+
         }
         return hashToAllPiece;
     }
+
     //递归遍历StatusOfSingleFile，将其转化为HashMap<String, StatusOfSingleFile>，其中String为
     // 非文件夹的文件的相对路径，StatusOfSingleFile为该文件的分片状态
     public void  recursion(StatusOfSingleFile statusOfSingleFile){
@@ -101,6 +121,10 @@ public class StatusOfSingleFile {
                 }
             }
         }
+    }
+
+    public void setPieceStatus(int index, boolean status){
+        pieceStatus[index] = status;
     }
 
 

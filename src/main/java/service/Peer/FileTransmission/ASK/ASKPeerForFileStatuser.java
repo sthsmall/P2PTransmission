@@ -42,13 +42,14 @@ public class ASKPeerForFileStatuser extends Thread{
                     }
                     objectInputStream = new ObjectInputStream(socket.getInputStream());
                     objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-                    objectOutputStream.writeObject(new ASKContent(ASKContent.ASK_FOR_PEER_STATUS_INFO, file.getName()));
+                    objectOutputStream.writeObject(new Content(Content.PEER_ASK_FOR_PEER_STATUS_INFO, file.getName()));
                     objectOutputStream.flush();
                     StatusOfTotalFile statusOfTotalFile = (StatusOfTotalFile) objectInputStream.readObject();
                     statusOfTotalFiles.add(statusOfTotalFile);
                 }
-                PeerMG.getInstance().getHashALLToTotalFileStatus().put(file.getName(), statusOfTotalFiles);
+
                 HashMap<String,Integer> status = PieceInfoAnalyser(statusOfTotalFiles);
+                PeerMG.getInstance().getHashALLToTotalFileStatus().put(file.getName(), status);
 
                 PeerMG.getInstance().getHashToTotalFileStatus().put(file.getName(),false);
 

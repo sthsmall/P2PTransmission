@@ -19,18 +19,18 @@ import java.util.Objects;
 public class Register extends JFrame {
 
 
-    private JPanel contentPane;
-    private JTextField ID;
-    private JPasswordField M1;
-    private JPasswordField M2;
+    private final JPanel contentPane;
+    private final JTextField ID;
+    private final JPasswordField M1;
+    private final JPasswordField M2;
     private static Register frame;
-    private JLabel userWarning;
-    private JLabel switichLogin;
-    private JLabel passwordWarning;
-    private JButton viewBtn1;
-    private JButton viewHideBtn1;
-    private JButton viewBtn2;
-    private JButton viewHideBtn2;
+    private final JLabel userWarning;
+    private final JLabel switichLogin;
+    private final JLabel passwordWarning;
+    private final JButton viewBtn1;
+    private final JButton viewHideBtn1;
+    private final JButton viewBtn2;
+    private final JButton viewHideBtn2;
 
     /**
      * Launch the application.

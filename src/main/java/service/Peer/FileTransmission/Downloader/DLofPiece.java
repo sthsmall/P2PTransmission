@@ -1,11 +1,16 @@
 package service.Peer.FileTransmission.Downloader;
 
+import domain.Torrent;
 import service.Peer.FileTransmission.DownloadTask.DownloadTask;
+import service.Peer.FileTransmission.Status.StatusOfSingleFile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DLofPiece implements Downloader{
     ArrayList<DownloadTask> downloadTasks = new ArrayList<>();
+
+
     @Override
     public void addTask(DownloadTask task) {
         downloadTasks.add(task);

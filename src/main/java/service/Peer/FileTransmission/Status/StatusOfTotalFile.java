@@ -43,4 +43,8 @@ public class StatusOfTotalFile {
     public Iterable<Map.Entry<String,StatusOfSingleFile>> getHashToDownloadList() {
         return downloadList;
     }
+
+    public void setFileStruct(StatusOfSingleFile fileStruct) {
+        statusOfSingleFile = fileStruct;
+    }
 }

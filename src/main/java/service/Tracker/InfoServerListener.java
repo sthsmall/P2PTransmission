@@ -6,7 +6,7 @@ import java.net.ServerSocket;
 //对监听
 public class InfoServerListener extends Thread{
     //监听端口
-    private int port = 5204;
+    private final int port = 5204;
 
     private ServerSocket serverSocket;
 

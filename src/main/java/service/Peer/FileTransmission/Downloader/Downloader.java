@@ -13,14 +13,14 @@ import java.util.List;
 处理下载事件：方法用于处理下载过程中的事件，例如成功下载一个块、下载错误等。
  */
 public interface Downloader {
-    public void addTask(DownloadTask task);
-    public void addAndStartTask(DownloadTask task);
+    void addTask(DownloadTask task);
+    void addAndStartTask(DownloadTask task);
 
-    public void removeTask(DownloadTask task);
+    void removeTask(DownloadTask task);
 
-    public void startAllTasks();
+    void startAllTasks();
 
-    public void pauseAllTasks();
+    void pauseAllTasks();
 
-    public void cancelAllTasks();
+    void cancelAllTasks();
 }

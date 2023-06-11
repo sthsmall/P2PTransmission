@@ -25,8 +25,8 @@ public class TrackerMG  {
     //文件分片大小
     public final static int FilePieceSize = 1024*1024;
 
-    private HashMap<String,ArrayList<String>> ipToTorrent = new HashMap<>();
-    private HashMap<String,String> TorrentToIp = new HashMap<>();
+    private HashMap<PeerInfo,ArrayList<String>> ipToTorrent = new HashMap<>();
+    private HashMap<String,PeerInfo> TorrentToIp = new HashMap<>();
     private HashSet<String> hasTorrent = new HashSet<>();
 
     private LargeFileHashCalculator largeFileHashCalculator = new LargeFileHashCalculator();
@@ -39,11 +39,15 @@ public class TrackerMG  {
 
     private TorrentsMap torrentsMap = new TorrentsMap();
 
+    public void init(){
+
+    }
+
     public void start() {
         //初始化种子文件列表
         File file = new File("./src/TestFile/torrents/");
 
-        File files[]=file.listFiles();
+        File[] files =file.listFiles();
         ArrayList<Torrent> torrents = new ArrayList<>();
         try {
 

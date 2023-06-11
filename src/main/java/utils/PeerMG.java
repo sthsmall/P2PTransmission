@@ -1,5 +1,7 @@
 package utils;
 
+import lombok.Data;
+import service.Peer.FileTransmission.Status.StatusOfSingleFile;
 import service.Peer.FileTransmission.Status.StatusOfTotalFile;
 import service.Peer.Sender.AccessInfoToTrackerSender;
 import service.Peer.page.Edit;
@@ -17,18 +19,19 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.*;
 
-
+@Data
 public class PeerMG {
 
     public final static int InfoPort = 5204;
     public final static int FilePort = 9999;
     public static int FilePieceSize = 1024 * 1024;
+    public static int PieceReceivePort = 8899;
     private String TrackerIP = "127.0.0.1";
     private HashMap<String, HashSet<PeerInfo>> hashToPeerInfo = new HashMap<>();
-    private HashMap<String, ArrayList<StatusOfTotalFile>> hashALLToTotalFileStatus = new HashMap<>();
-    private HashMap<String, Boolean> hashToTotalFileStatus = new HashMap<>();
+    private final HashMap<String, HashMap<String,Integer>> hashALLToTotalFileStatus = new HashMap<>();
+    private final HashMap<String, Boolean> hashToTotalFileStatus = new HashMap<>();
 
-    private HashMap<String,Queue<String>> hashToDownloadList = new HashMap<>();
+    private  HashMap<String,Queue<String>> hashToDownloadList = new HashMap<>();
 
     private HashMap<String, Boolean> dd = new HashMap<>();
 
@@ -41,9 +44,13 @@ public class PeerMG {
     }
 
     private HashMap<String, Torrent> hashToTorrent = new HashMap<>();
-    public HashMap<String, ArrayList<StatusOfTotalFile>> getHashALLToTotalFileStatus() {
-        return hashALLToTotalFileStatus;
-    }
+
+    //每个子文件对应的文件信息
+    private HashMap<String, StatusOfSingleFile> hashToStatusOfSingleFile = new HashMap<>();
+    //每个Torrent文件对应的文件信息
+    private HashMap<String, StatusOfTotalFile> hashToStatusOfTotalFile = new HashMap<>();
+
+    private HashMap<String, File> HashToFile = new HashMap<>();
 
     public HashMap<String, Boolean> getHashToTotalFileStatus() {
         return hashToTotalFileStatus;
@@ -58,7 +65,7 @@ public class PeerMG {
     //主界面
     private final Home home = new Home();
     //使用单例模式
-    private static PeerMG instance = new PeerMG();
+    private static final PeerMG instance = new PeerMG();
 
 
     private PeerMG() {
@@ -142,10 +149,13 @@ public class PeerMG {
 
         ArrayList<TorrentFile> torrentFiles = new ArrayList<TorrentFile>();
 
+
         for (File file : files) {
             String path = file.getName();
             if (file.isDirectory()) {
-                torrentFiles.add(MakeTorrentFromFileCirculate(file, path));
+                TorrentFile torrentFile = new TorrentFile(file, path);
+                MakeTorrentFromFileCirculate(file,torrentFile);
+                torrentFiles.add(torrentFile);
             } else {
                 torrentFiles.add(new TorrentFile(file, path));
             }
@@ -186,18 +196,24 @@ public class PeerMG {
     }
 
     //递归制作种子文件
-    private TorrentFile MakeTorrentFromFileCirculate(File now, String path) {
-        String newPath = path + "/" + now.getName();
-        if (now.isDirectory()) {
-            TorrentFile torrentFile = new TorrentFile(now, newPath);
-            for (File file : now.listFiles()) {
-                torrentFile.addChildren(MakeTorrentFromFileCirculate(file, newPath));
+    private void MakeTorrentFromFileCirculate(File now,TorrentFile torrentFile) {
+        String newPath = null;
+
+        for(File file : now.listFiles()){
+            if(file.isDirectory()){
+                newPath = torrentFile.getPath() + "/" + file.getName();
+                TorrentFile torrentFile1 = new TorrentFile(file, newPath);
+                MakeTorrentFromFileCirculate(file,torrentFile1);
+                torrentFile.addChildren(torrentFile1);
+            }else{
+                newPath = torrentFile.getPath() + "/" + file.getName();
+                torrentFile.addChildren(new TorrentFile(file, newPath));
             }
-            return torrentFile;
-        } else {
-            return new TorrentFile(now, newPath);
         }
+
     }
+
+
 
     //发送种子文件
     private boolean SendTorrent(File torrent) {
@@ -358,5 +374,6 @@ public class PeerMG {
         clear(EDIT);
         edit.setVisible(false);
     }
+
 
 }

@@ -9,13 +9,13 @@ import java.io.*;
 
 public class CopyFile extends JFrame {
 
-    private JPanel contentPane;
-    private JLabel lblNewLabel;
-    private JTextField sourceField;
-    private JLabel lblNewLabel_1;
-    private JTextField targetField;
-    private JProgressBar progressBar;
-    private JButton copyButton;
+    private final JPanel contentPane;
+    private final JLabel lblNewLabel;
+    private final JTextField sourceField;
+    private final JLabel lblNewLabel_1;
+    private final JTextField targetField;
+    private final JProgressBar progressBar;
+    private final JButton copyButton;
 
     /**
      * Launch the application.

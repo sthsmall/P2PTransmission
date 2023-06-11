@@ -15,16 +15,16 @@ import java.time.Period;
 */
 public class AccessInfoToTrackerSender extends Thread {
     //服务器ip
-    private String ip = PeerMG.getInstance().getTrackerIP();
+    private final String ip = PeerMG.getInstance().getTrackerIP();
     //服务器端口
-    private int port = PeerMG.InfoPort;
+    private final int port = PeerMG.InfoPort;
     //发送方套接字
     private Socket socket;
     //输入输出流
     private PrintWriter pw;
     private BufferedReader br;
     //要发送的协议信息
-    private String msg;
+    private final String msg;
 
     public AccessInfoToTrackerSender(String msg) {
         this.msg = msg;

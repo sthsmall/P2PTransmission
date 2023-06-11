@@ -17,17 +17,17 @@ import java.awt.Font;
 
 public class Edit extends JFrame {
 
-	private JPanel contentPane;
-	private JLabel lblNewLabel;
-	private JTextField newUsernameField;
-	private JLabel lblNewLabel_1;
-	private JPasswordField newPwField;
-	private JLabel lblNewLabel_2;
-	private JPasswordField newPeAckField;
-	private JLabel usernameWarning;
-	private JLabel newPwWaring1;
-	private JLabel newPwWaring2;
-	private JButton updateButton;
+	private final JPanel contentPane;
+	private final JLabel lblNewLabel;
+	private final JTextField newUsernameField;
+	private final JLabel lblNewLabel_1;
+	private final JPasswordField newPwField;
+	private final JLabel lblNewLabel_2;
+	private final JPasswordField newPeAckField;
+	private final JLabel usernameWarning;
+	private final JLabel newPwWaring1;
+	private final JLabel newPwWaring2;
+	private final JButton updateButton;
 
 	public JLabel getUsernameWarning() {
 		return usernameWarning;

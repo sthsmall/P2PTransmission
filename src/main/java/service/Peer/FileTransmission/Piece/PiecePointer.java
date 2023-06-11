@@ -1,5 +1,7 @@
 package service.Peer.FileTransmission.Piece;
 
+import utils.PeerMG;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -12,8 +14,10 @@ public class PiecePointer {
     int pieceIndex;
     int len = Piece.PieceSize;
 
-    public PiecePointer(File file, int pieceIndex) throws IOException {
+    public PiecePointer(String hash, int pieceIndex) throws IOException {
         this.pieceIndex = pieceIndex;
+        //获取文件
+        File file = PeerMG.getInstance().getHashToFile().get(hash);
         randomAccessFile = new RandomAccessFile(file, "rw");
         //将文件指针指向第（start+1）个字节上
         randomAccessFile.seek(pieceIndex * Piece.PieceSize);

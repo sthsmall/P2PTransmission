@@ -59,16 +59,16 @@ public class Login extends JFrame {
 //     }
 
 
-	private JPanel contentPane;
+	private final JPanel contentPane;
 
-	private JPasswordField Pw;
-	private JTextField ID2;
-	private JLabel lblNewLabel;
-	private JLabel lblNewLabel_1;
-	private JLabel lblNewLabel_2;
-	private JLabel register;
-	private JLabel warning1;
-	private JLabel warning2;
+	private final JPasswordField Pw;
+	private final JTextField ID2;
+	private final JLabel lblNewLabel;
+	private final JLabel lblNewLabel_1;
+	private final JLabel lblNewLabel_2;
+	private final JLabel register;
+	private final JLabel warning1;
+	private final JLabel warning2;
 
 	public JTextField getPw() {
 		return Pw;

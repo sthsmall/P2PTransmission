@@ -35,18 +35,19 @@ public class Torrent implements Serializable {
     }
 
 
-    public ArrayList<StatusOfSingleFile> getFileStruct(){
-        ArrayList<StatusOfSingleFile> sfs = new ArrayList<>();
+    public StatusOfSingleFile getFileStruct(){
+        StatusOfSingleFile statusOfSingleFile = new StatusOfSingleFile();
         for(TorrentFile torrentFile: fileList){
             String path = torrentFile.getPath();
             if(torrentFile.isDirectory()){
-                sfs.add(CirculateOfGetFileStruct(torrentFile));
+                statusOfSingleFile.addChildren(CirculateOfGetFileStruct(torrentFile));
             }else{
-                sfs.add(new StatusOfSingleFile(torrentFile.getFile(),path));
+                statusOfSingleFile.addChildren(new StatusOfSingleFile(torrentFile.getFile(),path));
             }
         }
-        return sfs;
+        return statusOfSingleFile;
     }
+
     private StatusOfSingleFile CirculateOfGetFileStruct (TorrentFile torrentFile){
         StatusOfSingleFile statusOfSingleFile = new StatusOfSingleFile(torrentFile.getFile(),torrentFile.getPath());
 

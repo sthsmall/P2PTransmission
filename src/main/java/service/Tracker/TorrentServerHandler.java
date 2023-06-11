@@ -1,6 +1,7 @@
 package service.Tracker;
 
 import domain.Torrent;
+import service.Peer.Model.PeerInfo;
 import utils.LargeFileHashCalculator;
 import utils.TrackerMG;
 
@@ -30,9 +31,6 @@ public class TorrentServerHandler extends Thread{
             String hash = LargeFileHashCalculator.getHash(file);
             File fileNew = new File(hash + ".torrent");
             file.renameTo(fileNew);
-
-            TrackerMG.getInstance().getIpToTorrent().get(accept.getInetAddress().getHostAddress()).add(hash);
-            TrackerMG.getInstance().getTorrentToIp().put(hash, accept.getInetAddress().getHostAddress());
             System.out.println("接收成功");
         } catch (IOException e) {
             throw new RuntimeException(e);
