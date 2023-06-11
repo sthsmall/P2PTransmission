@@ -349,5 +349,5 @@ public class PeerMG {
         clear(EDIT);
         edit.setVisible(false);
     }
-    
+
 }

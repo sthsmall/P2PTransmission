@@ -13,7 +13,8 @@ public class DLofTorrentFile implements Downloader{
 
     @Override
     public void addAndStartTask(DownloadTask task) {
-
+        downloadTasks.add(task);
+        task.startDownload();
     }
 
     @Override

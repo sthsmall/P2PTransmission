@@ -2,6 +2,8 @@ package service.Peer.FileTransmission.DownloadTask;
 
 import service.Peer.FileTransmission.ASKPeerForFileStatuser;
 import service.Peer.FileTransmission.ASKTrackerForPeerInfoer;
+import service.Peer.FileTransmission.Downloader.DLofSingleFile;
+import service.Peer.FileTransmission.StatusOfSingleFile;
 import service.Peer.FileTransmission.StatusOfTotalFile;
 import service.Peer.Model.PeerInfo;
 import service.Peer.Sender.InfoToTrackerSender;
@@ -10,6 +12,7 @@ import utils.PeerMG;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Map;
 
 public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
     File file;
@@ -22,7 +25,7 @@ public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
     }
     @Override
     public void run() {
-        ArrayList<DLTaskOfSingleFile> dlTaskOfSingleFiles = new ArrayList<>();
+        ArrayList<DLofSingleFile> dlOfSingleFiles = new ArrayList<>();
         //创建心跳线程
         InfoToTrackerSender infoToTrackerSender = new InfoToTrackerSender(file);
         infoToTrackerSender.run();
@@ -34,7 +37,12 @@ public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
             try {
                 Thread.sleep(1000);
                 StatusOfTotalFile statusOfTotalFile = PeerMG.getInstance().getHashToDownloadList().get(hash);
-
+                DLofSingleFile dlOfSingleFile = null;
+                for(Map.Entry<String ,StatusOfSingleFile> entry : statusOfTotalFile.getHashToDownloadList().entrySet()){
+                    dlOfSingleFile = new DLofSingleFile();
+                    dlOfSingleFile.addAndStartTask(new DLTaskOfSingleFile(entry.getKey(),entry.getValue()));
+                }
+                dlOfSingleFiles.add(dlOfSingleFile);
 
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);

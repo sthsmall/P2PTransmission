@@ -15,7 +15,7 @@ public class StatusOfTotalFile {
 
     }
 
-
-
-
+    public HashMap<String, StatusOfSingleFile> getHashToDownloadList() {
+        return hashToDownloadList;
+    }
 }
