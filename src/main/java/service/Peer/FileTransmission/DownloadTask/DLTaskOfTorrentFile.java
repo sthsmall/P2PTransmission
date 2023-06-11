@@ -34,7 +34,7 @@ public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
             try {
                 Thread.sleep(1000);
                 StatusOfTotalFile statusOfTotalFile = PeerMG.getInstance().getHashToDownloadList().get(hash);
-                for()
+
 
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);

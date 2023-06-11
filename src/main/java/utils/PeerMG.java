@@ -349,12 +349,5 @@ public class PeerMG {
         clear(EDIT);
         edit.setVisible(false);
     }
-
-    public String getTrackerIp() {
-        return TrackerIP;
-    }
-
-    public int getTrackerInfoPort() {
-        return InfoPort;
-    }
+    
 }

@@ -15,9 +15,7 @@ public class StatusOfTotalFile {
 
     }
 
-    public StatusOfTotalFile() {
 
-    }
 
 
 }
