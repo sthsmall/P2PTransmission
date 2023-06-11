@@ -17,7 +17,7 @@ import java.util.Date;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-public class H3 extends JFrame {
+public class ShowTime extends JFrame {
 
     private JPanel contentPane;
     private JPanel panel;
@@ -33,7 +33,7 @@ public class H3 extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    H3 frame = new H3();
+                    ShowTime frame = new ShowTime();
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -45,18 +45,20 @@ public class H3 extends JFrame {
     /**
      * Create the frame.
      */
-    public H3() {
+    public ShowTime() {
         //设置Windows风格界面
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //设置关闭方式，防止关闭后整个程序退出
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 573, 258);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
+        //窗口居中显示
+        setLocationRelativeTo(contentPane);
         setContentPane(contentPane);
         contentPane.setLayout(null);
 

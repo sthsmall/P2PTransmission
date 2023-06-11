@@ -38,7 +38,6 @@ public class InfoServerHandler extends Thread {
             while ((str = reader.readLine()) != null) {
                 //协议操作类型
                 String[] msgs = str.split("\\|");
-                System.out.println(msgs[0]);
                 if ("LOGIN".equals(msgs[0])) {
                     //登录
                     String username = msgs[1];
@@ -75,16 +74,25 @@ public class InfoServerHandler extends Thread {
                         //用户名存在
                         String reply = "CHECK|" + "YES";
                         writer.println(reply);
-                        System.out.println(11);
                     } else {
                         //用户名不存在
                         String reply = "CHECK|" + "NO";
                         writer.println(reply);
-                        System.out.println(111);
                     }
+                } else if ("UPDATE".equals(msgs[0])) {
+                    //更新用户信息
+                    String username = msgs[1];
+                    String password = msgs[2];
+                    String reply = null;
+                    //调用更新方法
+                    TrackerMG.getInstance().updateUser(new User(username, password));
+                    //更改成功
+                    reply = "UPDATE|" + "YES";
+                    writer.println(reply);
                 }
             }
-        } catch (Exception e) {
+        } catch (
+                Exception e) {
             throw new RuntimeException(e);
         } finally {
             try {

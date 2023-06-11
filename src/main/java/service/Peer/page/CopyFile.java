@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 
-public class H2 extends JFrame {
+public class CopyFile extends JFrame {
 
     private JPanel contentPane;
     private JLabel lblNewLabel;
@@ -24,7 +24,7 @@ public class H2 extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    H2 frame = new H2();
+                    CopyFile frame = new CopyFile();
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -36,7 +36,7 @@ public class H2 extends JFrame {
     /**
      * Create the frame.
      */
-    public H2() {
+    public CopyFile() {
         //设置Windows风格界面
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");

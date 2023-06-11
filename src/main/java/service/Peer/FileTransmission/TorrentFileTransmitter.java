@@ -55,6 +55,7 @@ public class TorrentFileTransmitter extends Thread{
 
     private TotalFileStatus PieceInfoAnalyser(ArrayList<TotalFileStatus> totalFileStatuses){
         //暂定
+        return null;
 
     }
 
