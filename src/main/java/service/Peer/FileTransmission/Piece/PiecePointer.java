@@ -9,22 +9,23 @@ public class PiecePointer {
     //随机访问文件类
     RandomAccessFile randomAccessFile;
     //获取文件片段的长度
-    long len;
+    int pieceIndex;
+    int len = Piece.PieceSize;
 
-    public PiecePointer(File file, long start, long end) throws IOException {
-        this.len = end - start + 1;
+    public PiecePointer(File file, int pieceIndex) throws IOException {
+        this.pieceIndex = pieceIndex;
         randomAccessFile = new RandomAccessFile(file, "rw");
         //将文件指针指向第（start+1）个字节上
-        randomAccessFile.seek(start);
+        randomAccessFile.seek(pieceIndex * Piece.PieceSize);
     }
 
     //写
     public void write(byte[] bytes) throws IOException {
-        randomAccessFile.write(bytes, 0, (int) len);
+        randomAccessFile.write(bytes, 0, len);
     }
 
     //读
     public void read(byte[] bytes) throws IOException {
-        randomAccessFile.read(bytes, 0, (int) len);
+        randomAccessFile.read(bytes, 0, len);
     }
 }

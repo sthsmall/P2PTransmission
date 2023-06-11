@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Piece {
+    public static final int PieceSize = 1024*1024;
     //数据大小
     byte [] bytes;
     //块的偏移量（第几块）

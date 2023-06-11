@@ -2,7 +2,9 @@ package utils;
 
 import dao.UserMapper;
 import domain.User;
+import lombok.Data;
 import org.apache.ibatis.session.SqlSession;
+import service.Peer.Model.PeerInfo;
 import service.Tracker.InfoServerListener;
 import domain.Torrent;
 import service.Tracker.TorrentsMap;
@@ -10,14 +12,24 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
+@Data
 public class TrackerMG  {
-    final static int ProtocolPort = 8888;
+    public final static int ProtocolPort = 8888;
 
-    final static int FilePort = 9999;
+    public final static int TorrentPort = 9999;
+
+    public final static int TrackerPort = 5204;
     //文件分片大小
     public final static int FilePieceSize = 1024*1024;
 
+    private HashMap<String,ArrayList<String>> ipToTorrent = new HashMap<>();
+    private HashMap<String,String> TorrentToIp = new HashMap<>();
+    private HashSet<String> hasTorrent = new HashSet<>();
+
+    private LargeFileHashCalculator largeFileHashCalculator = new LargeFileHashCalculator();
     //使用单例模式
     private static TrackerMG instance = new TrackerMG();
     private TrackerMG() {}

@@ -1,5 +1,6 @@
-package service.Peer.FileTransmission;
+package service.Peer.FileTransmission.ASK;
 
+import service.Peer.FileTransmission.Status.StatusOfTotalFile;
 import service.Peer.Model.PeerInfo;
 import utils.PeerMG;
 
@@ -8,7 +9,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Queue;
 
 public class ASKPeerForFileStatuser extends Thread{
     File file;
@@ -39,15 +42,17 @@ public class ASKPeerForFileStatuser extends Thread{
                     }
                     objectInputStream = new ObjectInputStream(socket.getInputStream());
                     objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-                    objectOutputStream.writeObject(new Content(Content.ASK_FOR_PEER_STATUS_INFO, file.getName()));
+                    objectOutputStream.writeObject(new ASKContent(ASKContent.ASK_FOR_PEER_STATUS_INFO, file.getName()));
                     objectOutputStream.flush();
                     StatusOfTotalFile statusOfTotalFile = (StatusOfTotalFile) objectInputStream.readObject();
                     statusOfTotalFiles.add(statusOfTotalFile);
                 }
                 PeerMG.getInstance().getHashALLToTotalFileStatus().put(file.getName(), statusOfTotalFiles);
-                StatusOfTotalFile status = PieceInfoAnalyser(statusOfTotalFiles);
-                PeerMG.getInstance().getHashToTotalFileStatus().put(file.getName(),status);
-                StatusOfTotalFile downloadList = PeerMG.getInstance().strategyOfDownload(status);
+                HashMap<String,Integer> status = PieceInfoAnalyser(statusOfTotalFiles);
+
+                PeerMG.getInstance().getHashToTotalFileStatus().put(file.getName(),false);
+
+                Queue<String> downloadList = PeerMG.getInstance().strategyOfDownload(status);
                 PeerMG.getInstance().getHashToDownloadList().put(file.getName(),downloadList);
             }
         }catch (Exception e) {
@@ -56,12 +61,20 @@ public class ASKPeerForFileStatuser extends Thread{
     }
 
     //计算所有文件的总状态
-    public static StatusOfTotalFile PieceInfoAnalyser(ArrayList<StatusOfTotalFile> statusOfTotalFiles){
+    public static HashMap<String,Integer> PieceInfoAnalyser(ArrayList<StatusOfTotalFile> statusOfTotalFiles){
         StatusOfTotalFile statusOfTotalFile = new StatusOfTotalFile();
+        HashMap<String,Integer> howPieceHave = new HashMap<>();
         for(StatusOfTotalFile t1 : statusOfTotalFiles){
-
+            HashSet<String> hashToAllPiece = t1.getHashToAllPiece();
+            for(String hash : hashToAllPiece){
+                if(howPieceHave.containsKey(hash)){
+                    howPieceHave.put(hash,howPieceHave.get(hash)+1);
+                }else{
+                    howPieceHave.put(hash,1);
+                }
+            }
         }
-        return statusOfTotalFile;
+        return howPieceHave;
     }
 
 

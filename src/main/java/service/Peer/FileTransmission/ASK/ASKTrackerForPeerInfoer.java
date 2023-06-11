@@ -1,4 +1,4 @@
-package service.Peer.FileTransmission;
+package service.Peer.FileTransmission.ASK;
 
 import service.Peer.Model.PeerInfo;
 import utils.PeerMG;
@@ -25,7 +25,7 @@ public class ASKTrackerForPeerInfoer extends Thread{
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
             while(!Thread.currentThread().isInterrupted()){
                 Thread.sleep(1000);
-                Content content = new Content(Content.ASK_FOR_TRACKER_PEER_INFO, hash);
+                ASKContent content = new ASKContent(ASKContent.ASK_FOR_TRACKER_PEER_INFO, hash);
                 objectOutputStream.writeObject(content);
                 objectOutputStream.flush();
                 objectInputStream = new ObjectInputStream(socket.getInputStream());

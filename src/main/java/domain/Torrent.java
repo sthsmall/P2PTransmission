@@ -1,9 +1,9 @@
 package domain;
 
 import lombok.Data;
-import service.Peer.FileTransmission.StatusOfSingleFile;
+import service.Peer.FileTransmission.Status.StatusOfSingleFile;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 
 //种子文件
@@ -25,6 +25,14 @@ public class Torrent implements Serializable {
     private String downloadUrl;
     //种子的文件列表
     private ArrayList<TorrentFile> fileList;
+
+    public static Torrent createTorrentFromFile(File file) throws IOException, ClassNotFoundException {
+        Torrent torrent;
+        ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file));
+        torrent = (Torrent) objectInputStream.readObject();
+        objectInputStream.close();
+        return torrent;
+    }
 
 
     public ArrayList<StatusOfSingleFile> getFileStruct(){
