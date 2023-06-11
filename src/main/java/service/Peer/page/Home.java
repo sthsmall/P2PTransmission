@@ -17,7 +17,7 @@ public class Home extends JFrame {
 
 
     private JPanel contentPane;
-    private JTextField textField;
+    private JTextField txtPp;
     private JLabel Score;
     private JLabel ID;
     private JLabel image;
@@ -52,9 +52,8 @@ public class Home extends JFrame {
      * Create the frame.
      */
     public Home() {
-        setTitle("P2P文件传输系统");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 941, 664);
+        setBounds(100, 100, 958, 687);
         //设置窗口大小不可变
         setResizable(false);
         contentPane = new JPanel();
@@ -66,42 +65,42 @@ public class Home extends JFrame {
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        textField = new JTextField();
-        textField.setEditable(false);
-        textField.setBackground(SystemColor.textHighlight);
-        textField.setText("\u6587\u4EF6\u4F20\u8F93\u7CFB\u7EDF");
-        textField.setBounds(10, 9, 883, 35);
-        contentPane.add(textField);
-        textField.setColumns(10);
+        txtPp = new JTextField();
+        txtPp.setEditable(false);
+        txtPp.setBackground(SystemColor.textHighlight);
+        txtPp.setText("P2P文件传输系统");
+        txtPp.setBounds(10, 9, 907, 35);
+        contentPane.add(txtPp);
+        txtPp.setColumns(10);
 
         JLabel lblNewLabel = new JLabel("用户名：");
-        lblNewLabel.setBounds(24, 408, 48, 34);
+        lblNewLabel.setBounds(24, 408, 78, 34);
         contentPane.add(lblNewLabel);
 
         JLabel lblNewLabel_1 = new JLabel("积分：");
-        lblNewLabel_1.setBounds(34, 452, 42, 34);
+        lblNewLabel_1.setBounds(34, 452, 68, 34);
         contentPane.add(lblNewLabel_1);
 
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(277, 234, 616, 372);
+        scrollPane.setBounds(277, 234, 640, 372);
         contentPane.add(scrollPane);
 
         JPanel panel = new JPanel();
         panel.setBorder(new TitledBorder(null, "\u83DC\u5355", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        panel.setBounds(10, 54, 883, 77);
+        panel.setBounds(10, 54, 907, 77);
         contentPane.add(panel);
         panel.setLayout(null);
 
         JButton Help = new JButton("\u5E2E\u52A9");
-        Help.setBounds(117, 17, 127, 48);
+        Help.setBounds(117, 19, 127, 48);
         panel.add(Help);
 
         JButton Relation = new JButton("\u76F8\u5173");
-        Relation.setBounds(239, 17, 127, 48);
+        Relation.setBounds(239, 19, 127, 48);
         panel.add(Relation);
 
         JButton File = new JButton("文件");
-        File.setBounds(10, 17, 109, 48);
+        File.setBounds(10, 19, 109, 48);
         panel.add(File);
         Relation.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -163,12 +162,13 @@ public class Home extends JFrame {
 
         JPanel panel_1 = new JPanel();
         panel_1.setBorder(new TitledBorder(null, "\u5DE5\u5177", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        panel_1.setBounds(10, 138, 883, 86);
+        panel_1.setBounds(10, 138, 907, 86);
         contentPane.add(panel_1);
         panel_1.setLayout(null);
 
         JButton Delete = new JButton("\u5220\u9664");
-        Delete.setBounds(544, 20, 109, 50);
+        Delete.setFont(new Font("宋体", Font.PLAIN, 12));
+        Delete.setBounds(574, 26, 109, 50);
         panel_1.add(Delete);
         Delete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -176,31 +176,38 @@ public class Home extends JFrame {
         });
 
         JButton Open = new JButton("\u6253\u5F00\u76EE\u5F55");
-        Open.setBounds(651, 20, 109, 50);
+        Open.setFont(new Font("宋体", Font.PLAIN, 12));
+        Open.setBounds(681, 26, 109, 50);
         panel_1.add(Open);
 
         JButton mTorrent = new JButton("\u5236\u4F5Ctorrent");
-        mTorrent.setBounds(10, 20, 109, 50);
+        mTorrent.setFont(new Font("宋体", Font.PLAIN, 12));
+        mTorrent.setBounds(10, 26, 127, 50);
         panel_1.add(mTorrent);
 
         JButton dLfTorrent = new JButton("torrent\u4E0B\u8F7D");
-        dLfTorrent.setBounds(117, 20, 109, 50);
+        dLfTorrent.setFont(new Font("宋体", Font.PLAIN, 12));
+        dLfTorrent.setBounds(129, 26, 127, 50);
         panel_1.add(dLfTorrent);
 
         JButton dLflink = new JButton("\u78C1\u94FE\u4E0B\u8F7D");
-        dLflink.setBounds(224, 20, 109, 50);
+        dLflink.setFont(new Font("宋体", Font.PLAIN, 12));
+        dLflink.setBounds(254, 26, 109, 50);
         panel_1.add(dLflink);
 
         JButton Dl = new JButton("\u5F00\u59CB\u4E0B\u8F7D");
-        Dl.setBounds(331, 20, 109, 50);
+        Dl.setFont(new Font("宋体", Font.PLAIN, 12));
+        Dl.setBounds(361, 26, 109, 50);
         panel_1.add(Dl);
 
         JButton Copy = new JButton("\u6587\u4EF6\u62F7\u8D1D");
-        Copy.setBounds(758, 20, 109, 50);
+        Copy.setFont(new Font("宋体", Font.PLAIN, 12));
+        Copy.setBounds(788, 26, 109, 50);
         panel_1.add(Copy);
 
         JButton Stop = new JButton("\u505C\u6B62\u4E0B\u8F7D");
-        Stop.setBounds(438, 20, 109, 50);
+        Stop.setFont(new Font("宋体", Font.PLAIN, 12));
+        Stop.setBounds(468, 26, 109, 50);
         panel_1.add(Stop);
         Stop.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -239,33 +246,22 @@ public class Home extends JFrame {
             }
         });
 
-
-        JButton Showtime = new JButton("计时");
-        Showtime.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                ShowTime frame = new ShowTime();
-                frame.setVisible(true);
-            }
-        });
-        Showtime.setBounds(127, 512, 94, 43);
-        contentPane.add(Showtime);
-
         JButton Exit = new JButton("退出");
         Exit.addActionListener(new ExitActionListener());
         Exit.setBounds(24, 565, 197, 43);
         contentPane.add(Exit);
 
         ID = new JLabel("");
-        ID.setBounds(82, 407, 165, 35);
+        ID.setBounds(102, 408, 165, 35);
         contentPane.add(ID);
 
         Score = new JLabel("");
-        Score.setBounds(82, 452, 101, 35);
+        Score.setBounds(94, 451, 101, 35);
         contentPane.add(Score);
 
         JButton Edit = new JButton("修改信息");
         Edit.addActionListener(new EditActionListener());
-        Edit.setBounds(24, 511, 94, 43);
+        Edit.setBounds(24, 511, 197, 43);
         contentPane.add(Edit);
 
         // 加载图片

@@ -79,7 +79,7 @@ public class Register extends JFrame {
         FlatLightLaf.setup();
         setTitle("注册界面");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 685, 479);
+        setBounds(100, 100, 685, 504);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         //窗口居中显示
@@ -138,15 +138,15 @@ public class Register extends JFrame {
         contentPane.add(M2);
         M2.setColumns(10);
 
-        userWarning = new JLabel("");
+        userWarning = new JLabel("  ");
         userWarning.setForeground(Color.RED);
         userWarning.setBounds(171, 148, 157, 24);
         contentPane.add(userWarning);
 
-        switichLogin = new JLabel("已有账号？切换至登录");
+        switichLogin = new JLabel("已有账号？登录");
         switichLogin.addMouseListener(new SwitichLoginMouseListener());
         switichLogin.setForeground(Color.RED);
-        switichLogin.setBounds(530, 392, 120, 24);
+        switichLogin.setBounds(476, 400, 169, 24);
         contentPane.add(switichLogin);
 
         passwordWarning = new JLabel("");
@@ -270,7 +270,7 @@ public class Register extends JFrame {
                 return;
             }
             //判断两次密码是否一致
-            if (PeerMG.getInstance().checkPassword(password, password2, true)) {
+            if (PeerMG.getInstance().checkPassword(password, password2, true) && "".equals(userWarning.getText())) {
                 //输入一致，提交注册
                 int res = JOptionPane.showConfirmDialog(null, "是否确认提交注册", "确认框",
                         JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
