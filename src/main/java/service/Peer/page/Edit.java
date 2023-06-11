@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.Font;
 
 public class Edit extends JFrame {
 
@@ -79,7 +80,7 @@ public class Edit extends JFrame {
 		setTitle("更改界面");
 		//设置关闭方式，防止关闭后整个程序退出
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 465, 333);
+		setBounds(100, 100, 483, 352);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		//窗口居中显示
@@ -88,54 +89,57 @@ public class Edit extends JFrame {
 		contentPane.setLayout(null);
 
 		lblNewLabel = new JLabel("用户名：");
-		lblNewLabel.setBounds(24, 26, 62, 32);
+		lblNewLabel.setBounds(19, 26, 76, 32);
 		contentPane.add(lblNewLabel);
 
 		newUsernameField = new JTextField();
 		newUsernameField.setEditable(false);
-		newUsernameField.setBounds(91, 27, 293, 32);
+		newUsernameField.setBounds(118, 27, 293, 32);
 		contentPane.add(newUsernameField);
 		newUsernameField.setColumns(10);
 
 		lblNewLabel_1 = new JLabel("新密码：");
-		lblNewLabel_1.setBounds(24, 92, 62, 32);
+		lblNewLabel_1.setBounds(19, 92, 88, 32);
 		contentPane.add(lblNewLabel_1);
 
 		newPwField = new JPasswordField();
 		newPwField.setEchoChar('*');
 		newPwField.setColumns(10);
-		newPwField.setBounds(91, 93, 293, 32);
+		newPwField.setBounds(118, 93, 293, 32);
 		contentPane.add(newPwField);
 
 		lblNewLabel_2 = new JLabel("确认密码：");
-		lblNewLabel_2.setBounds(24, 155, 62, 32);
+		lblNewLabel_2.setBounds(19, 155, 100, 32);
 		contentPane.add(lblNewLabel_2);
 
 		newPeAckField = new JPasswordField();
 		newPeAckField.setEchoChar('*');
 		newPeAckField.setColumns(10);
-		newPeAckField.setBounds(91, 156, 293, 32);
+		newPeAckField.setBounds(118, 156, 293, 32);
 		contentPane.add(newPeAckField);
 
 
 		usernameWarning = new JLabel("");
+		usernameWarning.setFont(new Font("宋体", Font.PLAIN, 10));
 		usernameWarning.setForeground(Color.RED);
-		usernameWarning.setBounds(91, 68, 88, 15);
+		usernameWarning.setBounds(118, 68, 88, 15);
 		contentPane.add(usernameWarning);
 
 		newPwWaring1 = new JLabel("");
+		newPwWaring1.setFont(new Font("宋体", Font.PLAIN, 11));
 		newPwWaring1.setForeground(Color.RED);
-		newPwWaring1.setBounds(91, 135, 88, 15);
+		newPwWaring1.setBounds(118, 135, 193, 15);
 		contentPane.add(newPwWaring1);
 
 		newPwWaring2 = new JLabel("");
+		newPwWaring2.setFont(new Font("宋体", Font.PLAIN, 11));
 		newPwWaring2.setForeground(Color.RED);
-		newPwWaring2.setBounds(91, 198, 130, 15);
+		newPwWaring2.setBounds(118, 198, 130, 15);
 		contentPane.add(newPwWaring2);
 
 		updateButton = new JButton("更改");
 		updateButton.addActionListener(new UpdateButtonActionListener());
-		updateButton.setBounds(91, 223, 293, 32);
+		updateButton.setBounds(118, 223, 293, 32);
 		contentPane.add(updateButton);
 
 		//添加显示密码图标按钮

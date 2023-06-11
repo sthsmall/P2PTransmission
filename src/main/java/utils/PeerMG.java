@@ -59,13 +59,14 @@ public class PeerMG {
     private InfoToTrackerSender infoToTrackerSender;
 
     //登录界面
-    private final Login login = new Login();
+    private  final Login login = new Login();
     //注册界面
     private final Register register = new Register();
     //主界面
     private final Home home = new Home();
     //使用单例模式
     private static PeerMG instance = new PeerMG();
+
 
     private PeerMG() {
     }

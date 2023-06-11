@@ -2,6 +2,7 @@ package service.Peer.Sender;
 
 import utils.PeerMG;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;

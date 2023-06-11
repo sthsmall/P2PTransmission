@@ -17,10 +17,6 @@ import java.io.File;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.time.Period;
-
 
 public class Login extends JFrame {
 
