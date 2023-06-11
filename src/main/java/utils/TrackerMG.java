@@ -97,4 +97,12 @@ public class TrackerMG  {
         return user != null;
     }
 
+    //修改由用户信息
+    public void updateUser(User user) {
+        SqlSession session = SqlSessionFactoryUtil.getSqlSessionFactory().openSession();
+        UserMapper mapper = session.getMapper(UserMapper.class);
+        mapper.updateUser(user);
+        session.commit();
+        session.close();
+    }
 }

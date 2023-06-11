@@ -20,4 +20,7 @@ public interface UserMapper {
 
     //查询用户是否存在
     User selectUser(@Param("userName") String userName);
+
+    //修改用户信息
+    void updateUser(User user);
 }

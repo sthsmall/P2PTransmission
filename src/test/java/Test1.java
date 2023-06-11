@@ -56,7 +56,7 @@ public class Test1 {
     public void test2() throws IOException {
         ArrayList<File> files = new ArrayList<>();
         File source = new File("./Torrent");
-        if(source.isDirectory()){
+        if (source.isDirectory()) {
             source.list();
         }
         for (String s : source.list()) {
@@ -65,9 +65,17 @@ public class Test1 {
 
     }
 
+    @Test
+    public void test3() {
+        boolean a = true;
+        String s = "woshi|"+ a;
+        System.out.println(s.split("\\|")[1]);
 
-    //启动tracker服务器
-    public static void main(String[] args) {
-        TrackerMG.getInstance().startInfoServerListener();
+
     }
+
+
+
+
+
 }

@@ -3,13 +3,10 @@ package service.Peer.page;
 import com.formdev.flatlaf.FlatLightLaf;
 import utils.PeerMG;
 
-import java.awt.EventQueue;
+import java.awt.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
-import java.awt.Font;
-import java.awt.Color;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -41,8 +38,8 @@ public class Register extends JFrame {
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
-
                 Register register = PeerMG.getInstance().getRegister();
+
                 register.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -75,13 +72,18 @@ public class Register extends JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //设置窗口大小不可变
+        setResizable(false);
+        setLocationRelativeTo(null);
         FlatLightLaf.setup();
         setTitle("注册界面");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 685, 479);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
+        //窗口居中显示
+        setLocationRelativeTo(contentPane);
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
@@ -153,17 +155,10 @@ public class Register extends JFrame {
         contentPane.add(passwordWarning);
 
 
-        JButton iconButton = new JButton(new ImageIcon("icon.png"));
-        iconButton.setBorderPainted(false);
-
-        // 创建密码框的JComponent数组，并添加图标按钮
-
-
         //添加显示密码图标按钮
         viewBtn1 = new JButton("view ");
         //添加隐藏密码图标按钮
         viewHideBtn1 = new JButton("hide ");
-
 
         //添加显示密码图标按钮
         viewBtn2 = new JButton("view ");
@@ -275,9 +270,15 @@ public class Register extends JFrame {
                 return;
             }
             //判断两次密码是否一致
-            if (PeerMG.getInstance().checkPassword(password, password2)) {
-                //输入一致，注册
-                PeerMG.getInstance().register(username, password);
+            if (PeerMG.getInstance().checkPassword(password, password2, true)) {
+                //输入一致，提交注册
+                int res = JOptionPane.showConfirmDialog(null, "是否确认提交注册", "确认框",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                if(res == JOptionPane.YES_OPTION){
+                    //弹出提示框
+                    JOptionPane.showMessageDialog(null, "注册成功", "提示", JOptionPane.INFORMATION_MESSAGE);
+                    PeerMG.getInstance().register(username, password);
+                }
             }
         }
     }
