@@ -17,10 +17,16 @@ public class Listener extends Thread{
     ObjectInputStream  objectInputStream;
     @Override
     public void run() {
+
         try {
             serverSocket = new ServerSocket(TrackerMG.TorrentPort);
-            while(!Thread.interrupted()) {
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        while(!Thread.interrupted()) {
+            try {
                 Socket socket = serverSocket.accept();
+                System.out.println(socket);
                 objectInputStream = new ObjectInputStream(socket.getInputStream());
                 objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
                 Content content = (Content) objectInputStream.readObject();
@@ -34,7 +40,7 @@ public class Listener extends Thread{
                     TrackerMG.getInstance().getTorrentToIp().get(content.getHash()).add(new PeerInfo(socket.getInetAddress().getHostAddress(),socket.getPort()));
                     TrackerMG.getInstance().getIpToTorrent().get(socket.getInetAddress().getHostAddress()).addAll(content.getMyTorrents());
                 } else if (content.getType() == Content.PEER_ASK_TRACK_FOR_TORRENT_BY_HASH) {
-                    
+
                 } else if (content.getType() == Content.PEER_SEND_TORRENT_FILE) {
 
                     File file = new File("./src/TrackerTorrent/temp");
@@ -46,7 +52,7 @@ public class Listener extends Thread{
                     objectOutputStream2.writeObject(torrent);
                     objectOutputStream2.flush();
                     objectOutputStream2.close();
-                    
+
                     objectOutputStream.writeObject(new Content(Content.OK));
                     String hash = LargeFileHashCalculator.getHash(file);
                     File fileNew = new File("./src/TrackerTorrent/"+hash + ".torrent");
@@ -55,13 +61,14 @@ public class Listener extends Thread{
 
                     System.out.println("接收成功");
                 }
+            } catch ( IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
             }
-        } catch ( IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+
         }
 
     }
