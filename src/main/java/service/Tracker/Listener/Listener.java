@@ -31,6 +31,7 @@ public class Listener extends Thread{
                 objectInputStream = new ObjectInputStream(socket.getInputStream());
                 objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
                 Content content = (Content) objectInputStream.readObject();
+                System.out.println(content);
                 if(content.getType() == Content.PEER_ASK_FOR_TRACKER_PEER_INFO){
                     Content backContent = new Content(Content.PEER_BACK_FROM_TRACKER_PEER_INFO);
                     backContent.setMyPeerInfo(TrackerMG.getInstance().getTorrentToIp().get(content.getHash()));
@@ -38,7 +39,7 @@ public class Listener extends Thread{
                     if(backContent.getMyPeerInfo() == null){
                         backContent.setMyPeerInfo(new HashSet<>());
                     }
-                    objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+
                     objectOutputStream.writeObject(backContent);
                     objectOutputStream.flush();
 
