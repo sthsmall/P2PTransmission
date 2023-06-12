@@ -6,11 +6,12 @@ import service.Peer.FileTransmission.Piece.Piece;
 import service.Peer.FileTransmission.Status.StatusOfTotalFile;
 import service.Peer.Model.PeerInfo;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 
 @Data
-public class Content {
+public class Content implements Serializable {
     public static final int PEER_BACK_FROM_PEER_STATUS_INFO = 5;
     public static final int PEER_BACK_FROM_TRACKER_PEER_INFO = 8;
     public static final int PEER_ASK_TRACK_FOR_TORRENT_BY_HASH = 9;
