@@ -40,6 +40,7 @@ public class Listener extends Thread{
                     objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
                     objectOutputStream.writeObject(backContent);
                     objectOutputStream.flush();
+
                 } else if (content.getType() == Content.PEER_ASK_TRACK_ONLINE) {
                     TrackerMG.getInstance().getTorrentToIp().get(content.getHash()).add(new PeerInfo(socket.getInetAddress().getHostAddress(),socket.getPort()));
                     TrackerMG.getInstance().getIpToTorrent().get(socket.getInetAddress().getHostAddress()).addAll(content.getMyTorrents());
