@@ -12,6 +12,8 @@ import java.net.URL;
 import javax.swing.border.TitledBorder;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+
 import javax.swing.event.MenuListener;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuKeyListener;
@@ -34,6 +36,7 @@ public class Home extends JFrame {
     private JMenuItem linkDownload;
     private JScrollPane scrollPane;
     private JTextArea recordArea;
+    private DefaultListModel<String> defaultListModel;
 
     public JLabel getScore() {
         return Score;
@@ -87,6 +90,17 @@ public class Home extends JFrame {
         lblNewLabel_1.setBounds(26, 370, 68, 34);
         contentPane.add(lblNewLabel_1);
 
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane.setBounds(269, 152, 640, 372);
+        contentPane.add(scrollPane);
+
+        defaultListModel = new DefaultListModel<String>();
+        JList list = new JList(defaultListModel);
+        scrollPane.setViewportView(list);
+
+
 
         JPanel panel_1 = new JPanel();
         panel_1.setBorder(new TitledBorder(null, "\u5DE5\u5177", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -124,7 +138,7 @@ public class Home extends JFrame {
         });
         Dl.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                defaultListModel.addElement("dfsadsa");
 
             }
         });
@@ -222,6 +236,26 @@ public class Home extends JFrame {
         scrollPane.setViewportView(recordArea);
     }
 
+    private class MTorrentActionListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JFileChooser fileChooser = new JFileChooser();
+
+            // 设置文件选择器的初始目录
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+            fileChooser.setMultiSelectionEnabled(true);
+            // 显示文件选择器对话框
+            int result = fileChooser.showOpenDialog(Home.this);
+
+            if (result == JFileChooser.APPROVE_OPTION) {
+                // 用户选择了一个文件
+                File selectedFile = fileChooser.getSelectedFile();
+                System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+            }
+        }
+
+    }
 
 
     //退出按钮
@@ -257,6 +291,7 @@ public class Home extends JFrame {
             frame.setSize(500, 600);
             //窗口居中显示
             frame.setLocationRelativeTo(null);
+            frame.setSize(500, 500);
             JTextArea ja = new JTextArea();// 注意类名别写错了。
             ja.setEditable(false);
             ja.setBounds(500, 500, 500, 700);
@@ -279,12 +314,14 @@ public class Home extends JFrame {
             JDialog frame = new JDialog();//构造一个新的JFrame，作为新窗口。
             frame.setSize(500, 600);
             frame.setLocationRelativeTo(null);
+            frame.setSize(500, 500);
             JTextArea ja = new JTextArea();// 注意类名别写错了。
             ja.setEditable(false);
             ja.setBounds(500, 500, 500, 700);
             ja.setLineWrap(true);        //激活自动换行功能
             ja.setWrapStyleWord(true);            // 激活断行不断字功能
             frame.getContentPane().add(ja);
+            //
             ja.setText("首先介绍一下该系统中的名词\r\n"
                     + "1.tracker：p2p网络中的服务节点，对P2P网络文件资源进行调配。\r\n"
                     + "2.torrent文件（种子文件）：种子文件中存有分享文件的元信息，包括大小，名称，和唯一的哈希值。\r\n"
