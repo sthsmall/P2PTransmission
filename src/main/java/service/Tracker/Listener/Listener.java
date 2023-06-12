@@ -49,7 +49,7 @@ public class Listener extends Thread{
                     
                     objectOutputStream.writeObject(new Content(Content.OK));
                     String hash = LargeFileHashCalculator.getHash(file);
-                    File fileNew = new File(hash + ".torrent");
+                    File fileNew = new File("./src/TrackerTorrent/"+hash + ".torrent");
                     file.renameTo(fileNew);
 
 
