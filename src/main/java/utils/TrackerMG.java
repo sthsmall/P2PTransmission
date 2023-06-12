@@ -17,11 +17,7 @@ import java.util.HashSet;
 
 @Data
 public class TrackerMG  {
-    public final static int ProtocolPort = 8888;
-
-    public final static int TorrentPort = 9999;
-
-    public final static int TrackerPort = 5204;
+    public final static int TorrentPort = 49999;
     //文件分片大小
     public final static int FilePieceSize = 1024*1024;
 

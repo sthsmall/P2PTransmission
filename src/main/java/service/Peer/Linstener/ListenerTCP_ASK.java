@@ -2,7 +2,6 @@ package service.Peer.Linstener;
 
 import service.Peer.FileTransmission.ASK.Content;
 import service.Peer.FileTransmission.Status.StatusOfTotalFile;
-import service.Tracker.TorrentServerHandler;
 import utils.PeerMG;
 import utils.TrackerMG;
 
