@@ -1,4 +1,4 @@
-package service.Peer;
+package service.Peer.FileTransmission.ASK;
 
 import utils.PeerMG;
 import domain.Torrent;
@@ -9,9 +9,9 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class TorrentFileTransmissionThread extends Thread{
+public class SendTorrentFileToTracker extends Thread{
     File file;
-    public TorrentFileTransmissionThread(File file) {
+    public SendTorrentFileToTracker(File file) {
         this.file = file;
     }
 

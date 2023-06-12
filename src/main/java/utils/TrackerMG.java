@@ -25,8 +25,8 @@ public class TrackerMG  {
     //文件分片大小
     public final static int FilePieceSize = 1024*1024;
 
-    private HashMap<PeerInfo,ArrayList<String>> ipToTorrent = new HashMap<>();
-    private HashMap<String,PeerInfo> TorrentToIp = new HashMap<>();
+    private HashMap<PeerInfo,HashSet<String>> ipToTorrent = new HashMap<>();
+    private HashMap<String,HashSet<PeerInfo>> TorrentToIp = new HashMap<>();
     private HashSet<String> hasTorrent = new HashSet<>();
 
     private LargeFileHashCalculator largeFileHashCalculator = new LargeFileHashCalculator();

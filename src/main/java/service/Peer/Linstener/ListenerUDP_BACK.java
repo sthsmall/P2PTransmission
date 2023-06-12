@@ -3,6 +3,7 @@ package service.Peer.Linstener;
 
 import service.Peer.FileTransmission.ASK.Content;
 import service.Peer.FileTransmission.Piece.PiecePointer;
+import utils.PeerMG;
 import utils.TrackerMG;
 
 import java.io.ByteArrayInputStream;
@@ -30,6 +31,7 @@ public class ListenerUDP_BACK extends Thread{
                 if(content.getType() == Content.PEER_BACK_FROM_PEER_FOR_PIECE){
                     PiecePointer piecePointer = new PiecePointer(content.getHash(),content.getPieceIndex());
                     piecePointer.write(content.getPiece().getBytes());
+                    PeerMG.getInstance().getHashToStatusOfSingleFile().get(content.getHash()).addPiece(content.getPieceIndex());
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);

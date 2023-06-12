@@ -128,10 +128,7 @@ public class StatusOfSingleFile {
     }
 
 
-
-
-
-
-
-
+    public void addPiece(int pieceIndex) {
+        pieceStatus[pieceIndex] = true;
+    }
 }

@@ -33,6 +33,7 @@ public class ListenerTCP_ASK extends Thread{
                     backContent.setPeerStatus(statusOfTotalFile);
                     objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
                     objectOutputStream.writeObject(backContent);
+                    objectOutputStream.flush();
                 }
             }
         } catch ( IOException e) {

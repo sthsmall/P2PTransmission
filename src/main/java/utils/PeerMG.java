@@ -8,7 +8,7 @@ import service.Peer.page.Edit;
 import service.Peer.page.Home;
 
 import service.Peer.Model.PeerInfo;
-import service.Peer.TorrentFileTransmissionThread;
+import service.Peer.FileTransmission.ASK.SendTorrentFileToTracker;
 import domain.Torrent;
 import domain.TorrentFile;
 import service.Peer.page.Login;
@@ -217,7 +217,7 @@ public class PeerMG {
 
     //发送种子文件
     private boolean SendTorrent(File torrent) {
-        new TorrentFileTransmissionThread(torrent).start();
+        new SendTorrentFileToTracker(torrent).start();
         return true;
     }
 
