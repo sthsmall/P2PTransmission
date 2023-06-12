@@ -90,7 +90,6 @@ public class Login extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-
 		EventQueue.invokeLater(() -> {
 			try {
 				Login login = PeerMG.getInstance().getLogin();

@@ -23,13 +23,14 @@ public class Content {
 
     public static final  int PEER_ASK_FOR_TRACKER_PEER_INFO = 0;
     public static final  int PEER_ASK_FOR_PEER_STATUS_INFO = 1;
-
+    //UDP
     public static final int PEER_ASK_FOR_PEER_FOR_PIECE = 2;
 
-    public static final int TRACKER_ASK_FOR_PEER_INFO = 3;
+    //public static final int TRACKER_ASK_FOR_PEER_INFO = 3;
     public static final int PEER_BACK_FROM_PEER_FOR_PIECE = 4;
 
     public static final int PEER_ASK_TRACK_ONLINE = 6;
+
     public static final int PEER_SEND_TORRENT_FILE = 7;
     public Content(int type, String hash) {
         this.type = type;

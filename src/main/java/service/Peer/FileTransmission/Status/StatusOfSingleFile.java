@@ -107,6 +107,9 @@ public class StatusOfSingleFile {
         return hashToAllPiece;
     }
 
+
+
+
     //递归遍历StatusOfSingleFile，将其转化为HashMap<String, StatusOfSingleFile>，其中String为
     // 非文件夹的文件的相对路径，StatusOfSingleFile为该文件的分片状态
     public void  recursion(StatusOfSingleFile statusOfSingleFile){
@@ -122,6 +125,55 @@ public class StatusOfSingleFile {
             }
         }
     }
+
+    public float getAllPercentage(){
+        int allPiece = 0;
+        int finishedPiece = 0;
+        for (StatusOfSingleFile child : children){
+            if(child.isDirectory){
+                allPiece += child.getAllPiece();
+                finishedPiece += child.getFinishedPiece();
+            }else{
+                allPiece += child.pieceStatus.length;
+                for(int i = 0; i < child.pieceStatus.length; i++){
+                    if(child.pieceStatus[i] == true){
+                        finishedPiece++;
+                    }
+                }
+            }
+        }
+        return (float)finishedPiece / allPiece;
+    }
+
+    private int getFinishedPiece() {
+        int finishedPiece = 0;
+        for (StatusOfSingleFile child : children){
+            if(child.isDirectory){
+                child.getFinishedPiece();
+            }else{
+                finishedPiece += child.pieceStatus.length;
+                for(int i = 0; i < child.pieceStatus.length; i++){
+                    if(child.pieceStatus[i] == true){
+                        finishedPiece++;
+                    }
+                }
+            }
+        }
+        return finishedPiece;
+    }
+
+    private int getAllPiece() {
+        int allPiece = 0;
+        for (StatusOfSingleFile child : children){
+            if(child.isDirectory){
+                child.getAllPiece();
+            }else{
+                allPiece += child.pieceStatus.length;
+            }
+        }
+        return allPiece;
+    }
+
 
     public void setPieceStatus(int index, boolean status){
         pieceStatus[index] = status;

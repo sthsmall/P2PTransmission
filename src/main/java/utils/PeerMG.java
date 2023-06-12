@@ -26,7 +26,7 @@ public class PeerMG {
     public final static int FilePort = 9999;
     public static int FilePieceSize = 1024 * 1024;
     public static int PieceReceivePort = 8899;
-    private String TrackerIP = "127.0.0.1";
+    private String TrackerIP = "192.168.231.75";
     private HashMap<String, HashSet<PeerInfo>> hashToPeerInfo = new HashMap<>();
     private final HashMap<String, HashMap<String,Integer>> hashALLToTotalFileStatus = new HashMap<>();
     private final HashMap<String, Boolean> hashToTotalFileStatus = new HashMap<>();
