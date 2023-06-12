@@ -42,6 +42,7 @@ public class Home extends JFrame {
     private JMenuItem downloadTorrent;
     private JMenuItem linkDownload;
     private JScrollPane scrollPane;
+    private JList list;
     private DefaultListModel<String> defaultListModel;
     private String folderPath = "./src/Download";
 
@@ -105,7 +106,7 @@ public class Home extends JFrame {
         contentPane.add(scrollPane);
 
         defaultListModel = new DefaultListModel<String>();
-        JList list = new JList(defaultListModel);
+         list = new JList(defaultListModel);
         scrollPane.setViewportView(list);
 
 
@@ -123,7 +124,8 @@ public class Home extends JFrame {
         //删除
         Delete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                String s = (String) list.getSelectedValue();
+                defaultListModel.removeElement(s);
             }
         });
 
@@ -143,6 +145,7 @@ public class Home extends JFrame {
         panel_1.add(Stop);
         Stop.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
             }
         });
         Dl.addActionListener(new ActionListener() {
@@ -253,7 +256,7 @@ public class Home extends JFrame {
     }
 
     public void addOneDownloadTask(String name) {
-        String tname = "name";
+        String tname = name + "  " + "0%";
         defaultListModel.addElement(tname);
     }
 
