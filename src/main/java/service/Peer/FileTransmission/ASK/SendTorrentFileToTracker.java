@@ -3,10 +3,7 @@ package service.Peer.FileTransmission.ASK;
 import utils.PeerMG;
 import domain.Torrent;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
 
 public class SendTorrentFileToTracker extends Thread{
@@ -27,8 +24,16 @@ public class SendTorrentFileToTracker extends Thread{
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
             objectOutputStream.writeObject(content);
             objectOutputStream.flush();
-            socket.close();
             System.out.println("发送成功");
+            ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+            Content Backcontent = (Content)objectInputStream.readObject();
+            if(Backcontent.getType() == Content.OK){
+                System.out.println("接收成功");
+            }else {
+                System.out.println("接收失败");
+            }
+
+            socket.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {

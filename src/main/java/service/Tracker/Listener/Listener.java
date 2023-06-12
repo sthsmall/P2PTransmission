@@ -1,5 +1,6 @@
 package service.Tracker.Listener;
 
+import domain.Torrent;
 import service.Peer.FileTransmission.ASK.Content;
 import service.Peer.Model.PeerInfo;
 import utils.LargeFileHashCalculator;
@@ -21,6 +22,7 @@ public class Listener extends Thread{
             while(!Thread.interrupted()) {
                 Socket socket = serverSocket.accept();
                 objectInputStream = new ObjectInputStream(socket.getInputStream());
+                objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
                 Content content = (Content) objectInputStream.readObject();
                 if(content.getType() == Content.PEER_ASK_FOR_TRACKER_PEER_INFO){
                     Content backContent = new Content(Content.PEER_BACK_FROM_TRACKER_PEER_INFO);
@@ -34,14 +36,22 @@ public class Listener extends Thread{
                 } else if (content.getType() == Content.PEER_ASK_TRACK_FOR_TORRENT_BY_HASH) {
                     
                 } else if (content.getType() == Content.PEER_SEND_TORRENT_FILE) {
-                    objectInputStream = new ObjectInputStream(socket.getInputStream());
-                    File file = new File("temp");
+
+                    File file = new File("./src/TrackerTorrent/temp");
+                    file.createNewFile();
+
+                    Torrent torrent = content.getTorrent();
+
                     ObjectOutputStream objectOutputStream2 = new ObjectOutputStream(new FileOutputStream(file));
-                    objectOutputStream2.writeObject(content.getTorrent());
+                    objectOutputStream2.writeObject(torrent);
                     objectOutputStream2.flush();
+
+                    objectOutputStream.writeObject(new Content(Content.OK));
                     String hash = LargeFileHashCalculator.getHash(file);
                     File fileNew = new File(hash + ".torrent");
                     file.renameTo(fileNew);
+
+
                     System.out.println("接收成功");
                 }
             }
