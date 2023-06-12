@@ -14,6 +14,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuKeyListener;
+import javax.swing.event.MenuKeyEvent;
 
 //首页面
 
@@ -30,6 +32,8 @@ public class Home extends JFrame {
     private JMenuItem makeTorrent;
     private JMenuItem downloadTorrent;
     private JMenuItem linkDownload;
+    private JScrollPane scrollPane;
+    private JTextArea recordArea;
 
     public JLabel getScore() {
         return Score;
@@ -83,10 +87,6 @@ public class Home extends JFrame {
         lblNewLabel_1.setBounds(26, 370, 68, 34);
         contentPane.add(lblNewLabel_1);
 
-        JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(269, 152, 640, 372);
-        contentPane.add(scrollPane);
-
 
         JPanel panel_1 = new JPanel();
         panel_1.setBorder(new TitledBorder(null, "\u5DE5\u5177", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -96,8 +96,9 @@ public class Home extends JFrame {
 
         JButton Delete = new JButton("\u5220\u9664");
         Delete.setFont(new Font("宋体", Font.PLAIN, 12));
-        Delete.setBounds(574, 26, 109, 50);
+        Delete.setBounds(223, 26, 109, 50);
         panel_1.add(Delete);
+        //删除
         Delete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             }
@@ -105,32 +106,17 @@ public class Home extends JFrame {
 
         JButton Open = new JButton("\u6253\u5F00\u76EE\u5F55");
         Open.setFont(new Font("宋体", Font.PLAIN, 12));
-        Open.setBounds(681, 26, 109, 50);
+        Open.setBounds(330, 26, 109, 50);
         panel_1.add(Open);
-
-        JButton mTorrent = new JButton("\u5236\u4F5Ctorrent");
-        mTorrent.setFont(new Font("宋体", Font.PLAIN, 12));
-        mTorrent.setBounds(10, 26, 127, 50);
-        panel_1.add(mTorrent);
-
-        JButton dLfTorrent = new JButton("torrent\u4E0B\u8F7D");
-        dLfTorrent.setFont(new Font("宋体", Font.PLAIN, 12));
-        dLfTorrent.setBounds(129, 26, 127, 50);
-        panel_1.add(dLfTorrent);
-
-        JButton dLflink = new JButton("\u78C1\u94FE\u4E0B\u8F7D");
-        dLflink.setFont(new Font("宋体", Font.PLAIN, 12));
-        dLflink.setBounds(254, 26, 109, 50);
-        panel_1.add(dLflink);
 
         JButton Dl = new JButton("\u5F00\u59CB\u4E0B\u8F7D");
         Dl.setFont(new Font("宋体", Font.PLAIN, 12));
-        Dl.setBounds(361, 26, 109, 50);
+        Dl.setBounds(10, 26, 109, 50);
         panel_1.add(Dl);
 
         JButton Stop = new JButton("\u505C\u6B62\u4E0B\u8F7D");
         Stop.setFont(new Font("宋体", Font.PLAIN, 12));
-        Stop.setBounds(468, 26, 109, 50);
+        Stop.setBounds(117, 26, 109, 50);
         panel_1.add(Stop);
         Stop.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -142,11 +128,7 @@ public class Home extends JFrame {
 
             }
         });
-        dLfTorrent.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
-        mTorrent.addActionListener(new MTorrentActionListener());
+        //打开目录
         Open.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -203,13 +185,20 @@ public class Home extends JFrame {
         file.add(makeTorrent);
 
         downloadTorrent = new JMenuItem("torrent下载");
+        downloadTorrent.addActionListener(new DownloadTorrentActionListener());
         file.add(downloadTorrent);
 
         linkDownload = new JMenuItem("磁链下载");
+        linkDownload.addActionListener(new LinkDownloadActionListener());
         file.add(linkDownload);
 
         Help1 = new JMenu("帮助");
+
         menuBar.add(Help1);
+
+        JMenuItem help = new JMenuItem("帮助");
+        help.addActionListener(new HelpActionListener());
+        Help1.add(help);
 
         JMenu relation = new JMenu("相关");
 
@@ -224,12 +213,16 @@ public class Home extends JFrame {
         JMenuItem team = new JMenuItem("团队");
         team.addActionListener(new TeamActionListener());
         relation.add(team);
+
+        scrollPane = new JScrollPane();
+        scrollPane.setBounds(285, 166, 649, 354);
+        contentPane.add(scrollPane);
+
+        recordArea = new JTextArea();
+        scrollPane.setViewportView(recordArea);
     }
 
-    private class MTorrentActionListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-        }
-    }
+
 
     //退出按钮
     private class ExitActionListener implements ActionListener {
@@ -260,26 +253,23 @@ public class Home extends JFrame {
     //团队介绍
     private class TeamActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-
             JDialog frame = new JDialog();//构造一个新的JFrame，作为新窗口。
-            frame.setSize(500, 500);
+            frame.setSize(500, 600);
             //窗口居中显示
-            setLocationRelativeTo(contentPane);
+            frame.setLocationRelativeTo(null);
             JTextArea ja = new JTextArea();// 注意类名别写错了。
-            ja.setBounds(500, 500, 500, 500);
+            ja.setEditable(false);
+            ja.setBounds(500, 500, 500, 700);
             ja.setLineWrap(true);        //激活自动换行功能
             ja.setWrapStyleWord(true);            // 激活断行不断字功能
             frame.getContentPane().add(ja);
             ja.setText("制作人员：\r\n"
-                    + "叶兆威：\r\n"
-                    + "时泽中：\r\n"
-                    + "李茂源:");
+                    + "叶兆威\r\n"
+                    + "时泽中\r\n"
+                    + "李茂源");
             // 参数 APPLICATION_MODAL：阻塞同一 Java 应用程序中的所有顶层窗口（它自己的子层次
             frame.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);    // 设置模式类型。
             frame.setVisible(true);
-
-
-
         }
     }
 
@@ -287,10 +277,11 @@ public class Home extends JFrame {
     private class ProjectActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             JDialog frame = new JDialog();//构造一个新的JFrame，作为新窗口。
-            frame.setSize(500, 500);
-
+            frame.setSize(500, 600);
+            frame.setLocationRelativeTo(null);
             JTextArea ja = new JTextArea();// 注意类名别写错了。
-            ja.setBounds(500, 500, 500, 500);
+            ja.setEditable(false);
+            ja.setBounds(500, 500, 500, 700);
             ja.setLineWrap(true);        //激活自动换行功能
             ja.setWrapStyleWord(true);            // 激活断行不断字功能
             frame.getContentPane().add(ja);
@@ -310,11 +301,55 @@ public class Home extends JFrame {
                     + "4.对peer节点建立链接，根据torrent文件进行下载\r\n"
                     + "");
 
-
             // 参数 APPLICATION_MODAL：阻塞同一 Java 应用程序中的所有顶层窗口（它自己的子层次
             frame.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);    // 设置模式类型。
+
             frame.setVisible(true);
         }
     }
+    //帮助按钮
+    private class HelpActionListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            JDialog frame = new JDialog();//构造一个新的JFrame，作为新窗口。
+            frame.setSize(500, 600);
+            frame.setLocationRelativeTo(null);
+            JTextArea ja = new JTextArea();// 注意类名别写错了。
+            ja.setEditable(false);
+            ja.setBounds(500, 500, 500, 700);
+            ja.setLineWrap(true);        //激活自动换行功能
+            ja.setWrapStyleWord(true);            // 激活断行不断字功能
+            frame.getContentPane().add(ja);
+            ja.setText("首先介绍一下该系统中的名词\r\n"
+                    + "1.tracker：p2p网络中的服务节点，对P2P网络文件资源进行调配。\r\n"
+                    + "2.torrent文件（种子文件）：种子文件中存有分享文件的元信息，包括大小，名称，和唯一的哈希值。\r\n"
+                    + "3.磁力链接：包含了tracker的地址和tracker中相应的种子文件的哈希值。\r\n"
+                    + "4.peer：有共同torrent文件的节点。\r\n"
+                    + "\r\n"
+                    + "\r\n"
+                    + "//为提高性能，节点的文件将被分割成块，相应的块使用多线程进行传输，并且不同节点之间会尽量保证优先下载不同的分块以此来保证性能。//(不一定有)\r\n"
+                    + "\r\n"
+                    + "系统共享的原理如下\r\n"
+                    + "1.先有分享者发布torrent文件到tracker服务器\r\n"
+                    + "2.tracker服务器维护一个torrent文件和磁力链接的映射\r\n"
+                    + "3.由下载者向tracker服务器发送磁力链接，返回peer节点信息和torrent文件\r\n"
+                    + "4.对peer节点建立链接，根据torrent文件进行下载\r\n"
+                    + "");
 
+            // 参数 APPLICATION_MODAL：阻塞同一 Java 应用程序中的所有顶层窗口（它自己的子层次
+            frame.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);    // 设置模式类型。
+
+            frame.setVisible(true);
+
+        }
+    }
+    //下载torrent
+    private class DownloadTorrentActionListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+        }
+    }
+    //磁链下载
+    private class LinkDownloadActionListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+        }
+    }
 }
