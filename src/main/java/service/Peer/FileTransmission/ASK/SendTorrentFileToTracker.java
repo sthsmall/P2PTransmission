@@ -19,16 +19,16 @@ public class SendTorrentFileToTracker extends Thread{
     public void run() {
         try {
             Torrent torrent = Torrent.createTorrentFromFile(file);
-            Socket socket = new Socket(torrent.getDownloadUrl(), PeerMG.FilePort);
+            Socket socket = new Socket(PeerMG.getInstance().getTrackerIP(), PeerMG.TrackerPort);
             System.out.println("连接成功");
+            Content content = new Content(Content.PEER_SEND_TORRENT_FILE);
+            content.setTorrent(torrent);
             OutputStream outputStream = socket.getOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-            objectOutputStream.writeObject(torrent);
+            objectOutputStream.writeObject(content);
             objectOutputStream.flush();
             socket.close();
             System.out.println("发送成功");
-
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {

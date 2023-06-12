@@ -23,11 +23,12 @@ import java.util.*;
 public class PeerMG {
 
     public final static int InfoPort = 5204;
-    public final static int FilePort = 9999;
+    public final static int FilePort = 49999;
     public final static int TrackerTorrentPort = 1234;
+    public final static int TrackerPort = 49999;
     public static int FilePieceSize = 1024 * 1024;
     public static int PieceReceivePort = 8899;
-    private String TrackerIP = "192.168.231.75";
+    private String TrackerIP = "pc.henu.life";
     private HashMap<String, HashSet<PeerInfo>> hashToPeerInfo = new HashMap<>();
     private final HashMap<String, HashMap<String,Integer>> hashALLToTotalFileStatus = new HashMap<>();
     private final HashMap<String, Boolean> hashToTotalFileStatus = new HashMap<>();
@@ -149,10 +150,10 @@ public class PeerMG {
     }
 
     //从文件制作种子文件
-    public boolean MakeTorrentFromFile(ArrayList<File> files) {
+    public boolean MakeTorrentFromFile(ArrayList<File> files,String name) {
 
         Torrent torrent = new Torrent();
-
+        torrent.setName(name);
         ArrayList<TorrentFile> torrentFiles = new ArrayList<TorrentFile>();
 
 
@@ -182,7 +183,7 @@ public class PeerMG {
     public File StorageTorrent(Torrent torrent) {
         File f = null;
         try {
-            File file = new File("./src/temp.torrent");
+            File file = new File("./src/Torrents/temp.torrent");
 
             //利用对象输出流，将种子对象写入文件
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
@@ -191,7 +192,7 @@ public class PeerMG {
 
             //获取给文件的哈希值(该哈希值为文件的唯一标识)
             String hash = LargeFileHashCalculator.getHash(file);
-            File fileNew = new File("./src/" + hash + ".torrent");
+            File fileNew = new File("./src/Torrents/" + hash + ".torrent");
             //将文件重命名
             file.renameTo(fileNew);
             f = fileNew;
@@ -394,7 +395,7 @@ public class PeerMG {
         Torrent torrent = PeerMG.getInstance().getHashToTorrent().get(hash);
         File file = PeerMG.getInstance().getHashToFile().get(hash);
         DLTaskOfTorrentFile dll = new DLTaskOfTorrentFile(file);
-        DLofTorrentFile.getInstance().addTask(dll);
+        DLofTorrentFile.getInstance().addAndStartTask(dll);
         getHome().addOneDownloadTask(torrent.getName());
     }
 

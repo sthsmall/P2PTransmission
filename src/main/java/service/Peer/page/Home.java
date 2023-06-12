@@ -1,5 +1,6 @@
 package service.Peer.page;
 
+import domain.Torrent;
 import utils.PeerMG;
 
 import java.awt.*;
@@ -8,13 +9,17 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.URL;
 import javax.swing.border.TitledBorder;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.event.MenuListener;
 import javax.swing.event.MenuEvent;
@@ -291,24 +296,25 @@ public class Home extends JFrame {
         }
     }
 
-    //通过Torrent下载
+    //制作
     private class MakeTorrentActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-
-
             JFileChooser fileChooser = new JFileChooser();
 
             // 设置文件选择器的初始目录
-            fileChooser.setCurrentDirectory(new File(System.getProperty("./src/Torrent")));
-
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+            fileChooser.setMultiSelectionEnabled(true);
             // 显示文件选择器对话框
             int result = fileChooser.showOpenDialog(Home.this);
 
             if (result == JFileChooser.APPROVE_OPTION) {
                 // 用户选择了一个文件
-                File selectedFile = fileChooser.getSelectedFile();
-                System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-                PeerMG.getInstance().AddDownLoad(selectedFile.getName());
+                File[] selectedFile = fileChooser.getSelectedFiles();
+                ArrayList<File> files = new ArrayList<>(Arrays.asList(selectedFile));
+                PeerMG.getInstance().MakeTorrentFromFile(files,"随机");
+                for (File file : selectedFile) {
+                    System.out.println("Selected file: " + file.getAbsolutePath());
+                }
             }
         }
     }
@@ -411,22 +417,33 @@ public class Home extends JFrame {
 
         }
     }
-    //下载torrent
+    //通过Torrent文件下载
     private class DownloadTorrentActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
+
+            System.out.println("makeTorrent");
             JFileChooser fileChooser = new JFileChooser();
 
             // 设置文件选择器的初始目录
-            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-            fileChooser.setMultiSelectionEnabled(true);
+            fileChooser.setCurrentDirectory(new File("./src/Torrents"));
+
             // 显示文件选择器对话框
             int result = fileChooser.showOpenDialog(Home.this);
 
             if (result == JFileChooser.APPROVE_OPTION) {
                 // 用户选择了一个文件
-                File[] selectedFile = fileChooser.getSelectedFiles();
-                for (File file : selectedFile) {
-                    System.out.println("Selected file: " + file.getAbsolutePath());
+                File selectedFile = fileChooser.getSelectedFile();
+                System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+                PeerMG.getInstance().getHashToFile().put(selectedFile.getName(), selectedFile);
+                try {
+                    ObjectInputStream ois = new ObjectInputStream(new FileInputStream(selectedFile));
+
+                    PeerMG.getInstance().getHashToTorrent().put(selectedFile.getName(), (Torrent) ois.readObject());
+                    PeerMG.getInstance().AddDownLoad(selectedFile.getName());
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                } catch (ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
                 }
             }
         }

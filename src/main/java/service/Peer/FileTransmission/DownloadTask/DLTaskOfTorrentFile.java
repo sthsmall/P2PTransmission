@@ -37,13 +37,23 @@ public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
         }
         //创建文件状态
         StatusOfSingleFile fileStruct = torrent.getFileStruct();
-
+        File file = new File("./src/Download/"+torrent.getName());
+        file.mkdir();
+        File tempFile = null;
         //遍历文件状态将每个文件状态加入到总文件状态中
         for(StatusOfSingleFile s : fileStruct.getChildren()){
             for(StatusOfSingleFile ss : s.getChildren()){
                 if(ss.isDirectory()){
+                    tempFile = new File("./src/Download/"+torrent.getName()+"/"+ss.getPath());
+                    tempFile.mkdir();
                     cire(ss);
                 }else {
+                    tempFile = new File("./src/Download/"+torrent.getName()+"/"+ss.getPath());
+                    try {
+                        tempFile.createNewFile();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     PeerMG.getInstance().getHashToStatusOfSingleFile().put(ss.getPath(),ss);
                 }
             }
@@ -62,10 +72,13 @@ public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
             try {
                 Thread.sleep(1000);
                 Queue<String> Piece = PeerMG.getInstance().getHashToDownloadList().get(hash);
-
+                if(Piece == null){
+                    Thread.sleep(1000);
+                    continue;
+                }
                 DLofPiece dlOfPiece = null;
-
                 for(String path: Piece){
+                    Thread.sleep(1000);
                     dlOfPiece = new DLofPiece();
                     dlOfPiece.addAndStartTask(new DLTaskOfPiece(hash, path));
                 }
@@ -97,6 +110,8 @@ public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
     private void cire(StatusOfSingleFile statusOfSingleFile){
         for (StatusOfSingleFile s : statusOfSingleFile.getChildren()){
             if(s.isDirectory()){
+                File file = new File("./src/Download/"+torrent.getName()+"/"+s.getPath());
+                file.mkdir();
                 cire(s);
             }else {
                 PeerMG.getInstance().getHashToStatusOfSingleFile().put(s.getPath(),s);
