@@ -2,9 +2,10 @@ package service.Peer.FileTransmission.Status;
 
 import utils.PeerMG;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class StatusOfTotalFile {
+public class StatusOfTotalFile implements Serializable {
     int len = PeerMG.FilePieceSize;
     HashMap<String,StatusOfSingleFile> hashToStatusOfSingleFile;
 

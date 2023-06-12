@@ -1,9 +1,10 @@
 package service.Peer.Model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 //Peer的信息类
-public class PeerInfo {
+public class PeerInfo implements Serializable {
     String ip;
 
     @Override

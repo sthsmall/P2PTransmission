@@ -14,17 +14,14 @@ public class ASKTrackerInfo extends Thread{
     @Override
     public void run() {
         Content content;
-        try {
-            socket =  new Socket(PeerMG.getInstance().getTrackerIP(), PeerMG.TrackerPort);
-            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-            objectInputStream = new ObjectInputStream(socket.getInputStream());
-             content = new Content(Content.PEER_ASK_TRACKER_SELF_INFO);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
         while(!Thread.interrupted()){
             try {
-                Thread.sleep(1000);
+                socket =  new Socket(PeerMG.getInstance().getTrackerIP(), PeerMG.TrackerPort);
+                objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+                objectInputStream = new ObjectInputStream(socket.getInputStream());
+                content = new Content(Content.PEER_ASK_TRACKER_SELF_INFO);
+                Thread.sleep(3000);
                 content.setMyTorrents(PeerMG.getInstance().getTorrents());
                 objectOutputStream.writeObject(content);
                 Content backContent = (Content) objectInputStream.readObject();
