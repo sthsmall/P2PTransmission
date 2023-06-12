@@ -138,7 +138,7 @@ public class Register extends JFrame {
         contentPane.add(M2);
         M2.setColumns(10);
 
-        userWarning = new JLabel("  ");
+        userWarning = new JLabel("");
         userWarning.setForeground(Color.RED);
         userWarning.setBounds(171, 148, 157, 24);
         contentPane.add(userWarning);
@@ -146,7 +146,7 @@ public class Register extends JFrame {
         switichLogin = new JLabel("已有账号？登录");
         switichLogin.addMouseListener(new SwitichLoginMouseListener());
         switichLogin.setForeground(Color.RED);
-        switichLogin.setBounds(476, 400, 169, 24);
+        switichLogin.setBounds(479, 417, 169, 24);
         contentPane.add(switichLogin);
 
         passwordWarning = new JLabel("");
@@ -270,7 +270,7 @@ public class Register extends JFrame {
                 return;
             }
             //判断两次密码是否一致
-            if (PeerMG.getInstance().checkPassword(password, password2, true) && "".equals(userWarning.getText())) {
+            if (PeerMG.getInstance().checkPassword(password, password2, true)) {
                 //输入一致，提交注册
                 int res = JOptionPane.showConfirmDialog(null, "是否确认提交注册", "确认框",
                         JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
