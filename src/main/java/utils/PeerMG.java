@@ -1,18 +1,18 @@
 package utils;
 
 import lombok.Data;
+import service.Peer.FileTransmission.ASK.ASKTrackerForTorrent;
+import service.Peer.FileTransmission.DownloadTask.DLTaskOfTorrentFile;
+import service.Peer.FileTransmission.Downloader.DLofTorrentFile;
 import service.Peer.FileTransmission.Status.StatusOfSingleFile;
 import service.Peer.FileTransmission.Status.StatusOfTotalFile;
 import service.Peer.Sender.AccessInfoToTrackerSender;
-import service.Peer.page.Edit;
-import service.Peer.page.Home;
+import service.Peer.page.*;
 
 import service.Peer.Model.PeerInfo;
 import service.Peer.FileTransmission.ASK.SendTorrentFileToTracker;
 import domain.Torrent;
 import domain.TorrentFile;
-import service.Peer.page.Login;
-import service.Peer.page.Register;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,6 +24,7 @@ public class PeerMG {
 
     public final static int InfoPort = 5204;
     public final static int FilePort = 9999;
+    public final static int TrackerTorrentPort = 1234;
     public static int FilePieceSize = 1024 * 1024;
     public static int PieceReceivePort = 8899;
     private String TrackerIP = "192.168.231.75";
@@ -108,6 +109,7 @@ public class PeerMG {
     //用户信息更改界面
     private final Edit edit = new Edit();
 
+    private final Link link = new Link();
     private final int LOGIN = 0;
     private final int REGISTER = 1;
     private final int HOME = 2;
@@ -132,6 +134,10 @@ public class PeerMG {
 
     public Edit getEdit() {
         return edit;
+    }
+
+    public Link getLink() {
+        return link;
     }
 
     public String getTrackerIp() {
@@ -173,7 +179,7 @@ public class PeerMG {
 
 
     //将种子对象写入文件
-    private File StorageTorrent(Torrent torrent) {
+    public File StorageTorrent(Torrent torrent) {
         File f = null;
         try {
             File file = new File("./src/temp.torrent");
@@ -376,4 +382,23 @@ public class PeerMG {
     }
 
 
+    public void closeLink() {
+        link.setVisible(false);
+    }
+
+    public void openLink() {
+        link.setVisible(true);
+    }
+
+    public void AddDownLoad(String hash){
+        Torrent torrent = PeerMG.getInstance().getHashToTorrent().get(hash);
+        File file = PeerMG.getInstance().getHashToFile().get(hash);
+        DLTaskOfTorrentFile dll = new DLTaskOfTorrentFile(file);
+        DLofTorrentFile.getInstance().addTask(dll);
+        getHome().addOneDownloadTask(torrent.getName());
+    }
+
+    public void addDownloadTorrent(Torrent torrent) {
+
+    }
 }

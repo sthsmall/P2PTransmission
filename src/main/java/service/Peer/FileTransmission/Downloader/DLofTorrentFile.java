@@ -6,8 +6,13 @@ import service.Peer.FileTransmission.Status.StatusOfSingleFile;
 import java.util.ArrayList;
 
 public class DLofTorrentFile implements Downloader{
+    //使用单例模式
+    private static DLofTorrentFile instance = new DLofTorrentFile();
+    private DLofTorrentFile(){}
+    public static DLofTorrentFile getInstance(){
+        return instance;
+    }
     ArrayList<DownloadTask> downloadTasks = new ArrayList<>();
-
     //StatusOfSingleFile statusOfSingleFile = new StatusOfSingleFile();
     @Override
     public void addTask(DownloadTask task) {

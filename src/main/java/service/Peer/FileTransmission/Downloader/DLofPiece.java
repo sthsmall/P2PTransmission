@@ -8,6 +8,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DLofPiece implements Downloader{
+//使用单例模式
+    private static DLofPiece instance = new DLofPiece();
+    public DLofPiece(){}
+    public static DLofPiece getInstance(){
+        return instance;
+    }
+
     ArrayList<DownloadTask> downloadTasks = new ArrayList<>();
 
 

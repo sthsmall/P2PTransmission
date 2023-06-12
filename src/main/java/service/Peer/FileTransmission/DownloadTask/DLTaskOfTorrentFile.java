@@ -10,25 +10,48 @@ import service.Peer.FileTransmission.Status.StatusOfTotalFile;
 import utils.LargeFileHashCalculator;
 import utils.PeerMG;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.*;
 
 public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
     File file;
     String hash;
-
+    Torrent torrent;
 
     public DLTaskOfTorrentFile(File file) {
         this.file = file;
         this.hash = file.getName();
+
     }
     @Override
     public void run() {
         ArrayList<DLofPiece> dlOfPieces = new ArrayList<>();
+        try {
+            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file));
+            this.torrent = (Torrent) objectInputStream.readObject();
+            PeerMG.getInstance().getHashToTorrent().put(hash,torrent);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        //创建文件状态
+        StatusOfSingleFile fileStruct = torrent.getFileStruct();
 
+        //遍历文件状态将每个文件状态加入到总文件状态中
+        for(StatusOfSingleFile s : fileStruct.getChildren()){
+            for(StatusOfSingleFile ss : s.getChildren()){
+                if(ss.isDirectory()){
+                    cire(ss);
+                }else {
+                    PeerMG.getInstance().getHashToStatusOfSingleFile().put(ss.getPath(),ss);
+                }
+            }
+        }
 
+        StatusOfTotalFile statusOfTotalFile = new StatusOfTotalFile();
+        statusOfTotalFile.setFileStruct(fileStruct);
+        PeerMG.getInstance().getHashToStatusOfTotalFile().put(file.getName(),statusOfTotalFile);
 
         //创建心跳线程
         ASKTrackerForPeerInfoer askTrackerForPeerInfoer = new ASKTrackerForPeerInfoer(file);
@@ -71,5 +94,13 @@ public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
     }
 
     //递归Torrent文件结构，将文件路径和状态对应存入HashMap
-
+    private void cire(StatusOfSingleFile statusOfSingleFile){
+        for (StatusOfSingleFile s : statusOfSingleFile.getChildren()){
+            if(s.isDirectory()){
+                cire(s);
+            }else {
+                PeerMG.getInstance().getHashToStatusOfSingleFile().put(s.getPath(),s);
+            }
+        }
+    }
 }

@@ -8,11 +8,13 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.net.URL;
 import javax.swing.border.TitledBorder;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.time.Period;
 
 import javax.swing.event.MenuListener;
 import javax.swing.event.MenuEvent;
@@ -36,6 +38,7 @@ public class Home extends JFrame {
     private JMenuItem linkDownload;
     private JScrollPane scrollPane;
     private DefaultListModel<String> defaultListModel;
+    private String folderPath = "./src/Download";
 
     public JLabel getScore() {
         return Score;
@@ -114,6 +117,7 @@ public class Home extends JFrame {
         //删除
         Delete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
             }
         });
 
@@ -145,8 +149,22 @@ public class Home extends JFrame {
         Open.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                OpenExplorer frame = new OpenExplorer();
-                frame.setVisible(true);
+                if (Desktop.isDesktopSupported()) {
+                    Desktop desktop = Desktop.getDesktop();
+                    File folder = new File(folderPath);
+
+                    if (folder.exists()) {
+                        try {
+                            desktop.open(folder);
+                        } catch ( IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    } else {
+                        System.out.println("Folder does not exist: " + folderPath);
+                    }
+                } else {
+                    System.out.println("Desktop is not supported.");
+                }
 
 
             }
@@ -228,6 +246,11 @@ public class Home extends JFrame {
         relation.add(team);
     }
 
+    public void addOneDownloadTask(String name) {
+        String tname = "name";
+        defaultListModel.addElement(tname);
+    }
+
     private class MTorrentActionListener implements ActionListener {
 
         @Override
@@ -268,7 +291,7 @@ public class Home extends JFrame {
         }
     }
 
-    //制作torrent
+    //通过Torrent下载
     private class MakeTorrentActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
 
@@ -276,7 +299,7 @@ public class Home extends JFrame {
             JFileChooser fileChooser = new JFileChooser();
 
             // 设置文件选择器的初始目录
-            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+            fileChooser.setCurrentDirectory(new File(System.getProperty("./src/Torrent")));
 
             // 显示文件选择器对话框
             int result = fileChooser.showOpenDialog(Home.this);
@@ -285,9 +308,8 @@ public class Home extends JFrame {
                 // 用户选择了一个文件
                 File selectedFile = fileChooser.getSelectedFile();
                 System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+                PeerMG.getInstance().AddDownLoad(selectedFile.getName());
             }
-
-
         }
     }
 
@@ -396,14 +418,16 @@ public class Home extends JFrame {
 
             // 设置文件选择器的初始目录
             fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-
+            fileChooser.setMultiSelectionEnabled(true);
             // 显示文件选择器对话框
             int result = fileChooser.showOpenDialog(Home.this);
 
             if (result == JFileChooser.APPROVE_OPTION) {
                 // 用户选择了一个文件
-                File selectedFile = fileChooser.getSelectedFile();
-                System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+                File[] selectedFile = fileChooser.getSelectedFiles();
+                for (File file : selectedFile) {
+                    System.out.println("Selected file: " + file.getAbsolutePath());
+                }
             }
         }
     }
@@ -411,19 +435,7 @@ public class Home extends JFrame {
     //磁链下载
     private class LinkDownloadActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            JFileChooser fileChooser = new JFileChooser();
-
-            // 设置文件选择器的初始目录
-            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-
-            // 显示文件选择器对话框
-            int result = fileChooser.showOpenDialog(Home.this);
-
-            if (result == JFileChooser.APPROVE_OPTION) {
-                // 用户选择了一个文件
-                File selectedFile = fileChooser.getSelectedFile();
-                System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-            }
+            PeerMG.getInstance().openLink();
         }
     }
 }
