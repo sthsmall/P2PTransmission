@@ -16,6 +16,7 @@ public class Content implements Serializable {
     public static final int PEER_BACK_FROM_TRACKER_PEER_INFO = 8;
     public static final int PEER_ASK_TRACK_FOR_TORRENT_BY_HASH = 9;
     public static final int OK = 10;
+    public static final int PEER_ASK_TRACKER_SELF_INFO = 11;
     int type;
     Torrent torrent;
     String hash;

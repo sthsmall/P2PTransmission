@@ -10,6 +10,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashSet;
 
 public class Listener extends Thread{
     ServerSocket serverSocket;
@@ -60,6 +61,30 @@ public class Listener extends Thread{
 
 
                     System.out.println("接收成功");
+                } else if (content.getType() == Content.PEER_ASK_TRACKER_SELF_INFO) {
+                    HashSet<String> hashSet = content.getMyTorrents();
+                    for (String hash : hashSet) {
+                        HashSet<PeerInfo> peerInfos = TrackerMG.getInstance().getTorrentToIp().get(hash);
+                        if (peerInfos == null) {
+                            peerInfos = new HashSet<>();
+                            TrackerMG.getInstance().getTorrentToIp().put(hash, peerInfos);
+                        }
+                        peerInfos = TrackerMG.getInstance().getTorrentToIp().get(hash);
+                        peerInfos.add(new PeerInfo(socket.getInetAddress().getHostAddress()));
+                    }
+
+                    HashSet<String> ipSet = TrackerMG.getInstance().getIpToTorrent().get(socket.getInetAddress().getHostAddress());
+                    if (ipSet == null) {
+                        ipSet = new HashSet<>();
+                        TrackerMG.getInstance().getIpToTorrent().put(new PeerInfo(socket.getInetAddress().getHostAddress()), ipSet);
+                    }
+                    ipSet = TrackerMG.getInstance().getIpToTorrent().get(socket.getInetAddress().getHostAddress());
+                    ipSet.addAll(hashSet);
+
+                    objectOutputStream.writeObject(new Content(Content.OK));
+                    objectOutputStream.flush();
+
+
                 }
             } catch ( IOException e) {
                 e.printStackTrace();

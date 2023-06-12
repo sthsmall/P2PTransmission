@@ -2,6 +2,7 @@ package utils;
 
 import lombok.Data;
 import service.Peer.FileTransmission.ASK.ASKTrackerForTorrent;
+import service.Peer.FileTransmission.ASK.ASKTrackerInfo;
 import service.Peer.FileTransmission.DownloadTask.DLTaskOfTorrentFile;
 import service.Peer.FileTransmission.Downloader.DLofTorrentFile;
 import service.Peer.FileTransmission.Status.StatusOfSingleFile;
@@ -32,7 +33,7 @@ public class PeerMG {
     private HashMap<String, HashSet<PeerInfo>> hashToPeerInfo = new HashMap<>();
     private final HashMap<String, HashMap<String,Integer>> hashALLToTotalFileStatus = new HashMap<>();
     private final HashMap<String, Boolean> hashToTotalFileStatus = new HashMap<>();
-
+    private HashSet<String> torrents = new HashSet<>();
     private  HashMap<String,Queue<String>> hashToDownloadList = new HashMap<>();
 
     private HashMap<String, Boolean> dd = new HashMap<>();
@@ -401,5 +402,15 @@ public class PeerMG {
 
     public void addDownloadTorrent(Torrent torrent) {
 
+    }
+
+    public void init() {
+        ASKTrackerInfo askTrackerInfo = new ASKTrackerInfo();
+        askTrackerInfo.start();
+
+    }
+
+    public HashSet<String> getTorrents() {
+        return torrents;
     }
 }
