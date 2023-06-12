@@ -45,7 +45,8 @@ public class Listener extends Thread{
                     ObjectOutputStream objectOutputStream2 = new ObjectOutputStream(new FileOutputStream(file));
                     objectOutputStream2.writeObject(torrent);
                     objectOutputStream2.flush();
-
+                    objectOutputStream2.close();
+                    
                     objectOutputStream.writeObject(new Content(Content.OK));
                     String hash = LargeFileHashCalculator.getHash(file);
                     File fileNew = new File(hash + ".torrent");

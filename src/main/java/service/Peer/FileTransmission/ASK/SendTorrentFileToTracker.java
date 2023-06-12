@@ -17,20 +17,20 @@ public class SendTorrentFileToTracker extends Thread{
         try {
             Torrent torrent = Torrent.createTorrentFromFile(file);
             Socket socket = new Socket(PeerMG.getInstance().getTrackerIP(), PeerMG.TrackerPort);
-            System.out.println("连接成功");
+            System.out.println("Connect to Tracker");
             Content content = new Content(Content.PEER_SEND_TORRENT_FILE);
             content.setTorrent(torrent);
             OutputStream outputStream = socket.getOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
             objectOutputStream.writeObject(content);
             objectOutputStream.flush();
-            System.out.println("发送成功");
+
             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
             Content Backcontent = (Content)objectInputStream.readObject();
             if(Backcontent.getType() == Content.OK){
-                System.out.println("接收成功");
+                System.out.println("Success");
             }else {
-                System.out.println("接收失败");
+                System.out.println("Fail");
             }
 
             socket.close();
