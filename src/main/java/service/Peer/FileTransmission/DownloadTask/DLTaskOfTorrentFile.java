@@ -66,8 +66,10 @@ public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
         //创建心跳线程
         ASKTrackerForPeerInfoer askTrackerForPeerInfoer = new ASKTrackerForPeerInfoer(file);
         askTrackerForPeerInfoer.start();
+
         ASKPeerForFileStatuser askPeerForFileStatuser = new ASKPeerForFileStatuser(file);
         askPeerForFileStatuser.start();
+
         while(!Thread.currentThread().isInterrupted()){
             try {
                 Thread.sleep(1000);

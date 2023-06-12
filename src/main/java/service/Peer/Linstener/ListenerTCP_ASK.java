@@ -2,6 +2,7 @@ package service.Peer.Linstener;
 
 import service.Peer.FileTransmission.ASK.Content;
 import service.Peer.FileTransmission.Status.StatusOfTotalFile;
+import service.Peer.Model.PeerInfo;
 import utils.PeerMG;
 import utils.TrackerMG;
 
@@ -10,6 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashSet;
 
 public class ListenerTCP_ASK extends Thread{
     ServerSocket serverSocket;
@@ -33,6 +35,14 @@ public class ListenerTCP_ASK extends Thread{
                     objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
                     objectOutputStream.writeObject(backContent);
                     objectOutputStream.flush();
+                } else if (content.getType() == Content.PEER_BACK_FROM_PEER_STATUS_INFO) {
+                    String hash = content.getHash();
+                    HashSet<PeerInfo> peerInfos = content.getMyPeerInfo();
+                    HashSet<PeerInfo> temp = PeerMG.getInstance().getHashToPeerInfo().get(hash);
+                    if (temp == null) {
+                        PeerMG.getInstance().getHashToPeerInfo().put(hash, new HashSet<>());
+                    }
+                    PeerMG.getInstance().getHashToPeerInfo().get(hash).addAll(peerInfos);
                 }
             }
         } catch ( IOException e) {

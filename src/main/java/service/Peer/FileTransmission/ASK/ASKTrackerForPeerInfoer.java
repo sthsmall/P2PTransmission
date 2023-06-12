@@ -31,21 +31,15 @@ public class ASKTrackerForPeerInfoer extends Thread {
                 objectOutputStream.writeObject(content);
                 objectOutputStream.flush();
                 Thread.sleep(1000);
-                Content backContent = (Content) objectInputStream.readObject();
+                //Content backContent = (Content) objectInputStream.readObject();
 
 
 
-                HashSet<PeerInfo> peerInfos = backContent.myPeerInfo;
-                HashSet<PeerInfo> temp = PeerMG.getInstance().getHashToPeerInfo().get(hash);
 
 
-                if (temp == null) {
-                    PeerMG.getInstance().getHashToPeerInfo().put(hash, new HashSet<>());
-                }
-                PeerMG.getInstance().getHashToPeerInfo().get(hash).addAll(peerInfos);
+
+
             }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (UnknownHostException e) {

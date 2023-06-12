@@ -34,6 +34,7 @@ public class Listener extends Thread{
                 if(content.getType() == Content.PEER_ASK_FOR_TRACKER_PEER_INFO){
                     Content backContent = new Content(Content.PEER_BACK_FROM_TRACKER_PEER_INFO);
                     backContent.setMyPeerInfo(TrackerMG.getInstance().getTorrentToIp().get(content.getHash()));
+                    backContent.setHash(content.getHash());
                     if(backContent.getMyPeerInfo() == null){
                         backContent.setMyPeerInfo(new HashSet<>());
                     }
