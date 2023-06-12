@@ -67,9 +67,9 @@ public class Test1 {
 
     @Test
     public void test3() {
-        boolean a = true;
-        String s = "woshi|"+ a;
-        System.out.println(s.split("\\|")[1]);
+        String a ="";
+        String b = "   ";
+        System.out.println(a.equals(b));
 
 
     }

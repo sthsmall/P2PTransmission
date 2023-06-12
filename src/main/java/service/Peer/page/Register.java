@@ -138,7 +138,7 @@ public class Register extends JFrame {
         contentPane.add(M2);
         M2.setColumns(10);
 
-        userWarning = new JLabel("");
+        userWarning = new JLabel("  ");
         userWarning.setForeground(Color.RED);
         userWarning.setBounds(171, 148, 157, 24);
         contentPane.add(userWarning);
@@ -270,7 +270,7 @@ public class Register extends JFrame {
                 return;
             }
             //判断两次密码是否一致
-            if (PeerMG.getInstance().checkPassword(password, password2, true)) {
+            if (PeerMG.getInstance().checkPassword(password, password2, true) && "".equals(userWarning.getText())) {
                 //输入一致，提交注册
                 int res = JOptionPane.showConfirmDialog(null, "是否确认提交注册", "确认框",
                         JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
