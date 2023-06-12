@@ -406,10 +406,9 @@ public class PeerMG {
     }
 
     public void init() {
-//        ASKTrackerInfo askTrackerInfo = new ASKTrackerInfo();
-//        askTrackerInfo.start();
-        ListenerTCP_ASK listenerTCP_ask = new ListenerTCP_ASK();
-        listenerTCP_ask.start();
+        ASKTrackerInfo askTrackerInfo = new ASKTrackerInfo();
+        askTrackerInfo.start();
+
     }
 
     public HashSet<String> getTorrents() {

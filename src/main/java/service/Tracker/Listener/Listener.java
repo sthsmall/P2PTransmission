@@ -85,7 +85,7 @@ public class Listener extends Thread{
                         ipSet = new HashSet<>();
                         TrackerMG.getInstance().getIpToTorrent().put(new PeerInfo(socket.getInetAddress().getHostAddress()), ipSet);
                     }
-                    ipSet = TrackerMG.getInstance().getIpToTorrent().get(socket.getInetAddress().getHostAddress());
+                    ipSet = TrackerMG.getInstance().getIpToTorrent().get(new PeerInfo(socket.getInetAddress().getHostAddress()));
                     ipSet.addAll(hashSet);
 
                     objectOutputStream.writeObject(new Content(Content.OK));

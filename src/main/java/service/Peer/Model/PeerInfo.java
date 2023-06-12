@@ -11,12 +11,12 @@ public class PeerInfo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PeerInfo peerInfo = (PeerInfo) o;
-        return port == peerInfo.port && Objects.equals(ip, peerInfo.ip);
+        return Objects.equals(ip, peerInfo.ip);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ip, port);
+        return Objects.hash(ip);
     }
 
     int port;
