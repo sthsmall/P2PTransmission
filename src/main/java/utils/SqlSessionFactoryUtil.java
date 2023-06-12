@@ -9,8 +9,6 @@ import java.io.InputStream;
 
 /*
 @Subject:sql会话工厂工具类
-@Author:叶兆威
-@Time:2023/6/4
 */
 public class SqlSessionFactoryUtil {
     //采用单例模式创建SqlSessionFactory

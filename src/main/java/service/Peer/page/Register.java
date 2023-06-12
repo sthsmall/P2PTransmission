@@ -146,7 +146,7 @@ public class Register extends JFrame {
         switichLogin = new JLabel("已有账号？登录");
         switichLogin.addMouseListener(new SwitichLoginMouseListener());
         switichLogin.setForeground(Color.RED);
-        switichLogin.setBounds(476, 400, 169, 24);
+        switichLogin.setBounds(479, 417, 169, 24);
         contentPane.add(switichLogin);
 
         passwordWarning = new JLabel("");
