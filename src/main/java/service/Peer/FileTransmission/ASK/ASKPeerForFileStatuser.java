@@ -44,7 +44,8 @@ public class ASKPeerForFileStatuser extends Thread{
                     objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
                     objectOutputStream.writeObject(new Content(Content.PEER_ASK_FOR_PEER_STATUS_INFO, file.getName()));
                     objectOutputStream.flush();
-                    StatusOfTotalFile statusOfTotalFile = (StatusOfTotalFile) objectInputStream.readObject();
+                    Content content = (Content) objectInputStream.readObject();
+                    StatusOfTotalFile statusOfTotalFile = content.getPeerStatus();
                     statusOfTotalFiles.add(statusOfTotalFile);
                 }
 

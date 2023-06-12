@@ -7,6 +7,7 @@ import service.Peer.FileTransmission.DownloadTask.DLTaskOfTorrentFile;
 import service.Peer.FileTransmission.Downloader.DLofTorrentFile;
 import service.Peer.FileTransmission.Status.StatusOfSingleFile;
 import service.Peer.FileTransmission.Status.StatusOfTotalFile;
+import service.Peer.Linstener.ListenerTCP_ASK;
 import service.Peer.Sender.AccessInfoToTrackerSender;
 import service.Peer.page.*;
 
@@ -405,9 +406,10 @@ public class PeerMG {
     }
 
     public void init() {
-        ASKTrackerInfo askTrackerInfo = new ASKTrackerInfo();
-        askTrackerInfo.start();
-
+//        ASKTrackerInfo askTrackerInfo = new ASKTrackerInfo();
+//        askTrackerInfo.start();
+        ListenerTCP_ASK listenerTCP_ask = new ListenerTCP_ASK();
+        listenerTCP_ask.start();
     }
 
     public HashSet<String> getTorrents() {
