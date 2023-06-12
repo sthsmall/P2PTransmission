@@ -35,7 +35,6 @@ public class Home extends JFrame {
     private JMenuItem downloadTorrent;
     private JMenuItem linkDownload;
     private JScrollPane scrollPane;
-    private JTextArea recordArea;
     private DefaultListModel<String> defaultListModel;
 
     public JLabel getScore() {
@@ -93,7 +92,7 @@ public class Home extends JFrame {
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollPane.setBounds(269, 152, 640, 372);
+        scrollPane.setBounds(269, 152, 653, 374);
         contentPane.add(scrollPane);
 
         defaultListModel = new DefaultListModel<String>();
@@ -227,13 +226,6 @@ public class Home extends JFrame {
         JMenuItem team = new JMenuItem("团队");
         team.addActionListener(new TeamActionListener());
         relation.add(team);
-
-        scrollPane = new JScrollPane();
-        scrollPane.setBounds(285, 166, 649, 354);
-        contentPane.add(scrollPane);
-
-        recordArea = new JTextArea();
-        scrollPane.setViewportView(recordArea);
     }
 
     private class MTorrentActionListener implements ActionListener {
@@ -281,19 +273,19 @@ public class Home extends JFrame {
         public void actionPerformed(ActionEvent e) {
 
 
-                    JFileChooser fileChooser = new JFileChooser();
+            JFileChooser fileChooser = new JFileChooser();
 
-                    // 设置文件选择器的初始目录
-                    fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+            // 设置文件选择器的初始目录
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 
-                    // 显示文件选择器对话框
-                    int result = fileChooser.showOpenDialog(Home.this);
+            // 显示文件选择器对话框
+            int result = fileChooser.showOpenDialog(Home.this);
 
-                    if (result == JFileChooser.APPROVE_OPTION) {
-                        // 用户选择了一个文件
-                        File selectedFile = fileChooser.getSelectedFile();
-                        System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-                    }
+            if (result == JFileChooser.APPROVE_OPTION) {
+                // 用户选择了一个文件
+                File selectedFile = fileChooser.getSelectedFile();
+                System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+            }
 
 
         }
