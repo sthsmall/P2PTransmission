@@ -34,6 +34,9 @@ public class Listener extends Thread{
                 if(content.getType() == Content.PEER_ASK_FOR_TRACKER_PEER_INFO){
                     Content backContent = new Content(Content.PEER_BACK_FROM_TRACKER_PEER_INFO);
                     backContent.setMyPeerInfo(TrackerMG.getInstance().getTorrentToIp().get(content.getHash()));
+                    if(backContent.getMyPeerInfo() == null){
+                        backContent.setMyPeerInfo(new HashSet<>());
+                    }
                     objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
                     objectOutputStream.writeObject(backContent);
                     objectOutputStream.flush();
@@ -57,7 +60,8 @@ public class Listener extends Thread{
                     objectOutputStream.writeObject(new Content(Content.OK));
                     String hash = LargeFileHashCalculator.getHash(file);
                     File fileNew = new File("./src/TrackerTorrent/"+hash + ".torrent");
-                    file.renameTo(fileNew);
+                    System.out.println(file.renameTo(fileNew));
+
 
 
                     System.out.println("接收成功");
@@ -95,6 +99,7 @@ public class Listener extends Thread{
             }
 
         }
+
 
     }
 }

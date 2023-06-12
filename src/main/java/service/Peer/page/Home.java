@@ -64,7 +64,7 @@ public class Home extends JFrame {
         EventQueue.invokeLater(() -> {
             try {
                 Home home = PeerMG.getInstance().getHome();
-                PeerMG.getInstance().init();
+                //PeerMG.getInstance().init();
                 home.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();

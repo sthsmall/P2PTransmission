@@ -31,7 +31,7 @@ public class ASKPeerForFileStatuser extends Thread{
             while(!Thread.currentThread().isInterrupted()){
                 Thread.sleep(1000);
                 peerInfos = PeerMG.getInstance().getHashToPeerInfo().get(file.getName());
-
+                if (peerInfos == null) continue;
                 for (PeerInfo peerInfo : peerInfos) {
                     Socket socket;
                     try {
@@ -57,7 +57,7 @@ public class ASKPeerForFileStatuser extends Thread{
                 PeerMG.getInstance().getHashToDownloadList().put(file.getName(),downloadList);
             }
         }catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 

@@ -21,7 +21,7 @@ public class ASKTrackerForPeerInfoer extends Thread{
         try {
             ObjectOutputStream objectOutputStream;
             ObjectInputStream objectInputStream;
-            Socket socket = new Socket(PeerMG.getInstance().getTrackerIp(), PeerMG.getInstance().getTrackerInfoPort());
+            Socket socket = new Socket(PeerMG.getInstance().getTrackerIp(), PeerMG.TrackerPort);
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
             while(!Thread.currentThread().isInterrupted()){
                 Thread.sleep(1000);
@@ -29,7 +29,13 @@ public class ASKTrackerForPeerInfoer extends Thread{
                 objectOutputStream.writeObject(content);
                 objectOutputStream.flush();
                 objectInputStream = new ObjectInputStream(socket.getInputStream());
-                PeerMG.getInstance().getHashToPeerInfo().put(hash,(HashSet<PeerInfo>) objectInputStream.readObject());
+                Content backContent = (Content) objectInputStream.readObject();
+                HashSet<PeerInfo> peerInfos = backContent.myPeerInfo;
+                HashSet<PeerInfo> temp = PeerMG.getInstance().getHashToPeerInfo().get(hash);
+                if(temp == null){
+                    PeerMG.getInstance().getHashToPeerInfo().put(hash,new HashSet<>());
+                }
+                PeerMG.getInstance().getHashToPeerInfo().get(hash).addAll(peerInfos);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

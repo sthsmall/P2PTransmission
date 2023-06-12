@@ -37,8 +37,8 @@ public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
         }
         //创建文件状态
         StatusOfSingleFile fileStruct = torrent.getFileStruct();
-        File file = new File("./src/Download/"+torrent.getName());
-        file.mkdir();
+        File filek = new File("./src/Download/"+torrent.getName());
+        filek.mkdir();
         File tempFile = null;
         //遍历文件状态将每个文件状态加入到总文件状态中
         for(StatusOfSingleFile s : fileStruct.getChildren()){
