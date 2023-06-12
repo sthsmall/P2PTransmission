@@ -35,7 +35,7 @@ public class ASKPeerForFileStatuser extends Thread{
                 for (PeerInfo peerInfo : peerInfos) {
                     Socket socket;
                     try {
-                        socket = new Socket(peerInfo.getIp(), peerInfo.getPort());
+                        socket = new Socket(peerInfo.getIp(), PeerMG.PeerStatusPort);
                     }catch (Exception e){
                         System.out.println("Peer "+peerInfo.getIp()+" "+peerInfo.getPort()+" is not online");
                         continue;

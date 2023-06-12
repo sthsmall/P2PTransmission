@@ -26,6 +26,7 @@ public class PeerMG {
 
     public final static int InfoPort = 5204;
     public final static int FilePort = 49999;
+    public final static int PeerStatusPort = 49999;
     public final static int TrackerTorrentPort = 1234;
     public final static int TrackerPort = 49999;
     public static int FilePieceSize = 1024 * 1024;
