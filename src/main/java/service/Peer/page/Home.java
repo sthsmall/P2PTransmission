@@ -279,7 +279,23 @@ public class Home extends JFrame {
     //制作torrent
     private class MakeTorrentActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            System.out.println(11);
+
+
+                    JFileChooser fileChooser = new JFileChooser();
+
+                    // 设置文件选择器的初始目录
+                    fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+
+                    // 显示文件选择器对话框
+                    int result = fileChooser.showOpenDialog(Home.this);
+
+                    if (result == JFileChooser.APPROVE_OPTION) {
+                        // 用户选择了一个文件
+                        File selectedFile = fileChooser.getSelectedFile();
+                        System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+                    }
+
+
         }
     }
 
@@ -347,6 +363,8 @@ public class Home extends JFrame {
     //帮助按钮
     private class HelpActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
+
+
             JDialog frame = new JDialog();//构造一个新的JFrame，作为新窗口。
             frame.setSize(500, 600);
             frame.setLocationRelativeTo(null);
@@ -382,11 +400,38 @@ public class Home extends JFrame {
     //下载torrent
     private class DownloadTorrentActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
+            JFileChooser fileChooser = new JFileChooser();
+
+            // 设置文件选择器的初始目录
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+
+            // 显示文件选择器对话框
+            int result = fileChooser.showOpenDialog(Home.this);
+
+            if (result == JFileChooser.APPROVE_OPTION) {
+                // 用户选择了一个文件
+                File selectedFile = fileChooser.getSelectedFile();
+                System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+            }
         }
     }
+
     //磁链下载
     private class LinkDownloadActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
+            JFileChooser fileChooser = new JFileChooser();
+
+            // 设置文件选择器的初始目录
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+
+            // 显示文件选择器对话框
+            int result = fileChooser.showOpenDialog(Home.this);
+
+            if (result == JFileChooser.APPROVE_OPTION) {
+                // 用户选择了一个文件
+                File selectedFile = fileChooser.getSelectedFile();
+                System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+            }
         }
     }
 }
