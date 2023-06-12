@@ -1,7 +1,24 @@
 package service.Peer.Model;
+
+import java.util.Objects;
+
 //Peer的信息类
 public class PeerInfo {
     String ip;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PeerInfo peerInfo = (PeerInfo) o;
+        return port == peerInfo.port && Objects.equals(ip, peerInfo.ip);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ip, port);
+    }
+
     int port;
 
     public PeerInfo(String ip, int port) {

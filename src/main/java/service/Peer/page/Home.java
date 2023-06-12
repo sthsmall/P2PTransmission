@@ -16,11 +16,11 @@ import javax.swing.border.TitledBorder;
 public class Home extends JFrame {
 
 
-    private JPanel contentPane;
-    private JTextField txtPp;
-    private JLabel Score;
-    private JLabel ID;
-    private JLabel image;
+    private final JPanel contentPane;
+    private final JTextField txtPp;
+    private final JLabel Score;
+    private final JLabel ID;
+    private final JLabel image;
 
     public JLabel getScore() {
         return Score;

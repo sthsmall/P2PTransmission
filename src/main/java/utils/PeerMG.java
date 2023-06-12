@@ -1,45 +1,41 @@
 package utils;
 
-import service.Peer.FileTransmission.StatusOfTotalFile;
+import lombok.Data;
+import service.Peer.FileTransmission.Status.StatusOfSingleFile;
+import service.Peer.FileTransmission.Status.StatusOfTotalFile;
 import service.Peer.Sender.AccessInfoToTrackerSender;
 import service.Peer.page.Edit;
 import service.Peer.page.Home;
 
 import service.Peer.Model.PeerInfo;
-import service.Peer.Sender.InfoToTrackerSender;
 import service.Peer.TorrentFileTransmissionThread;
 import domain.Torrent;
 import domain.TorrentFile;
 import service.Peer.page.Login;
 import service.Peer.page.Register;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
-
+@Data
 public class PeerMG {
 
     public final static int InfoPort = 5204;
     public final static int FilePort = 9999;
     public static int FilePieceSize = 1024 * 1024;
+    public static int PieceReceivePort = 8899;
     private String TrackerIP = "127.0.0.1";
     private HashMap<String, HashSet<PeerInfo>> hashToPeerInfo = new HashMap<>();
-    private HashMap<String, ArrayList<StatusOfTotalFile>> hashALLToTotalFileStatus = new HashMap<>();
-    private HashMap<String, StatusOfTotalFile> hashToTotalFileStatus = new HashMap<>();
+    private final HashMap<String, HashMap<String,Integer>> hashALLToTotalFileStatus = new HashMap<>();
+    private final HashMap<String, Boolean> hashToTotalFileStatus = new HashMap<>();
 
-    private HashMap<String,StatusOfTotalFile> hashToDownloadList = new HashMap<>();
+    private  HashMap<String,Queue<String>> hashToDownloadList = new HashMap<>();
 
-    public HashMap<String, StatusOfTotalFile> getHashToDownloadList() {
+    private HashMap<String, Boolean> dd = new HashMap<>();
+
+    public  HashMap<String,Queue<String>> getHashToDownloadList() {
         return hashToDownloadList;
     }
 
@@ -48,15 +44,19 @@ public class PeerMG {
     }
 
     private HashMap<String, Torrent> hashToTorrent = new HashMap<>();
-    public HashMap<String, ArrayList<StatusOfTotalFile>> getHashALLToTotalFileStatus() {
-        return hashALLToTotalFileStatus;
-    }
 
-    public HashMap<String, StatusOfTotalFile> getHashToTotalFileStatus() {
+    //每个子文件对应的文件信息
+    private HashMap<String, StatusOfSingleFile> hashToStatusOfSingleFile = new HashMap<>();
+    //每个Torrent文件对应的文件信息
+    private HashMap<String, StatusOfTotalFile> hashToStatusOfTotalFile = new HashMap<>();
+
+    private HashMap<String, File> HashToFile = new HashMap<>();
+
+    public HashMap<String, Boolean> getHashToTotalFileStatus() {
         return hashToTotalFileStatus;
     }
 
-    private InfoToTrackerSender infoToTrackerSender;
+
 
     //登录界面
     private  final Login login = new Login();
@@ -65,7 +65,7 @@ public class PeerMG {
     //主界面
     private final Home home = new Home();
     //使用单例模式
-    private static PeerMG instance = new PeerMG();
+    private static final PeerMG instance = new PeerMG();
 
 
     private PeerMG() {
@@ -86,9 +86,22 @@ public class PeerMG {
 
 
     //分析所有的文件状况
-    public StatusOfTotalFile strategyOfDownload(StatusOfTotalFile StructOfTotalFile){
-        //暂定
-        return null;
+    public Queue<String> strategyOfDownload(HashMap<String,Integer> status){
+        PriorityQueue<Map.Entry<String,Integer>> priorityQueue = new PriorityQueue<>(new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String,Integer> o2) {
+                return o1.getValue() - o2.getValue();
+            }
+        });
+
+        for (Map.Entry<String,Integer> entry : status.entrySet()){
+            priorityQueue.add(entry);
+        }
+        Queue<String> arrayList = new LinkedList<>();
+        for (Map.Entry<String,Integer> entry : priorityQueue){
+            arrayList.add(entry.getKey());
+        }
+        return arrayList;
     }
 
 
@@ -136,10 +149,13 @@ public class PeerMG {
 
         ArrayList<TorrentFile> torrentFiles = new ArrayList<TorrentFile>();
 
+
         for (File file : files) {
             String path = file.getName();
             if (file.isDirectory()) {
-                torrentFiles.add(MakeTorrentFromFileCirculate(file, path));
+                TorrentFile torrentFile = new TorrentFile(file, path);
+                MakeTorrentFromFileCirculate(file,torrentFile);
+                torrentFiles.add(torrentFile);
             } else {
                 torrentFiles.add(new TorrentFile(file, path));
             }
@@ -148,16 +164,17 @@ public class PeerMG {
         torrent.setFileList(torrentFiles);
 
         //将种子对象写入文件
-        StorageTorrent(torrent);
+        File file = StorageTorrent(torrent);
 
         //将种子文件发送到服务器
-        SendTorrent(torrent);
+        SendTorrent(file);
         return true;
     }
 
 
     //将种子对象写入文件
-    private void StorageTorrent(Torrent torrent) {
+    private File StorageTorrent(Torrent torrent) {
+        File f = null;
         try {
             File file = new File("./src/temp.torrent");
 
@@ -171,28 +188,35 @@ public class PeerMG {
             File fileNew = new File("./src/" + hash + ".torrent");
             //将文件重命名
             file.renameTo(fileNew);
+            f = fileNew;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return f;
     }
 
     //递归制作种子文件
-    private TorrentFile MakeTorrentFromFileCirculate(File now, String path) {
-        String newPath = path + "/" + now.getName();
-        if (now.isDirectory()) {
-            TorrentFile torrentFile = new TorrentFile(now, newPath);
-            for (File file : now.listFiles()) {
-                torrentFile.addChildren(MakeTorrentFromFileCirculate(file, newPath));
+    private void MakeTorrentFromFileCirculate(File now,TorrentFile torrentFile) {
+        String newPath = null;
+
+        for(File file : now.listFiles()){
+            if(file.isDirectory()){
+                newPath = torrentFile.getPath() + "/" + file.getName();
+                TorrentFile torrentFile1 = new TorrentFile(file, newPath);
+                MakeTorrentFromFileCirculate(file,torrentFile1);
+                torrentFile.addChildren(torrentFile1);
+            }else{
+                newPath = torrentFile.getPath() + "/" + file.getName();
+                torrentFile.addChildren(new TorrentFile(file, newPath));
             }
-            return torrentFile;
-        } else {
-            return new TorrentFile(now, newPath);
         }
+
     }
 
+
+
     //发送种子文件
-    private boolean SendTorrent(Torrent torrent) {
-        infoToTrackerSender.Send("Torrent");
+    private boolean SendTorrent(File torrent) {
         new TorrentFileTransmissionThread(torrent).start();
         return true;
     }
@@ -350,5 +374,6 @@ public class PeerMG {
         clear(EDIT);
         edit.setVisible(false);
     }
-    
+
+
 }

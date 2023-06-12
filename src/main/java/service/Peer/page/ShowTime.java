@@ -19,11 +19,11 @@ import javax.swing.SwingConstants;
 
 public class ShowTime extends JFrame {
 
-    private JPanel contentPane;
-    private JPanel panel;
-    private JButton startButton;
-    private JButton stopButton;
-    private JLabel timeLabel;
+    private final JPanel contentPane;
+    private final JPanel panel;
+    private final JButton startButton;
+    private final JButton stopButton;
+    private final JLabel timeLabel;
     private boolean flag = true;
 
     /**

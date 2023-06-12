@@ -1,11 +1,14 @@
 package service.Peer.FileTransmission.Downloader;
 
 import service.Peer.FileTransmission.DownloadTask.DownloadTask;
+import service.Peer.FileTransmission.Status.StatusOfSingleFile;
 
 import java.util.ArrayList;
 
 public class DLofTorrentFile implements Downloader{
     ArrayList<DownloadTask> downloadTasks = new ArrayList<>();
+
+    //StatusOfSingleFile statusOfSingleFile = new StatusOfSingleFile();
     @Override
     public void addTask(DownloadTask task) {
         downloadTasks.add(task);
@@ -13,7 +16,8 @@ public class DLofTorrentFile implements Downloader{
 
     @Override
     public void addAndStartTask(DownloadTask task) {
-
+        downloadTasks.add(task);
+        task.startDownload();
     }
 
     @Override

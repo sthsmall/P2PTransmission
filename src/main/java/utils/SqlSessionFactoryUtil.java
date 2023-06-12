@@ -16,7 +16,7 @@ public class SqlSessionFactoryUtil {
     //采用单例模式创建SqlSessionFactory
     //mybatis配置文件
     private static final String resource = "mybatis-config.xml";
-    private static InputStream inputStream;
+    private static final InputStream inputStream;
     static {
         try {
             inputStream = Resources.getResourceAsStream(resource);

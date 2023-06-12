@@ -1,9 +1,9 @@
 package domain;
 
 import lombok.Data;
-import service.Peer.FileTransmission.StatusOfSingleFile;
+import service.Peer.FileTransmission.Status.StatusOfSingleFile;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 
 //种子文件
@@ -26,19 +26,28 @@ public class Torrent implements Serializable {
     //种子的文件列表
     private ArrayList<TorrentFile> fileList;
 
+    public static Torrent createTorrentFromFile(File file) throws IOException, ClassNotFoundException {
+        Torrent torrent;
+        ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file));
+        torrent = (Torrent) objectInputStream.readObject();
+        objectInputStream.close();
+        return torrent;
+    }
 
-    public ArrayList<StatusOfSingleFile> getFileStruct(){
-        ArrayList<StatusOfSingleFile> sfs = new ArrayList<>();
+
+    public StatusOfSingleFile getFileStruct(){
+        StatusOfSingleFile statusOfSingleFile = new StatusOfSingleFile();
         for(TorrentFile torrentFile: fileList){
             String path = torrentFile.getPath();
             if(torrentFile.isDirectory()){
-                sfs.add(CirculateOfGetFileStruct(torrentFile));
+                statusOfSingleFile.addChildren(CirculateOfGetFileStruct(torrentFile));
             }else{
-                sfs.add(new StatusOfSingleFile(torrentFile.getFile(),path));
+                statusOfSingleFile.addChildren(new StatusOfSingleFile(torrentFile.getFile(),path));
             }
         }
-        return sfs;
+        return statusOfSingleFile;
     }
+
     private StatusOfSingleFile CirculateOfGetFileStruct (TorrentFile torrentFile){
         StatusOfSingleFile statusOfSingleFile = new StatusOfSingleFile(torrentFile.getFile(),torrentFile.getPath());
 

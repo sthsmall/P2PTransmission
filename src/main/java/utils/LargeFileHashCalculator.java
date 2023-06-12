@@ -8,11 +8,11 @@ import java.security.NoSuchAlgorithmException;
 
 public class LargeFileHashCalculator {
 
-    private static String hashAlgorithm = "SHA-256";
+    private static final String hashAlgorithm = "SHA-256";
     private static final int BUFFER_SIZE = 8192; // 8 KB buffer
 
 
-    private LargeFileHashCalculator() {
+    LargeFileHashCalculator() {
     }
 
     //获取文件的哈希值

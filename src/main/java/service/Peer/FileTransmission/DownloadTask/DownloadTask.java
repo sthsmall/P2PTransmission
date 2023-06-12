@@ -17,11 +17,11 @@ public interface DownloadTask {
     //断点续传：支持断点续传功能，可以通过已下载字节数确定下一次下载的起始位置。
 
 
-    public void startDownload() ;
+    void startDownload() ;
 
-    public void pauseDownload() ;
+    void pauseDownload() ;
 
-    public void cancelDownload() ;
+    void cancelDownload() ;
 
 
 }
