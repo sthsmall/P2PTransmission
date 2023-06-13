@@ -45,7 +45,7 @@ public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
             for(StatusOfSingleFile ss : s.getChildren()){
                 if(ss.isDirectory()){
                     tempFile = new File("./src/Download/"+torrent.getName()+"/"+ss.getPath());
-                    tempFile.mkdir();
+                    tempFile.mkdirs();
                     cire(ss);
                 }else {
                     tempFile = new File("./src/Download/"+torrent.getName()+"/"+ss.getPath());
@@ -118,10 +118,16 @@ public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
         for (StatusOfSingleFile s : statusOfSingleFile.getChildren()){
             if(s.isDirectory()){
                 File file = new File("./src/Download/"+torrent.getName()+"/"+s.getPath());
-                file.mkdir();
+                file.mkdirs();
                 cire(s);
             }else {
                 PeerMG.getInstance().getHashToStatusOfSingleFile().put(s.getPath(),s);
+                File file = new File("./src/Download/"+torrent.getName()+"/"+s.getPath());
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }

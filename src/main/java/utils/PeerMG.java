@@ -31,7 +31,7 @@ public class PeerMG {
     public final static int TrackerPort = 49999;
     public static int FilePieceSize = 1024 * 1024;
     public static int PieceReceivePort = 8899;
-    private String TrackerIP = "192.168.122.116";
+    private String TrackerIP = "pc.henu.life";
     private HashMap<String, HashSet<PeerInfo>> hashToPeerInfo = new HashMap<>();
     private final HashMap<String, HashMap<String,Integer>> hashALLToTotalFileStatus = new HashMap<>();
     private final HashMap<String, Boolean> hashToTotalFileStatus = new HashMap<>();
@@ -409,6 +409,20 @@ public class PeerMG {
     public void init() {
         ASKTrackerInfo askTrackerInfo = new ASKTrackerInfo();
         askTrackerInfo.start();
+        new Thread(){
+            @Override
+            public void run() {
+                while (true){
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    home.fake();
+                }
+
+            }
+        }.start();
 
     }
 

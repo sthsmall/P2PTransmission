@@ -20,6 +20,8 @@ import java.io.File;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.Random;
 
 import javax.swing.event.MenuListener;
 import javax.swing.event.MenuEvent;
@@ -107,6 +109,7 @@ public class Home extends JFrame {
 
         defaultListModel = new DefaultListModel<String>();
          list = new JList(defaultListModel);
+        list.setFont(new Font("宋体", Font.PLAIN, 25));
         scrollPane.setViewportView(list);
 
 
@@ -145,13 +148,15 @@ public class Home extends JFrame {
         panel_1.add(Stop);
         Stop.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                int selectedIndex = list.getSelectedIndex();
+                //暂停
+                flag[selectedIndex] = flag[selectedIndex] == true ? false : true;
             }
         });
         Dl.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                defaultListModel.addElement("dfsadsa");
-
+                defaultListModel.addElement("dfsadsa            0%");
+                k++;
             }
         });
         //打开目录
@@ -256,7 +261,8 @@ public class Home extends JFrame {
     }
 
     public void addOneDownloadTask(String name) {
-        String tname = name + "  " + "0%";
+        String tname = name + "            " + "0%";
+        k++;
         defaultListModel.addElement(tname);
     }
 
@@ -308,6 +314,7 @@ public class Home extends JFrame {
             // 设置文件选择器的初始目录
             fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
             fileChooser.setMultiSelectionEnabled(true);
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
             // 显示文件选择器对话框
             int result = fileChooser.showOpenDialog(Home.this);
 
@@ -315,7 +322,7 @@ public class Home extends JFrame {
                 // 用户选择了一个文件
                 File[] selectedFile = fileChooser.getSelectedFiles();
                 ArrayList<File> files = new ArrayList<>(Arrays.asList(selectedFile));
-                PeerMG.getInstance().MakeTorrentFromFile(files,"随机");
+                PeerMG.getInstance().MakeTorrentFromFile(files,"测试1");
                 for (File file : selectedFile) {
                     System.out.println("Selected file: " + file.getAbsolutePath());
                 }
@@ -434,6 +441,7 @@ public class Home extends JFrame {
             // 显示文件选择器对话框
             int result = fileChooser.showOpenDialog(Home.this);
 
+
             if (result == JFileChooser.APPROVE_OPTION) {
                 // 用户选择了一个文件
                 File selectedFile = fileChooser.getSelectedFile();
@@ -459,4 +467,31 @@ public class Home extends JFrame {
             PeerMG.getInstance().openLink();
         }
     }
+    boolean flag[] = new boolean[100];
+    int k = 0;
+    int  count = 0;
+    public void fake(){
+        count++;
+        if(count == 30){
+            count = 0;
+            if(k!=0){
+                k--;
+            }
+        }
+
+        int len = defaultListModel.size();
+        //修改defaultListModel里面的值
+        for (int i = k; i < len; i++) {
+            String[] s = defaultListModel.get(i).split("            ");
+            if(flag[i]){
+                continue;
+            }
+            double d = (Double.parseDouble(s[1].substring(0,s[1].indexOf("%")))+ Math.random());
+            if(d>100){
+                d=100;
+            }
+            defaultListModel.set(i, s[0] +"            "+ d +"%");
+        }
+    }
+
 }
