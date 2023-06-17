@@ -17,7 +17,7 @@ public class AccessInfoToTrackerSender extends Thread {
     //服务器ip
     private final String ip = PeerMG.getInstance().getTrackerIP();
     //服务器端口
-    private final int port = PeerMG.InfoPort;
+    private final int port = 5204;
     //发送方套接字
     private Socket socket;
     //输入输出流

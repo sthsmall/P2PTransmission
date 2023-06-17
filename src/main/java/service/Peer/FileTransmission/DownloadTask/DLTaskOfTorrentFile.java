@@ -59,10 +59,14 @@ public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
             }
         }
 
+
+
         PeerMG.getInstance().getTorrents().add(hash);
 
         StatusOfTotalFile statusOfTotalFile = new StatusOfTotalFile();
+
         statusOfTotalFile.setFileStruct(fileStruct);
+
         PeerMG.getInstance().getHashToStatusOfTotalFile().put(file.getName(),statusOfTotalFile);
 
         //创建心跳线程

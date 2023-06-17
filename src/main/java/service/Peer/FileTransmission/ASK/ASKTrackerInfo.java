@@ -7,6 +7,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+
+//用于告诉Tracker自己的信息
 public class ASKTrackerInfo extends Thread{
     Socket socket;
     ObjectInputStream objectInputStream ;

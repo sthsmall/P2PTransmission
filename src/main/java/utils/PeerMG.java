@@ -31,22 +31,23 @@ public class PeerMG {
     public final static int TrackerPort = 49999;
     public static int FilePieceSize = 1024 * 1024;
     public static int PieceReceivePort = 8899;
-    private String TrackerIP = "pc.henu.life";
+    private String TrackerIP = "192.168.231.75";
+    //通过磁链获得Peer信息
     private HashMap<String, HashSet<PeerInfo>> hashToPeerInfo = new HashMap<>();
+    //通过磁链获得分块信息
     private final HashMap<String, HashMap<String,Integer>> hashALLToTotalFileStatus = new HashMap<>();
+    //通过磁链获得分块信息
     private final HashMap<String, Boolean> hashToTotalFileStatus = new HashMap<>();
+    //获得torrent拥有情况
     private HashSet<String> torrents = new HashSet<>();
+    //获得下载列表
     private  HashMap<String,Queue<String>> hashToDownloadList = new HashMap<>();
-
-    private HashMap<String, Boolean> dd = new HashMap<>();
 
     public  HashMap<String,Queue<String>> getHashToDownloadList() {
         return hashToDownloadList;
     }
 
-    public HashMap<String, Torrent> getHashToTorrent() {
-        return hashToTorrent;
-    }
+
 
     private HashMap<String, Torrent> hashToTorrent = new HashMap<>();
 
@@ -76,17 +77,7 @@ public class PeerMG {
     private PeerMG() {
     }
 
-    public static PeerMG getInstance() {
-        return instance;
-    }
 
-    public String getTrackerIP() {
-        return TrackerIP;
-    }
-
-    public void setTrackerIP(String trackerIP) {
-        TrackerIP = trackerIP;
-    }
 
 
 
@@ -122,34 +113,6 @@ public class PeerMG {
     //与服务器建立连接
     public void ConnectToServer() {
 
-    }
-
-    public Login getLogin() {
-        return login;
-    }
-
-    public Register getRegister() {
-        return register;
-    }
-
-    public Home getHome() {
-        return home;
-    }
-
-    public Edit getEdit() {
-        return edit;
-    }
-
-    public Link getLink() {
-        return link;
-    }
-
-    public String getTrackerIp() {
-        return TrackerIP;
-    }
-
-    public int getTrackerInfoPort() {
-        return InfoPort;
     }
 
     //从文件制作种子文件
@@ -198,7 +161,7 @@ public class PeerMG {
             File fileNew = new File("./src/Torrents/" + hash + ".torrent");
             //将文件重命名
             file.renameTo(fileNew);
-            f = fileNew;
+            f = file;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -231,13 +194,7 @@ public class PeerMG {
         return true;
     }
 
-    public HashMap<String, HashSet<PeerInfo>> getHashToPeerInfo() {
-        return hashToPeerInfo;
-    }
 
-    public void setHashToPeerInfo(HashMap<String, HashSet<PeerInfo>> hashToPeerInfo) {
-        this.hashToPeerInfo = hashToPeerInfo;
-    }
 
     //跳转到登录页面
     public void switchLogin(boolean isRegister) {
@@ -396,10 +353,19 @@ public class PeerMG {
 
     public void AddDownLoad(String hash){
         Torrent torrent = PeerMG.getInstance().getHashToTorrent().get(hash);
+        //将种子文件添加到下载任务
         File file = PeerMG.getInstance().getHashToFile().get(hash);
+        //创建下载任务
         DLTaskOfTorrentFile dll = new DLTaskOfTorrentFile(file);
+        //将下载任务添加到下载任务列表
         DLofTorrentFile.getInstance().addAndStartTask(dll);
+        //将下载任务添加到主界面
         getHome().addOneDownloadTask(torrent.getName());
+
+    }
+
+    public static PeerMG getInstance() {
+        return instance;
     }
 
     public void addDownloadTorrent(Torrent torrent) {

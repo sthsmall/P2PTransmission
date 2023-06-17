@@ -22,7 +22,7 @@ public class ASKTrackerForPeerInfoer extends Thread {
     public void run() {
         try {
             while (!Thread.currentThread().isInterrupted()) {
-                Socket socket = new Socket(PeerMG.getInstance().getTrackerIp(), PeerMG.TrackerPort);
+                Socket socket = new Socket(PeerMG.getInstance().getTrackerIP(), PeerMG.TrackerPort);
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
                 Thread.sleep(1000);

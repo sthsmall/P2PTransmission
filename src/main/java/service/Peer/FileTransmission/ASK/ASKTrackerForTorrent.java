@@ -17,7 +17,7 @@ public class ASKTrackerForTorrent {
 
     public void run() {
         try {
-            Socket socket = new Socket(PeerMG.getInstance().getTrackerIP(), PeerMG.getInstance().getTrackerInfoPort());
+            Socket socket = new Socket(PeerMG.getInstance().getTrackerIP(), PeerMG.TrackerTorrentPort);
             Content content = new Content(Content.PEER_ASK_TRACK_FOR_TORRENT_BY_HASH);
             content.setHash(hash);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
