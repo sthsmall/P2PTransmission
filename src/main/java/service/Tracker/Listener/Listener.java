@@ -47,7 +47,11 @@ public class Listener extends Thread{
                     TrackerMG.getInstance().getTorrentToIp().get(content.getHash()).add(new PeerInfo(socket.getInetAddress().getHostAddress(),socket.getPort()));
                     TrackerMG.getInstance().getIpToTorrent().get(socket.getInetAddress().getHostAddress()).addAll(content.getMyTorrents());
                 } else if (content.getType() == Content.PEER_ASK_TRACK_FOR_TORRENT_BY_HASH) {
-
+                    Torrent torrent = (Torrent) new ObjectInputStream(new FileInputStream(new File("./src/TrackerTorrent/"+content.getHash()+".torrent"))).readObject();
+                    Content backContent = new Content(Content.OK);
+                    backContent.setTorrent(torrent);
+                    objectOutputStream.writeObject(backContent);
+                    objectOutputStream.flush();
                 } else if (content.getType() == Content.PEER_SEND_TORRENT_FILE) {
 
                     File file = new File("./src/TrackerTorrent/temp");

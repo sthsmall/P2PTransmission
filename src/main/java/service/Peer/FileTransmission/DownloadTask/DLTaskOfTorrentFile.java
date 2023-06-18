@@ -44,6 +44,7 @@ public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
         File tempFile = null;
         //遍历文件状态将每个文件状态加入到总文件状态中
         for(StatusOfSingleFile s : fileStruct.getChildren()){
+
             for(StatusOfSingleFile ss : s.getChildren()){
                 if(ss.isDirectory()){
                     tempFile = new File("./src/Download/"+torrent.getName()+"/"+ss.getPath());
@@ -51,8 +52,10 @@ public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
                     cire(ss);
                 }else {
                     tempFile = new File("./src/Download/"+torrent.getName()+"/"+ss.getPath());
+                    new File("./src/Download/"+torrent.getName()).mkdirs();
                     try {
                         if(!tempFile.exists()) {
+                            System.out.println("./src/Download/"+torrent.getName()+"/"+ss.getPath());
                             System.out.println(tempFile.createNewFile());
                         }
                     } catch (IOException e) {

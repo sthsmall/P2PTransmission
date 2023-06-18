@@ -12,3 +12,5 @@ TestFile
 target
 .classpath
 .settings
+
+.src/Download
