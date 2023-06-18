@@ -30,21 +30,23 @@ public class DLTaskOfPiece extends Thread implements DownloadTask{
 
     @Override
     public void run() {
-        try {
-            DatagramSocket datagramSocket = new DatagramSocket();
-            Content content = new Content(Content.PEER_ASK_FOR_PEER_FOR_PIECE,hash,pieceIndex);
-            ObjectOutput objectOutput = new ObjectOutputStream(new ByteArrayOutputStream());
-            objectOutput.writeObject(content);
-            byte[] bytes = ((ByteArrayOutputStream) objectOutput).toByteArray();
+        if(statusOfSingleFile.getPieceStatus()[pieceIndex] == false){
+            try {
+                DatagramSocket datagramSocket = new DatagramSocket();
+                Content content = new Content(Content.PEER_ASK_FOR_PEER_FOR_PIECE, hash, pieceIndex);
+                ObjectOutput objectOutput = new ObjectOutputStream(new ByteArrayOutputStream());
+                objectOutput.writeObject(content);
+                byte[] bytes = ((ByteArrayOutputStream) objectOutput).toByteArray();
 
-            for(PeerInfo peerInfo: PeerMG.getInstance().getHashToPeerInfo().get(hash)){
-                DatagramPacket datagramPacket = new DatagramPacket(bytes, bytes.length, InetAddress.getByName(peerInfo.getIp()), peerInfo.getPort());
-                datagramSocket.send(datagramPacket);
+                for (PeerInfo peerInfo : PeerMG.getInstance().getHashToPeerInfo().get(hash)) {
+                    DatagramPacket datagramPacket = new DatagramPacket(bytes, bytes.length, InetAddress.getByName(peerInfo.getIp()), peerInfo.getPort());
+                    datagramSocket.send(datagramPacket);
+                }
+            } catch (SocketException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-        } catch (SocketException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 

@@ -24,7 +24,7 @@ public class ASKTrackerInfo extends Thread{
                 objectInputStream = new ObjectInputStream(socket.getInputStream());
                 content = new Content(Content.PEER_ASK_TRACKER_SELF_INFO);
                 Thread.sleep(3000);
-                content.setMyTorrents(PeerMG.getInstance().getTorrents());
+                content.setMyTorrents(PeerMG.getInstance().getNowDownloadingTorrents());
                 objectOutputStream.writeObject(content);
                 Content backContent = (Content) objectInputStream.readObject();
                 if(backContent.getType() == Content.OK) {

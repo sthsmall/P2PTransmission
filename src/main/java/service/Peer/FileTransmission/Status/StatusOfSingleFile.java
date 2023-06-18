@@ -55,7 +55,6 @@ public class StatusOfSingleFile {
         this.path = path;
         this.isDirectory = file.isDirectory();
         this.pieceStatus = new Boolean[(int) Math.ceil((double) size / PeerMG.FilePieceSize)];
-
     }
 
     public void addChildren(StatusOfSingleFile statusOfSingleFile){

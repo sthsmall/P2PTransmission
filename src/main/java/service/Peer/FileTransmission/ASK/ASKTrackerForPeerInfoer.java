@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.HashSet;
@@ -31,9 +32,10 @@ public class ASKTrackerForPeerInfoer extends Thread {
                 objectOutputStream.flush();
 
                 Content backContent = (Content) objectInputStream.readObject();
+
+                //去除自己
+                backContent.getMyPeerInfo().remove(new PeerInfo(InetAddress.getLocalHost().getHostAddress()));
                 System.out.println("backContent = " + backContent);
-
-
                 HashSet<PeerInfo> peerInfos = backContent.myPeerInfo;
                 HashSet<PeerInfo> temp = PeerMG.getInstance().getHashToPeerInfo().get(hash);
 

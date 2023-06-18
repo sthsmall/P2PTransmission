@@ -69,6 +69,8 @@ public class Link extends JFrame {
 		textArea.setFont(new Font("Courier New", Font.PLAIN, 16));
 		scrollPane.setViewportView(textArea);
 
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
 		JButton btnNewButton = new JButton("确认");
 		btnNewButton.addActionListener(new ActionListener() {
 
@@ -80,6 +82,7 @@ public class Link extends JFrame {
 					return;
 				}
 				new ASKTrackerForTorrent(textArea.getText().trim()).run();
+
 				PeerMG.getInstance().AddDownLoad(textArea.getText().trim());
 				PeerMG.getInstance().closeLink();
 			}

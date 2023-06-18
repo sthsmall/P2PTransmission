@@ -3,6 +3,7 @@ package service.Peer.FileTransmission.ASK;
 import domain.Torrent;
 import utils.PeerMG;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -25,7 +26,8 @@ public class ASKTrackerForTorrent {
             objectOutputStream.writeObject(content);
             objectOutputStream.flush();
             Content content1 = (Content) objectInputStream.readObject();
-            PeerMG.getInstance().StorageTorrent(content1.getTorrent());
+            File file = PeerMG.getInstance().StorageTorrent(content1.getTorrent());
+            PeerMG.getInstance().getNowDownloadingTorrents().add(file.getName());
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {

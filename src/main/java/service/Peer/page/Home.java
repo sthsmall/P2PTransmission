@@ -1,6 +1,8 @@
 package service.Peer.page;
 
 import domain.Torrent;
+import service.Peer.FileTransmission.DownloadTask.DLTaskOfTorrentFile;
+import service.Peer.FileTransmission.Downloader.DLofTorrentFile;
 import utils.PeerMG;
 
 import java.awt.*;
@@ -12,27 +14,31 @@ import java.awt.event.ActionEvent;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.DatagramPacket;
 import java.net.URL;
 import javax.swing.border.TitledBorder;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.Random;
+import java.util.*;
 
 import javax.swing.event.MenuListener;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuKeyListener;
 import javax.swing.event.MenuKeyEvent;
+import javax.swing.table.DefaultTableModel;
 
 //首页面
 
 public class Home extends JFrame {
 
+    public ArrayList<String> getTorrentList() {
+        return torrentList;
+    }
 
+    private ArrayList<String> torrentList = new ArrayList<>();
+    private HashMap<String, DLTaskOfTorrentFile> dlMap = new HashMap<>();
     private final JPanel contentPane;
     private final JLabel Score;
     private final JLabel ID;
@@ -44,9 +50,10 @@ public class Home extends JFrame {
     private JMenuItem downloadTorrent;
     private JMenuItem linkDownload;
     private JScrollPane scrollPane;
-    private JList list;
     private DefaultListModel<String> defaultListModel;
     private String folderPath = "./src/Download";
+    private JTable table;
+    private DefaultTableModel tableModel;
 
     public JLabel getScore() {
         return Score;
@@ -104,13 +111,21 @@ public class Home extends JFrame {
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollPane.setBounds(269, 152, 653, 374);
+        scrollPane.setBounds(269, 152, 665, 374);
         contentPane.add(scrollPane);
 
-        defaultListModel = new DefaultListModel<String>();
-         list = new JList(defaultListModel);
-        list.setFont(new Font("宋体", Font.PLAIN, 25));
-        scrollPane.setViewportView(list);
+
+        tableModel = new DefaultTableModel();
+
+        tableModel.addColumn("Torrent文件名");
+        tableModel.addColumn("下载进度");
+
+
+        // 创建一个表格，并使用表格模型初始化
+        table = new JTable(tableModel);
+        scrollPane.setViewportView(table);
+
+
 
 
 
@@ -127,8 +142,14 @@ public class Home extends JFrame {
         //删除
         Delete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String s = (String) list.getSelectedValue();
-                defaultListModel.removeElement(s);
+                int selectedColumn = table.getSelectedColumn();
+                dlMap.get(table.getValueAt(selectedColumn, 0)).cancelDownload();
+                torrentList.remove(selectedColumn);
+                dlMap.remove(table.getValueAt(selectedColumn, 0));
+                tableModel.removeRow(selectedColumn);
+
+                //删除
+
             }
         });
 
@@ -148,15 +169,23 @@ public class Home extends JFrame {
         panel_1.add(Stop);
         Stop.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int selectedIndex = list.getSelectedIndex();
+
                 //暂停
-                flag[selectedIndex] = flag[selectedIndex] == true ? false : true;
+                int selectedColumn = table.getSelectedColumn();
+                dlMap.get(table.getValueAt(selectedColumn, 0)).pauseDownload();
+                flags[selectedColumn] = true;
+
             }
         });
+        //开始下载
         Dl.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                defaultListModel.addElement("dfsadsa            0%");
-                k++;
+                int selectedColumn = table.getSelectedColumn();
+               dlMap.get(table.getValueAt(selectedColumn, 0)).startDownload();
+                flags[selectedColumn] = false;
+                //开始下载
+                //PeerMG.getInstance().startDownload();
+
             }
         });
         //打开目录
@@ -261,9 +290,7 @@ public class Home extends JFrame {
     }
 
     public void addOneDownloadTask(String name) {
-        String tname = name + "            " + "0%";
-        k++;
-        defaultListModel.addElement(tname);
+        tableModel.addRow(new Object[]{name, 0.0});
     }
 
     private class MTorrentActionListener implements ActionListener {
@@ -449,9 +476,11 @@ public class Home extends JFrame {
                 PeerMG.getInstance().getHashToFile().put(selectedFile.getName(), selectedFile);
                 try {
                     ObjectInputStream ois = new ObjectInputStream(new FileInputStream(selectedFile));
-
                     PeerMG.getInstance().getHashToTorrent().put(selectedFile.getName(), (Torrent) ois.readObject());
-                    PeerMG.getInstance().AddDownLoad(selectedFile.getName());
+                    DLTaskOfTorrentFile dlTaskOfTorrentFile = PeerMG.getInstance().AddDownLoad(selectedFile.getName());
+                    dlMap.put(selectedFile.getName(), dlTaskOfTorrentFile);
+
+
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 } catch (ClassNotFoundException ex) {
@@ -467,31 +496,29 @@ public class Home extends JFrame {
             PeerMG.getInstance().openLink();
         }
     }
-    boolean flag[] = new boolean[100];
-    int k = 0;
-    int  count = 0;
+
+    boolean flags[] = new boolean[1000];
+
     public void fake(){
-        count++;
-        if(count == 30){
-            count = 0;
-            if(k!=0){
-                k--;
+        new Thread(){
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1000);
+                    for(int i=0;i<tableModel.getRowCount();i++){
+                        double ran = Math.random();
+                        if (flags[i] == false) {
+                            table.setValueAt((double)table.getValueAt(i,1)+ran,i,1);
+                        }else if((double)table.getValueAt(i,1)+ran>100) {
+                            table.setValueAt(100.0, i, 1);
+                        }
+                    }
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
-        }
+        }.start();
 
-        int len = defaultListModel.size();
-        //修改defaultListModel里面的值
-        for (int i = k; i < len; i++) {
-            String[] s = defaultListModel.get(i).split("            ");
-            if(flag[i]){
-                continue;
-            }
-            double d = (Double.parseDouble(s[1].substring(0,s[1].indexOf("%")))+ Math.random());
-            if(d>100){
-                d=100;
-            }
-            defaultListModel.set(i, s[0] +"            "+ d +"%");
-        }
+
     }
-
 }

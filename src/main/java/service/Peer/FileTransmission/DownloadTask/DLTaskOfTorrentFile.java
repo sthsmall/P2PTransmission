@@ -1,13 +1,11 @@
 package service.Peer.FileTransmission.DownloadTask;
 
 import domain.Torrent;
-import domain.TorrentFile;
 import service.Peer.FileTransmission.ASK.ASKPeerForFileStatuser;
 import service.Peer.FileTransmission.ASK.ASKTrackerForPeerInfoer;
 import service.Peer.FileTransmission.Downloader.DLofPiece;
 import service.Peer.FileTransmission.Status.StatusOfSingleFile;
 import service.Peer.FileTransmission.Status.StatusOfTotalFile;
-import utils.LargeFileHashCalculator;
 import utils.PeerMG;
 
 import java.io.*;
@@ -35,9 +33,13 @@ public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        //创建文件状态
+        //获得文件结构
         StatusOfSingleFile fileStruct = torrent.getFileStruct();
+
+        //创建实际文件结构
+
         File filek = new File("./src/Download/"+torrent.getName());
+
         filek.mkdir();
         File tempFile = null;
         //遍历文件状态将每个文件状态加入到总文件状态中
@@ -50,23 +52,29 @@ public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
                 }else {
                     tempFile = new File("./src/Download/"+torrent.getName()+"/"+ss.getPath());
                     try {
-                        tempFile.createNewFile();
+                        if(!tempFile.exists()) {
+                            System.out.println(tempFile.createNewFile());
+                        }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
+
+                    //将文件状态加入到总文件状态中
                     PeerMG.getInstance().getHashToStatusOfSingleFile().put(ss.getPath(),ss);
                 }
             }
         }
 
 
+        //将下载任务加入到下载队列中
+        PeerMG.getInstance().getNowDownloadingTorrents().add(hash);
 
-        PeerMG.getInstance().getTorrents().add(hash);
-
+        //创建本Torrent文件下载状态
         StatusOfTotalFile statusOfTotalFile = new StatusOfTotalFile();
 
         statusOfTotalFile.setFileStruct(fileStruct);
 
+        //将本Torrent文件下载状态加入到总下载状态中
         PeerMG.getInstance().getHashToStatusOfTotalFile().put(file.getName(),statusOfTotalFile);
 
         //创建心跳线程
@@ -88,7 +96,12 @@ public class DLTaskOfTorrentFile extends Thread implements DownloadTask{
                     continue;
                 }
                 DLofPiece dlOfPiece = null;
+
+                int k = 0;
                 for(String path: Piece){
+                    if(k++ > 30){
+                        break;
+                    }
                     Thread.sleep(1000);
                     dlOfPiece = new DLofPiece();
                     dlOfPiece.addAndStartTask(new DLTaskOfPiece(hash, path));

@@ -1,13 +1,11 @@
 package utils;
 
 import lombok.Data;
-import service.Peer.FileTransmission.ASK.ASKTrackerForTorrent;
 import service.Peer.FileTransmission.ASK.ASKTrackerInfo;
 import service.Peer.FileTransmission.DownloadTask.DLTaskOfTorrentFile;
 import service.Peer.FileTransmission.Downloader.DLofTorrentFile;
 import service.Peer.FileTransmission.Status.StatusOfSingleFile;
 import service.Peer.FileTransmission.Status.StatusOfTotalFile;
-import service.Peer.Linstener.ListenerTCP_ASK;
 import service.Peer.Sender.AccessInfoToTrackerSender;
 import service.Peer.page.*;
 
@@ -31,7 +29,7 @@ public class PeerMG {
     public final static int TrackerPort = 49999;
     public static int FilePieceSize = 1024 * 1024;
     public static int PieceReceivePort = 8899;
-    private String TrackerIP = "192.168.231.75";
+    private String TrackerIP = "192.168.122.116";
     //通过磁链获得Peer信息
     private HashMap<String, HashSet<PeerInfo>> hashToPeerInfo = new HashMap<>();
     //通过磁链获得分块信息
@@ -39,7 +37,7 @@ public class PeerMG {
     //通过磁链获得分块信息
     private final HashMap<String, Boolean> hashToTotalFileStatus = new HashMap<>();
     //获得torrent拥有情况
-    private HashSet<String> torrents = new HashSet<>();
+    private HashSet<String> NowDownloadingTorrents = new HashSet<>();
     //获得下载列表
     private  HashMap<String,Queue<String>> hashToDownloadList = new HashMap<>();
 
@@ -47,9 +45,9 @@ public class PeerMG {
         return hashToDownloadList;
     }
 
-
-
+    //哈希值对应的种子
     private HashMap<String, Torrent> hashToTorrent = new HashMap<>();
+
 
     //每个子文件对应的文件信息
     private HashMap<String, StatusOfSingleFile> hashToStatusOfSingleFile = new HashMap<>();
@@ -138,6 +136,9 @@ public class PeerMG {
 
         //将种子对象写入文件
         File file = StorageTorrent(torrent);
+
+        //将种子对象加入
+        PeerMG.getInstance().getHashToTorrent().put(file.getName(), torrent);
 
         //将种子文件发送到服务器
         SendTorrent(file);
@@ -351,7 +352,8 @@ public class PeerMG {
         link.setVisible(true);
     }
 
-    public void AddDownLoad(String hash){
+    public DLTaskOfTorrentFile AddDownLoad(String hash){
+        ArrayList<String> torrentL = home.getTorrentList();
         Torrent torrent = PeerMG.getInstance().getHashToTorrent().get(hash);
         //将种子文件添加到下载任务
         File file = PeerMG.getInstance().getHashToFile().get(hash);
@@ -360,7 +362,10 @@ public class PeerMG {
         //将下载任务添加到下载任务列表
         DLofTorrentFile.getInstance().addAndStartTask(dll);
         //将下载任务添加到主界面
-        getHome().addOneDownloadTask(torrent.getName());
+        torrentL.add(torrent.getName());
+
+        getHome().addOneDownloadTask(hash);
+        return dll;
 
     }
 
@@ -392,7 +397,7 @@ public class PeerMG {
 
     }
 
-    public HashSet<String> getTorrents() {
-        return torrents;
+    public HashSet<String> getNowDownloadingTorrents() {
+        return NowDownloadingTorrents;
     }
 }
