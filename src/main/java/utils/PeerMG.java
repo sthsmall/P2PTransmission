@@ -114,7 +114,7 @@ public class PeerMG {
     }
 
     //从文件制作种子文件
-    public boolean MakeTorrentFromFile(ArrayList<File> files,String name) {
+    public File MakeTorrentFromFile(ArrayList<File> files,String name) {
 
         Torrent torrent = new Torrent();
         torrent.setName(name);
@@ -142,7 +142,7 @@ public class PeerMG {
 
         //将种子文件发送到服务器
         SendTorrent(file);
-        return true;
+        return file;
     }
 
 
@@ -162,10 +162,11 @@ public class PeerMG {
             File fileNew = new File("./src/Torrents/" + hash + ".torrent");
             //将文件重命名
             file.renameTo(fileNew);
-            f = file;
+            f = fileNew;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("hahaha"+f.getName());
         return f;
     }
 
@@ -205,6 +206,7 @@ public class PeerMG {
             clear(REGISTER);
             register.setVisible(false);
         } else {
+
             home.setVisible(false);
         }
         login.setVisible(true);
@@ -226,6 +228,8 @@ public class PeerMG {
         //在首页面显示用户名和积分
         home.getID().setText(username);
         home.getScore().setText(String.valueOf(score));
+        PeerMG.getInstance().init();
+        home.fake();
         home.setVisible(true);
     }
 
@@ -352,7 +356,7 @@ public class PeerMG {
         link.setVisible(true);
     }
 
-    public DLTaskOfTorrentFile AddDownLoad(String hash){
+    public DLTaskOfTorrentFile AddDownLoad(String hash,boolean isfull){
         ArrayList<String> torrentL = home.getTorrentList();
         Torrent torrent = PeerMG.getInstance().getHashToTorrent().get(hash);
         //将种子文件添加到下载任务
@@ -364,7 +368,7 @@ public class PeerMG {
         //将下载任务添加到主界面
         torrentL.add(torrent.getName());
 
-        getHome().addOneDownloadTask(hash);
+        getHome().addOneDownloadTask(hash,isfull);
         return dll;
 
     }
@@ -380,21 +384,6 @@ public class PeerMG {
     public void init() {
         ASKTrackerInfo askTrackerInfo = new ASKTrackerInfo();
         askTrackerInfo.start();
-        new Thread(){
-            @Override
-            public void run() {
-                while (true){
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    home.fake();
-                }
-
-            }
-        }.start();
-
     }
 
     public HashSet<String> getNowDownloadingTorrents() {

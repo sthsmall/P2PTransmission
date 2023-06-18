@@ -75,6 +75,7 @@ public class Home extends JFrame {
             try {
                 Home home = PeerMG.getInstance().getHome();
                 PeerMG.getInstance().init();
+                System.out.println("fdsafd");
                 home.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -86,6 +87,7 @@ public class Home extends JFrame {
      * Create the frame.
      */
     public Home() {
+
         setTitle("P2P文件传输系统");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 958, 587);
@@ -287,11 +289,20 @@ public class Home extends JFrame {
         JMenuItem team = new JMenuItem("团队");
         team.addActionListener(new TeamActionListener());
         relation.add(team);
+
+
     }
 
-    public void addOneDownloadTask(String name) {
-        tableModel.addRow(new Object[]{name, 0.0});
+    public void addOneDownloadTask(String name,boolean isfull) {
+        if(isfull){
+            tableModel.addRow(new Object[]{name, 100.0});
+        }else {
+            tableModel.addRow(new Object[]{name, 0.0});
+        }
+
     }
+
+
 
     private class MTorrentActionListener implements ActionListener {
 
@@ -344,16 +355,21 @@ public class Home extends JFrame {
             fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
             // 显示文件选择器对话框
             int result = fileChooser.showOpenDialog(Home.this);
-
+            File selectedFile = null;
             if (result == JFileChooser.APPROVE_OPTION) {
                 // 用户选择了一个文件
-                File[] selectedFile = fileChooser.getSelectedFiles();
-                ArrayList<File> files = new ArrayList<>(Arrays.asList(selectedFile));
-                PeerMG.getInstance().MakeTorrentFromFile(files,"测试1");
-                for (File file : selectedFile) {
+                File[] selectedFiles = fileChooser.getSelectedFiles();
+                ArrayList<File> files = new ArrayList<>(Arrays.asList(selectedFiles));
+                selectedFile = PeerMG.getInstance().MakeTorrentFromFile(files,"测试1");
+                for (File file : selectedFiles) {
                     System.out.println("Selected file: " + file.getAbsolutePath());
                 }
             }
+            System.out.println(selectedFile.getAbsolutePath());
+            PeerMG.getInstance().getHashToFile().put(selectedFile.getName(),selectedFile);
+            DLTaskOfTorrentFile dlTaskOfTorrentFile = PeerMG.getInstance().AddDownLoad(selectedFile.getName(),true);
+
+            dlMap.put(selectedFile.getName(), dlTaskOfTorrentFile);
         }
     }
 
@@ -477,7 +493,7 @@ public class Home extends JFrame {
                 try {
                     ObjectInputStream ois = new ObjectInputStream(new FileInputStream(selectedFile));
                     PeerMG.getInstance().getHashToTorrent().put(selectedFile.getName(), (Torrent) ois.readObject());
-                    DLTaskOfTorrentFile dlTaskOfTorrentFile = PeerMG.getInstance().AddDownLoad(selectedFile.getName());
+                    DLTaskOfTorrentFile dlTaskOfTorrentFile = PeerMG.getInstance().AddDownLoad(selectedFile.getName(),false);
                     dlMap.put(selectedFile.getName(), dlTaskOfTorrentFile);
 
 
@@ -503,18 +519,21 @@ public class Home extends JFrame {
         new Thread(){
             @Override
             public void run() {
-                try {
-                    Thread.sleep(1000);
-                    for(int i=0;i<tableModel.getRowCount();i++){
-                        double ran = Math.random();
-                        if (flags[i] == false) {
-                            table.setValueAt((double)table.getValueAt(i,1)+ran,i,1);
-                        }else if((double)table.getValueAt(i,1)+ran>100) {
-                            table.setValueAt(100.0, i, 1);
+                while (true){
+                    try {
+                        Thread.sleep(1000);
+                        //System.out.println("fake");
+                        for(int i=0;i<tableModel.getRowCount();i++){
+                            double ran = Math.random();
+                            if (flags[i] == false) {
+                                table.setValueAt((double)table.getValueAt(i,1)+ran,i,1);
+                            }else if((double)table.getValueAt(i,1)+ran>100) {
+                                table.setValueAt(100.0, i, 1);
+                            }
                         }
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
                     }
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
                 }
             }
         }.start();
