@@ -2,7 +2,7 @@ package service.Peer.page;
 
 import domain.Torrent;
 import service.Peer.FileTransmission.DownloadTask.DLTaskOfTorrentFile;
-import service.Peer.FileTransmission.Downloader.DLofTorrentFile;
+import service.Peer.FileTransmission.Status.StatusOfTotalFile;
 import utils.PeerMG;
 
 import java.awt.*;
@@ -14,19 +14,11 @@ import java.awt.event.ActionEvent;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.net.DatagramPacket;
 import java.net.URL;
 import javax.swing.border.TitledBorder;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.File;
-import java.time.Period;
 import java.util.*;
 
-import javax.swing.event.MenuListener;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuKeyListener;
-import javax.swing.event.MenuKeyEvent;
 import javax.swing.table.DefaultTableModel;
 
 //首页面
@@ -515,24 +507,25 @@ public class Home extends JFrame {
 
     boolean flags[] = new boolean[1000];
 
-    public void fake(){
+    public void percent(){
         new Thread(){
             @Override
             public void run() {
-                while (true){
-                    try {
-                        Thread.sleep(1000);
-                        //System.out.println("fake");
-                        for(int i=0;i<tableModel.getRowCount();i++){
-                            double ran = Math.random();
-                            if (flags[i] == false) {
-                                table.setValueAt((double)table.getValueAt(i,1)+ran,i,1);
-                            }else if((double)table.getValueAt(i,1)+ran>100) {
-                                table.setValueAt(100.0, i, 1);
+                while(true){
+                    for(String s : dlMap.keySet()){
+                        StatusOfTotalFile statusOfTotalFile = PeerMG.getInstance().getHashToStatusOfTotalFile().get(s);
+                        if(statusOfTotalFile==null){
+                            continue;
+                        }
+                        float allPercentage = statusOfTotalFile.getStatusOfSingleFile().getAllPercentage();
+                        for( int i=0;i<tableModel.getRowCount();i++){
+                            if(table.getValueAt(i,0).equals(s)){
+                                table.setValueAt(allPercentage,i,2);
+                                if(allPercentage==100.0){
+                                    flags[i] = true;
+                                }
                             }
                         }
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
                     }
                 }
             }

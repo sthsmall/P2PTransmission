@@ -1,10 +1,11 @@
 package service.Peer.FileTransmission.Status;
 
+import lombok.Data;
 import utils.PeerMG;
 
 import java.io.Serializable;
 import java.util.*;
-
+@Data
 public class StatusOfTotalFile implements Serializable {
     int len = PeerMG.FilePieceSize;
     HashMap<String,StatusOfSingleFile> hashToStatusOfSingleFile;

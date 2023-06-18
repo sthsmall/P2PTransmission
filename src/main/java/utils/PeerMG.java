@@ -229,7 +229,7 @@ public class PeerMG {
         home.getID().setText(username);
         home.getScore().setText(String.valueOf(score));
         PeerMG.getInstance().init();
-        home.fake();
+        home.percent();
         home.setVisible(true);
     }
 

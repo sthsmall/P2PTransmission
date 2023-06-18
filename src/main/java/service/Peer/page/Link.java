@@ -82,8 +82,12 @@ public class Link extends JFrame {
 					return;
 				}
 				new ASKTrackerForTorrent(textArea.getText().trim()).run();
-
-				PeerMG.getInstance().AddDownLoad(textArea.getText().trim(),false);
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException ex) {
+					throw new RuntimeException(ex);
+				}
+				PeerMG.getInstance().AddDownLoad(textArea.getText().trim()+".torrent",false);
 				PeerMG.getInstance().closeLink();
 			}
 
