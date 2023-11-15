@@ -10,7 +10,7 @@ import java.util.ArrayList;
 @Data
 public class Torrent implements Serializable {
     //种子文件的名称
-    private String name;
+    private String name;//
     //种子文件的大小
     private long size;
     //种子文件的哈希值
